@@ -1,0 +1,17 @@
+- name: copy jenkins.repo
+  action: copy src=jenkins.repo dest=/etc/yum.repos.d/
+  tags:
+    - jenkins
+
+- name: install jenkins
+  action: yum name={{ item }} state=latest enablerepo=jenkins
+  with_items:
+    - jenkins
+    - java-1.7.0-openjdk
+  tags:
+    - jenkins
+
+- name: start jenkins
+  action: service name=jenkins state=started
+  tags:
+    - jenkins

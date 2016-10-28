@@ -1,0 +1,92 @@
+- name: install httpd package from base repository
+  action: yum name=httpd state=latest disablerepo=* enablerepo=base
+  tags:
+    - apache
+
+- name: backup old file
+  action: shell cp -pR /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.$(date +%Y%m%d-%H%M%S)
+  tags:
+    - apache
+
+- name: add secure setting /etc/httpd/conf/httpd.conf
+  action: lineinfile regexp="{{ item.regexp }}" line="{{ item.line }}" dest=/etc/httpd/conf/httpd.conf backup=no
+  with_items:
+    - { regexp: '^ServerTokens',    line: 'ServerTokens Prod' }
+    - { regexp: '^ServerSignature', line: 'ServerSignature Off' }
+  tags:
+    - apache
+
+- name: add secure setting /etc/httpd/conf/httpd.conf
+  action: replace regexp="{{ item.regexp }}" replace="{{ item.replace }}" dest=/etc/httpd/conf/httpd.conf backup=no
+  with_items:
+    - { regexp: 'Options Indexes FollowSymLinks', replace: 'Options FollowSymLinks' }
+    - { regexp: 'Options Indexes MultiViews FollowSymLinks', replace: 'Options MultiViews FollowSymLinks' }
+  tags:
+    - apache
+
+- name: enable extnded status
+  action: lineinfile dest=/etc/httpd/conf/httpd.conf backup=no line="{{ item.line }}" insertafter="{{ item.insertafter }}"
+  with_items:
+    - { line: 'ExtendedStatus On', insertafter: '#ExtendedStatus On' }
+  tags:
+    - apache
+
+- name: enable server status & server info
+  action: copy src={{ item }} dest=/etc/httpd/conf.d/
+  with_items:
+    - server-status.conf
+    - server-info.conf
+  tags:
+    - apache
+
+- name: delete unnecessary conf
+  action: file path={{item}} state=absent
+  with_items:
+    - /etc/httpd/conf.d/README
+    - /etc/httpd/conf.d/welcome.conf
+  tags:
+    - apache
+
+- name: increase file descriptor for apache user to 4096
+  action: copy src=10-apache.conf dest=/etc/security/limits.d/
+  tags:
+    - apache
+
+- name: change logrotate settings
+  action: template src=etc_logrotate.d_httpd dest=/etc/logrotate.d/httpd
+  tags:
+    - apache
+
+- name: change logdir permission
+  action: file dest=/var/log/httpd mode=0755
+  tags:
+    - apache
+
+- name: remove default Alias setting /etc/httpd/conf/httpd.conf
+  action: replace regexp="{{ item.regexp }}" replace="{{ item.replace }}" dest=/etc/httpd/conf/httpd.conf backup=no
+  with_items:
+    - { regexp: '^Alias', replace: '#Alias' }
+    - { regexp: '^ScriptAlias', replace: '#ScriptAlias' }
+  tags:
+    - apache
+
+- name: delete default /var/www/cgi-bin
+  action: file dest=/var/www/cgi-bin state=absent
+  tags:
+    - apache
+
+- name: delete default /var/www/icons 
+  action: file dest=/var/www/icons state=absent force=yes
+  tags:
+    - apache
+
+- name: delete default /var/www/error
+  action: file dest=/var/www/error state=absent force=yes
+  tags:
+    - apache
+
+- name: restart httpd server
+  action: service name=httpd state=restarted enabled=yes
+  tags:
+    - apache
+

@@ -1,0 +1,174 @@
+#- name: update /etc/yum.conf
+#  action: raw sed '/proxy.*/d' /etc/yum.conf -i
+#  tags:
+#    - yum
+
+#- name: update /etc/yum.conf
+#  action: raw echo proxy={{ http_proxy }} >> /etc/yum.conf
+#  tags:
+#    - yum
+
+- name: update /etc/yum/pluginconf.d/fastestmirror.conf
+  action: raw echo include_only=.jp >> /etc/yum/pluginconf.d/fastestmirror.conf
+  tags:
+    - yum
+
+- name: set old releasever if [ releasever ] is defined
+  action: raw {{ item }}
+  with_items:
+    - echo "{{ releasever }}" > /etc/yum/vars/releasever
+    - sed -e 's@#baseurl=http://mirror.centos.org/centos@baseurl=http://vault.centos.org@g' /etc/yum.repos.d/CentOS-Base.repo -i.org
+  when: releasever is defined
+  tags:
+    - yum
+
+- name: remove /etc/yum/vars/releasever if [ releasever ] is not defined
+  action: raw {{ item }}
+  with_items:
+    - rm -f /etc/yum/vars/releasever
+  when: releasever is not defined
+  tags:
+    - yum
+
+- name: install required for ansible
+  action: yum name={{ item }} state=present
+  with_items:
+    - libselinux-python
+  tags:
+    - yum
+
+- name: update /etc/yum.conf
+  action: lineinfile dest=/etc/yum.conf  regexp='^keepcache' line='keepcache=1'
+  tags:
+    - yum
+
+#- name: update /etc/yum.conf
+#  action: lineinfile dest=/etc/yum.conf regexp='.*proxy=.*' line='proxy={{ http_proxy }}'
+#  tags:
+#    - yum
+
+- name: update all package
+  action: yum name=* state=latest disable_gpg_check=yes
+  tags:
+    - yum
+
+- name: update /etc/yum.conf
+  action: lineinfile dest=/etc/yum.conf  regexp='.*exclude=kernel' line='# exclude=kernel* centos-release*'
+  tags:
+    - yum
+
+- name: install base packages in [Base] 1/4
+  action: yum pkg={{ item }} state=latest
+
+  with_items:
+    - abrt-addon-ccpp
+    - abrt-addon-kerneloops
+    - abrt-addon-python
+    - abrt-cli
+    - blktrace
+    - bzip2
+  tags:
+    - packages
+
+- name: install base packages in [Base] 2/4
+  action: yum pkg={{ item }} state=latest
+
+  with_items:
+    - eject
+    - ethtool
+#    - libselinux-python
+    - man
+    - man-pages
+    - microcode_ctl
+    - mlocate
+  tags:
+    - packages
+
+- name: install base packages in [Base] 3/4
+  action: yum pkg={{ item }} state=latest
+
+  with_items:
+    - ntp
+    - ntpdate
+    - openssh
+    - prelink
+    - rsync
+    - strace
+    - sysstat
+  tags:
+    - packages
+
+- name: install base packages in [Base] 4/4
+  action: yum pkg={{ item }} state=latest
+
+  with_items:
+    - tcpdump
+    - time
+    - unzip
+    - wget
+    - which
+    - yum-plugin-security
+    - yum-utils
+    - zip
+  tags:
+    - packages
+
+- name: install base packages in [Performance Tools]
+  action: yum pkg={{ item }} state=latest
+
+  with_items:
+    - dstat
+    - sysstat
+    - perf
+  tags:
+    - packages
+
+- name: install base packages in [Networking Tools]
+  action: yum pkg={{ item }} state=latest
+
+  with_items:
+    - nc
+    - nmap
+  tags:
+    - packages
+
+- name: install base packages in [Legacy UNIX compatibility]
+  action: yum pkg={{ item }} state=latest
+
+  with_items:
+    - telnet
+    - xinetd
+  tags:
+    - packages
+
+- name: install base packages in [Development Tools]
+  action: yum pkg={{ item }} state=latest
+
+  with_items:
+    - gcc
+    - make
+  tags:
+    - packages
+
+- name: install base packages in [System Management]
+  action: yum pkg={{ item }} state=latest
+
+  with_items:
+    - net-snmp-utils
+  tags:
+    - packages
+
+- name: install extra packages
+  action: yum pkg={{ item }} state=latest
+
+  with_items:
+    - dmidecode
+    - bind-utils
+    - pciutils
+  tags:
+    - extra-packages
+
+- name: update /etc/yum.conf
+  action: lineinfile dest=/etc/yum.conf regexp='.*exclude=kernel' line='exclude=kernel* centos-release*'
+  tags:
+    - yum

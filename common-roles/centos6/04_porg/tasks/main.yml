@@ -1,0 +1,38 @@
+- name: install required package
+  yum: name={{ item }} state=latest
+  with_items:
+    - gcc-c++
+    - libtool
+    - make
+  tags:
+    - install
+  
+- name: download src package
+  copy: src=porg-{{ porg_version }}.tar.gz dest=/usr/local/src/
+  tags:
+    - install
+
+- name: extract src package
+  shell: tar xvzf /usr/local/src/porg-{{ porg_version }}.tar.gz chdir=/usr/local/src/ creates=porg-{{ porg_version }}
+  tags:
+    - install 
+
+- name: install porg(./configure)
+  shell: ./configure --disable-grop --enable-scripts chdir=/usr/local/src/porg-{{ porg_version }}
+  tags:
+    - install
+
+- name: install porg(make)
+  shell: make chdir=/usr/local/src/porg-{{ porg_version }}
+  tags:
+    - install
+
+- name: make install porg(make install)
+  shell: make install chdir=/usr/local/src/porg-{{ porg_version }}
+  tags:
+    - install
+
+- name: add porg
+  shell: make logme chdir=/usr/local/src/porg-{{ porg_version }}
+  tags:
+    - install

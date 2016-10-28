@@ -1,0 +1,15 @@
+# List of servers used for initial synchronization.
+{% if platform_ntpservers is defined and system_ntpservers is defined %}
+{% for ntpserver in platform_ntpservers | union(system_ntpservers) | unique %}
+{{ ntpserver }}
+{% endfor %}
+{% elif platform_ntpservers is defined and system_ntpservers is not defined %}
+{% for ntpserver in platform_ntpservers | unique %}
+{{ ntpserver }}
+{% endfor %}
+{% elif platform_ntpservers is not defined and system_ntpservers is defined %}
+{% for ntpserver in system_ntpservers | unique %}
+{{ ntpserver }}
+{% endfor %}
+{% endif %}
+

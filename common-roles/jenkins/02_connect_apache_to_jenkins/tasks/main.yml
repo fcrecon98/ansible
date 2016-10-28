@@ -1,0 +1,5 @@
+- name: copy jenkins.conf
+  action: copy src=jenkins.conf dest=/etc/httpd/conf.d/
+  tags:
+    - apache
+    - jenkins

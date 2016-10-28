@@ -1,0 +1,16 @@
+# bash
+gnu_bash_version: 4.3
+
+# porg
+porg_version: 0.3
+
+# redis
+redis26_version: 2.6.17
+redis28_version: 2.8.9
+
+# nginx
+nginx_statuspage: nginx_ss
+
+# php-fpm
+phpfpm_statuspage: php_ss
+phpfpm_pingpage: ping

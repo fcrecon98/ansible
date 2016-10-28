@@ -1,0 +1,4 @@
+- name: set HISTSIZE=10000 /etc/profile
+  action: lineinfile dest=/etc/profile regexp='HISTSIZE=' line='HISTSIZE=10000' backup=yes
+  tags:
+    - history

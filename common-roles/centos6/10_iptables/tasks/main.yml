@@ -1,0 +1,5 @@
+- name: stop and disable iptables
+  action: service name={{ item }} state=stopped enabled=false
+  with_items:
+     - ip6tables
+     - iptables

@@ -1,0 +1,8 @@
+- name: configure /etc/pam.d/su
+  lineinfile: dest=/etc/pam.d/su owner=root group=root mode=0644 backup=yes regexp='^auth.*required.*pam_wheel.so use_uid' line='auth           required        pam_wheel.so use_uid group=wheel' insertafter='^#auth.*required.*pam_wheel.so use_uid'
+  tags: wheel
+
+- name: configure /etc/login.defs
+  lineinfile: dest=/etc/login.defs owner=root group=root mode=0644 backup=yes regexp='^SU_WHEEL_ONLY' line='SU_WHEEL_ONLY yes' insertafter='^ENCRYPT_METHOD'
+  tags: wheel
+

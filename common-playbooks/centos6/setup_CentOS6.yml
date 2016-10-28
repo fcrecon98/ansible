@@ -1,0 +1,37 @@
+- hosts: '{{ hosts }}'
+  sudo: no
+  vars_files:
+     # common vars file
+     - ../../common-vars/common.yml
+     # platform vars file
+     #- ../../platform-vars/{{ platform }}-{{ env }}.yml
+     # system vars file
+     #- ../../system-vars/{{ system }}-{{ env }}.yml
+
+  roles:
+
+    - ../../common-roles/CentOS6/01_packages
+    - ../../common-roles/CentOS6/02_root_bash_profile
+    - ../../common-roles/CentOS6/03_account
+    - ../../common-roles/CentOS6/04_porg
+
+    - ../../common-roles/CentOS6/10_anacron
+    - ../../common-roles/CentOS6/10_cron.daily
+    - ../../common-roles/CentOS6/10_ctrl-alt-del
+    - ../../common-roles/CentOS6/10_gnu_bash
+    - ../../common-roles/CentOS6/10_history
+    - ../../common-roles/CentOS6/10_hosts
+    - ../../common-roles/CentOS6/10_ipv6
+    - ../../common-roles/CentOS6/10_iptables
+    - ../../common-roles/CentOS6/10_mail_to_root
+    - ../../common-roles/CentOS6/10_motd
+    - ../../common-roles/CentOS6/10_motd
+    - ../../common-roles/CentOS6/10_nozeroconf
+    - ../../common-roles/CentOS6/10_nscd
+    - ../../common-roles/CentOS6/10_prelink
+    - ../../common-roles/CentOS6/10_selinux
+    - ../../common-roles/CentOS6/10_shared_library
+    - ../../common-roles/CentOS6/10_sshd
+    - ../../common-roles/CentOS6/10_wheel
+    - ../../common-roles/CentOS6/10_yum
+    - ../../common-roles/CentOS6/20_sysctl

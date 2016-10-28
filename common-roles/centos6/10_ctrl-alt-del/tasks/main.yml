@@ -1,0 +1,4 @@
+- name: disable ctrl+alt+del reboot /etc/init/control-alt-delete.conf
+  action: lineinfile dest=/etc/init/control-alt-delete.conf regexp='exec /sbin/shutdown -r now' line='#exec /sbin/shutdown -r now "Control-Alt-Delete pressed"' backup=yes
+  tags:
+    - ctrl-alt-del

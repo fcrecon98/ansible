@@ -1,0 +1,30 @@
+- name: install prelink
+  action: yum name=prelink state=installed
+  tags:
+     - prelink
+
+- name: backup /etc/sysconfig/prelink
+  action: shell cp -p /etc/sysconfig/prelink /etc/sysconfig/prelink.$(date +%Y%m%d-%H%M%S)
+  tags:
+     - prelink
+
+- name: insert PRELINKING=no /etc/sysconfig/prelink
+  action: lineinfile dest=/etc/sysconfig/prelink state=absent insertbefore=BOF line='PRELINKING=no'
+  tags:
+     - prelink
+
+- name: update /etc/sysconfig/prelink
+  action: lineinfile dest=/etc/sysconfig/prelink state=present regexp='.*PRELINKING=.*' line='PRELINKING=no'
+  tags:
+     - prelink
+
+- name: turn off prelink
+  action: command prelink -au
+  tags:
+     - prelink
+
+- name: stop prelink job
+  action: command chmod -x /etc/cron.daily/prelink
+  tags:
+     - prelink
+
