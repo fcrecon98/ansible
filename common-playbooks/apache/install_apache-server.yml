@@ -2,8 +2,7 @@
   sudo: no
   vars_files: 
      - ../../common-vars/common.yml
-     - ../../platform-vars/{{ platform }}-{{ env }}.yml
-     - ../../system-vars/{{ system }}-{{ env }}.yml
 
   roles:
-     - ../../common-roles/apache/01_apache-server
+     - ../../common-roles/apache/01_apache-server_with-src
+#     - ../../common-roles/apache/01_apache-server
