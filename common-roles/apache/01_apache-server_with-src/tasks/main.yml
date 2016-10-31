@@ -19,6 +19,42 @@
   tags:
     - apache
 
+###
+- name: download apr source file
+  action: shell wget -nc http://ftp.meisei-u.ac.jp/mirror/apache/dist//apr/apr-{{ apr_version }}.tar.gz chdir=/usr/local/src/
+  tags:
+    - apache
+
+- name: extract apr source file
+  action: shell tar xvzf {{ item }} chdir=/usr/local/src/
+  with_items:
+    - apr-{{ apr_version }}.tar.gz
+  tags:
+    - apache
+
+- name: copy apr source file
+  action: shell cp -Rr /usr/local/src/apr-{{ apr_version }} httpd-{{ apache_version }}/srclib/apr
+  tags: 
+    - apache
+
+- name: download apr-util source file
+  action: shell wget -nc http://ftp.meisei-u.ac.jp/mirror/apache/dist//apr/apr-util-{{ apr-util_version }}.tar.gz chdir=/usr/local/src/
+  tags:
+    - apache
+
+- name: extract apr-util source file
+  action: shell tar xvzf {{ item }} chdir=/usr/local/src/
+  with_items:
+    - apr-util-{{ apr-util_version }}.tar.gz
+  tags:
+    - apache
+
+- name: copy apr-util source file
+  action: shell cp -Rr /usr/local/src/apr-util-{{ apr-util_version }} httpd-{{ apache_version }}/srclib/apr-util
+  tags:
+    - apache
+###
+
 - name: copy apache configure file
   action: template src=apache-configure.sh dest=/usr/local/src/httpd-{{ apache_version }}/
   tags:
