@@ -38,7 +38,7 @@
     - apache
 
 - name: download apr-util source file
-  action: shell wget -nc http://ftp.meisei-u.ac.jp/mirror/apache/dist//apr/apr-util-{{ apr-util_version }}.tar.gz chdir=/usr/local/src/
+  action: shell wget -nc http://ftp.meisei-u.ac.jp/mirror/apache/dist//apr/apr-util-{{ apr-util_version }}.tar.gz
   tags:
     - apache
 
