@@ -1,10 +1,10 @@
-- name: add capadmin group
-  action: group name=capadmin gid=1001 state=present
+- name: add dmmadmin group
+  action: group name=dmmadmin gid=1001 state=present
   tags:
      - account
 
-- name: add capadmin user
-  action: user name=capadmin uid=1001 group=capadmin groups=wheel append=yes state=present force=yes
+- name: add dmmadmin user
+  action: user name=dmmadmin uid=1001 group=dmmadmin groups=wheel append=yes state=present force=yes
   ignore_errors: yes
   tags:
      - account
