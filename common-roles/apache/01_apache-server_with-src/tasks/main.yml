@@ -3,6 +3,7 @@
   with_items:
     - openssl
     - openssl-devel
+    - pcre-devel
   tags:
     - apache
 
