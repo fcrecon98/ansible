@@ -1,0 +1,158 @@
+#!/bin/bash
+#
+# masterha startup script
+#
+# ver0.1  20140620 M.Meguro
+# ver0.2  20141007 M.Meguro
+# ver0.3  20141007 M.Meguro
+#
+# chkconfig: 345 91 11
+# description: mysql master-ha
+# processname: masterha_manager
+#
+
+# Source function library.
+. /etc/init.d/functions
+
+test -e /etc/sysconfig/masterha && . /etc/sysconfig/masterha
+
+function usage
+{
+  echo "
+usage: $0 [COMMAND]
+
+COMMAND:
+start 		start masterha_manager with cleanup tempolary files
+stop		stop masterha_manager
+restart		stop & start masterha_manager
+status		check masterha_manager status
+cleanup		cleanup tempolary files
+check		check SSH and MySQL replication
+"
+}
+
+function start
+{
+  cleanup 
+  masterha_manager --conf=${MHA_CONFIGFILE} &
+  sleep 10
+  status
+  if [ $? -eq 0 ]; then
+    echo "[INFO] masterha_manager start completed!"
+    exit 0
+  fi
+}
+
+function stop
+{
+  masterha_stop --conf=${MHA_CONFIGFILE}
+}
+
+
+function status
+{
+  masterha_check_status --conf=${MHA_CONFIGFILE}
+  return $?
+}
+
+function check
+{
+  masterha_check_ssh --conf=${MHA_CONFIGFILE}
+  if [ $? -ne 0 ]; then
+    echo "[ERROR] masterha_check_ssh failed" >&2
+    exit 1
+  fi
+
+  masterha_check_repl --conf=${MHA_CONFIGFILE} --skip-check-ssh
+  if [ $? -ne 0 ]; then
+    echo "[ERROR] masterha_check_repl failed" >&2
+    exit 1 
+  fi
+
+  check_mysql_readonly
+}
+
+function cleanup
+{
+  echo "[INFO] check masterha_master is not running."
+  status
+  if [ $? -eq 0 ]; then
+    echo '[ERROR] masterha_master is running. i cannot cleanup' >&2
+    exit 1
+  fi
+
+  echo "[INFO] check replication status before cleanup..."
+  sleep 3
+  check
+
+  MHA_WORKDIR=`get_parameter manager_workdir`
+  MHA_BASENAME=`basename ${MHA_CONFIGFILE} | awk -F '.' '{print $1}'`
+  MHA_STATUSFILE_PREFIX=${MHA_WORKDIR}/${MHA_BASENAME}
+   
+  MHA_STATUSFILE_FAILOVER=${MHA_STATUSFILE_PREFIX}.failover.complete
+  if [ -f ${MHA_STATUSFILE_FAILOVER} ]; then
+    rm -f ${MHA_STATUSFILE_FAILOVER}
+    echo "[INFO] file removed. ${MHA_STATUSFILE_FAILOVER}"
+  else
+    echo "[INFO] not found. ${MHA_STATUSFILE_FAILOVER}"
+  fi
+
+  if ls ${MHA_WORKDIR}/saved_master_binlog_from_*.binlog > /dev/null 2>&1 ; then
+    rm -f ${MHA_WORKDIR}/saved_master_binlog_from_*.binlog
+    echo "[INFO] file removed. saved_master_from_*.binlog"
+  else
+    echo "[INFO] not found. saved_master_from_*.binlog"
+  fi
+}
+
+function check_mysql_readonly
+{
+  MASTER_USER=`get_parameter user`
+  MASTER_PASSWORD=`get_parameter password`
+
+  echo -n "[INFO] check master setting read_only ... "
+  READONLY_STATE=`mysql -B --column-names=0 -h${MASTER_VIP} -u${MASTER_USER} -p${MASTER_PASSWORD} -e"show global variables like 'read_only';"`
+  echo ${READONLY_STATE} | grep "OFF"
+  if [ $? -ne 0 ]; then
+    echo "[ERROR] master is readonly"
+    exit 2
+  fi
+
+  echo "[INFO] check all slaves setting read_only"
+  SLAVE_HOSTS=(`mysql -B --column-names=0 -h${MASTER_VIP} -u${MASTER_USER} -p${MASTER_PASSWORD} -e'show slave hosts;' | awk '{print $2}'`)
+
+  for TARGET_SLAVE in ${SLAVE_HOSTS[@]}
+  do
+    READONLY_STATE=`mysql -B --column-names=0 -h${TARGET_SLAVE} -u${MASTER_USER} -p${MASTER_PASSWORD} -e"show global variables like 'read_only'"`
+    echo "[INFO] ${TARGET_SLAVE}	${READONLY_STATE}"
+    echo ${READONLY_STATE} | grep "ON" > /dev/null
+    if [ $? -ne 0 ]; then
+      echo "[ERROR] ${TARGET_SLAVE} is not setting readonly"
+      exit 2
+    fi
+  done
+  echo "[INFO] OK! all slaves setting read_only"
+}
+
+function get_parameter
+{
+  awk -v PARAMETER=$1 -F'=' '{if($1==PARAMETER) print $2}' ${MHA_CONFIGFILE}
+}
+
+#main
+
+if [ $# -ne 1 ]; then 
+  echo "please set commant arg."
+  usage
+  exit 1
+fi
+
+case $1 in
+  start ) start;;
+  stop ) stop ;;
+  restart ) stop && start ;;
+  status ) status;;
+  check ) check;;
+  cleanup ) cleanup;;
+  * ) usage;;
+esac

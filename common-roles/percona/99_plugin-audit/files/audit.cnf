@@ -1,0 +1,3 @@
+[mysqld]
+audit_log_format = JSON
+audit_log_file = /var/log/mysql/audit.log

@@ -1,0 +1,29 @@
+- hosts: '{{ hosts }}'
+  user: root
+
+  vars_prompt:
+    - name: "mysql_username"
+      prompt: "Enter target username(default: root)"
+      confirm: false
+      private: no
+      default: root
+
+    - name: "mysql_password"
+      prompt: "Enter new password"
+      confirm: true
+      private: yes
+
+    - name: "mysql_host"
+      prompt: "Enter target host(default: localhost)"
+      confirm: false
+      private: no
+      default: localhost
+
+    - name: "mysql_priv"
+      prompt: "Enter privileges(default *.*:ALL)"
+      confirm: false
+      private: no
+      default: *.*:ALL
+
+  roles:
+     - ../common-roles/percona/99_change_password

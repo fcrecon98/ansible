@@ -1,0 +1,42 @@
+- name: check plugin
+  action: shell mysql -e 'SHOW PLUGINS;' | grep -c audit_log.so
+  register: is_installed
+  failed_when: is_installed.stdout == ""
+  tags:
+    - mysql
+
+- name: install plugin
+  action: shell mysql -e "INSTALL PLUGIN audit_log SONAME 'audit_log.so';"
+  when: is_installed.stdout == "0"
+  tags:
+    - mysql
+
+- name: remove old log file
+  action: file dest=/var/lib/mysql/data/audit.log state=absent
+  tags:
+    - mysql
+
+- name: create subconf directory
+  action: file dest=/etc/my.cnf.d/ state=directory
+  tags:
+    - mysql
+
+- name: put audit log conf file
+  action: copy src=audit.cnf dest=/etc/my.cnf.d/
+  tags:
+    - mysql
+
+- name: add include conf to my.cnf
+  action: lineinfile line='!include /etc/my.cnf.d/audit.cnf' insertafter='\[mysqld\]' dest=/etc/my.cnf
+  tags:
+    - mysql
+
+- name: add logrotate conf
+  action: template src=etc_logrotate.d_mysql-audit dest=/etc/logrotate.d/mysql-audit
+  tags:
+    - mysql
+
+- name: change permission audit.log
+  action: file dest=/var/log/mysql/audit.log state=present mode=0644
+  tags:
+    - mysql

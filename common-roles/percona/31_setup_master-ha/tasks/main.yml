@@ -1,0 +1,83 @@
+- name: add percona repository
+  copy: src=percona.repo dest=/etc/yum.repos.d/
+  when: is_masterha is defined and mysql_role is not defined
+  tags:
+    - packages
+
+- name: install percona-client
+  yum: name={{ item }} state=latest disable_gpg_check=yes enablerepo=percona,epel
+  when: is_masterha is defined and mysql_role is not defined
+  with_items:
+    - Percona-Server-client-56.x86_64
+    - Percona-Server-shared-56.x86_64
+  tags:
+    - packages
+
+- name: install required packages
+  action: yum name=perl-TermReadKey state=latest
+  when: mysql_role is defined or is_masterha is defined
+  tags:
+    - masterha
+
+- name: create directory 
+  action: file path={{ item }} state=directory
+  with_items:
+    - /etc/masterha
+    - /var/log/masterha
+    - /var/tmp/masterha
+    - /usr/local/src/masterha
+  when: is_masterha is defined
+  tags:
+    - masterha
+
+- name: copy rpm files
+  action: copy src={{ item }} dest=/usr/local/src/masterha/
+  with_items:
+    - mha4mysql-manager-0.56-0.el6.noarch.rpm
+    - mha4mysql-node-0.56-0.el6.noarch.rpm
+  when: mysql_role is defined or is_masterha is defined
+  tags:
+    - masterha
+
+- name: install mha4mysql-node
+  action: yum name=/usr/local/src/masterha/mha4mysql-node-0.56-0.el6.noarch.rpm state=present enablerepo=epel,remi,rpmforge disable_gpg_check=yes
+  when: mysql_role is defined or is_masterha is defined
+  tags:
+    - masterha
+
+- name: install mha4mysql-manager
+  action: yum name=/usr/local/src/masterha/mha4mysql-manager-0.56-0.el6.noarch.rpm state=present enablerepo=epel,remi,rpmforge disable_gpg_check=yes
+  when: is_masterha is defined
+  tags:
+    - masterha
+
+- name: copy masterha.cnf
+  action: template src=masterha.cnf dest=/etc/masterha/ mode=0600
+  when: is_masterha is defined
+  tags:
+    - masterha
+
+- name: copy master_ip_failover
+  action: template src=master_ip_failover dest=/etc/masterha/ mode=0700
+  when: is_masterha is defined
+  tags:
+    - masterha
+
+- name: copy masterha sysconfig file
+  action: template src=etc_sysconfig_masterha dest=/etc/sysconfig/masterha
+  when: is_masterha is defined
+  tags:
+    - masterha
+
+- name: copy masterha init script
+  action: template src=etc_init.d_masterha dest=/etc/init.d/masterha mode=0755
+  when: is_masterha is defined
+  tags:
+    - masterha
+
+- name: add masterha service
+  action: shell chkconfig --add masterha
+  when: is_masterha is defined
+  tags:
+    - masterha
+

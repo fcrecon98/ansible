@@ -1,0 +1,16 @@
+- name: "change root password"
+  action: mysql_user name={{ mysql_admin_user }} password={{ mysql_admin_password }}
+  tags:
+    - mysql
+
+- name: "create /root/.my.cnf"
+  action: template src=.my.cnf dest=/root/
+  tags:
+    - mysql
+
+- name: "create app users"
+  action: mysql_user name="{{ item.username }}" password="{{ item.password }}" host="{{ item.host }}" priv="{{ item.priv }}"
+  with_items:
+    - "{{ mysql_ap_user }}"
+  tags:
+    - mysql

@@ -1,0 +1,70 @@
+- name: add replication grant from slave to master via replication network.
+  action: mysql_user name={{ mysql_repl_user }} password={{ mysql_repl_password }} append_privs=yes priv=*.*:"REPLICATION SLAVE" host={{ item.replicate_ip }} state=present
+  with_items:
+    - "{{ mysql_slave }}"
+  when: mysql_role == "master" and mysql_slave is defined
+  tags:
+    - percona
+    - mysql
+
+- name: add replication grant from backup to master via replication network.
+  action: mysql_user name={{ mysql_repl_user }} password={{ mysql_repl_password }} append_privs=yes priv=*.*:"REPLICATION SLAVE" host={{ item.replicate_ip }} state=present
+  with_items:
+    - "{{ mysql_backup }}"
+  when: mysql_role == "master" and mysql_backup is defined
+  tags:
+    - percona
+    - mysql
+
+- name: get master servers replication status
+  action: mysql_replication mode=getmaster
+  when: mysql_role == "slave" or mysql_role == "backup"
+  delegate_to: "{{ item.hostname }}"
+  with_items:
+    - "{{ mysql_master }}"
+  register: replstat
+  tags:
+    - percona
+    - mysql
+
+- name: stop replication
+  action: mysql_replication mode=stopslave
+  when: mysql_role == "slave" or mysql_role == "backup"
+  tags:
+    - percona
+    - mysql
+
+- name: debug change master
+  action: debug var=item.item.replicate_ip
+  with_items:
+    - "{{ replstat.results }}"
+  when: mysql_role == "slave" or mysql_role == "backup"
+
+- name: debug change master
+  action: debug var=item.File
+  with_items:
+    - "{{ replstat.results }}"
+  when: mysql_role == "slave" or mysql_role == "backup"
+
+- name: debug change master
+  action: debug var=item.Position
+  with_items:
+    - "{{ replstat.results }}"
+  when: mysql_role == "slave" or mysql_role == "backup"
+
+- name: change master
+  action: shell mysql -uroot -e 'CHANGE MASTER TO MASTER_HOST="{{ item.item.replicate_ip }}", MASTER_LOG_FILE="{{ item.File }}", MASTER_LOG_POS={{ item.Position }}, MASTER_USER="{{ mysql_repl_user }}", MASTER_PASSWORD="{{ mysql_repl_password }}"'
+  with_items:
+    - "{{ replstat.results }}"
+  when: mysql_role == "slave" or mysql_role == "backup"
+  ignore_errors: true
+  tags:
+    - percona
+    - mysql
+
+- name: start replication
+  action: mysql_replication mode=startslave
+  when: mysql_role == "slave" or mysql_role == "backup"
+  tags:
+    - percona
+    - mysql

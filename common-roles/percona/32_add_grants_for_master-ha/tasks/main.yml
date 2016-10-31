@@ -1,0 +1,50 @@
+- name: add replication grant from master and slave mysql server to all mysql server via replication network with repl user.
+  action: mysql_user name="{{ mysql_repl_user }}" password="{{ mysql_repl_password }}" append_privs=yes priv=*.*:"REPLICATION SLAVE" host="{{ item.replicate_ip }}" state=present
+  with_items:
+    - "{{ mysql_master }}"
+    - "{{ mysql_slave }}"
+  when: mysql_role == "master" or mysql_role == "slave" or mysql_role == "backup"
+  tags:
+    - percona
+
+- name: add replication grant from backup mysql server to all mysql server via replication network with repl user.
+  action: mysql_user name="{{ mysql_repl_user }}" password="{{ mysql_repl_password }}" append_privs=yes priv=*.*:"REPLICATION SLAVE" host="{{ item.replicate_ip }}" state=present
+  with_items:
+    - "{{ mysql_backup }}"
+  when: (mysql_role == "master" or mysql_role == "slave" or mysql_role == "backup") and mysql_backup is defined
+  tags:
+    - percona
+
+
+- name: add all grant from master and slave mysql server to all mysql server via replication network with root user.
+  action: mysql_user name="{{ mysql_admin_user }}" password="{{ mysql_admin_password }}" append_privs=yes priv=*.*:"ALL" host="{{ item.replicate_ip }}" state=present
+  with_items:
+    - "{{ mysql_master }}"
+    - "{{ mysql_slave }}"
+  when: mysql_role == "master" or mysql_role == "slave" or mysql_role == "backup"
+  tags:
+    - percona
+
+- name: add all grant from backup mysql server to all mysql server via replication network with root user.
+  action: mysql_user name="{{ mysql_admin_user }}" password="{{ mysql_admin_password }}" append_privs=yes priv=*.*:"ALL" host="{{ item.replicate_ip }}" state=present
+  with_items:
+    - "{{ mysql_backup }}"
+  when: (mysql_role == "master" or mysql_role == "slave" or mysql_role == "backup") and mysql_backup is defined
+  tags:
+    - percona
+
+- name: add all grant from masterha to all mysql server via replication network with root user.
+  action: mysql_user name="{{ mysql_admin_user }}" password="{{ mysql_admin_password }}" append_privs=yes priv=*.*:"ALL" host="{{ item.replicate_ip }}" state=present
+  with_items:
+    - "{{ mysql_masterha }}"
+  when: mysql_role == "master" or mysql_role == "slave" or mysql_role == "backup"
+  tags:
+    - percona
+
+- name: add all grant from masterha to all mysql server via backend network with root user.
+  action: mysql_user name="{{ mysql_admin_user }}" password="{{ mysql_admin_password }}" append_privs=yes priv=*.*:"ALL" host="{{ item.backend_ip }}" state=present
+  with_items:
+    - "{{ mysql_masterha }}"
+  when: mysql_role == "master" or mysql_role == "slave" or mysql_role == "backup"
+  tags:
+    - percona

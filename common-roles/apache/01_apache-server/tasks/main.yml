@@ -89,4 +89,3 @@
   action: service name=httpd state=restarted enabled=yes
   tags:
     - apache
-

@@ -1,0 +1,46 @@
+- name: dump database on master
+  action: mysql_db name="{{ item }}" state=dump target="/var/lib/mysql/tmp/{{ item }}.sql"
+  with_items:
+    - "{{ mysql_replicate_do_db }}"
+  when: mysql_role == "master"
+  tags:
+    - percona
+    - mysql
+
+- name: copy database dump file from master to slave
+  action: shell scp "/var/lib/mysql/tmp/{{ item[0] }}.sql" "{{ item[1].replicate_ip }}:/var/lib/mysql/tmp/"
+  with_nested:
+    - "{{ mysql_replicate_do_db }}"
+    - "{{ mysql_slave }}"
+  when: mysql_role == "master" and mysql_slave is defined
+  tags:
+    - percona
+    - mysql
+
+- name: copy database dump file from master to backup
+  action: shell scp "/var/lib/mysql/tmp/{{ item[0] }}.sql" "{{ item[1].replicate_ip }}:/var/lib/mysql/tmp/"
+  with_nested:
+    - "{{ mysql_replicate_do_db }}"
+    - "{{ mysql_backup }}"
+  when: mysql_role == "master" and mysql_backup is defined
+  tags:
+    - percona
+    - mysql
+
+- name: create database on slave & backup
+  action: mysql_db name="{{ item }}" state=present
+  with_items:
+    - "{{ mysql_replicate_do_db }}"
+  when: mysql_role == "slave" or mysql_role == "backup"
+  tags:
+    - percona
+    - mysql
+
+- name: import database on slave & backup
+  action: mysql_db name="{{ item }}" state=import target="/var/lib/mysql/tmp/{{ item }}.sql"
+  with_items:
+    - "{{ mysql_replicate_do_db }}"
+  when: mysql_role == "slave" or mysql_role == "backup"
+  tags:
+    - percona
+    - mysql

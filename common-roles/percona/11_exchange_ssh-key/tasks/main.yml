@@ -1,0 +1,31 @@
+- name: generate ssh-keys
+  action: shell test -e ~/.ssh/id_rsa || ssh-keygen -q -t rsa -f ~/.ssh/id_rsa -N ""
+  when: mysql_role is defined or mysql_masterha == "true"
+  tags:
+    - percona
+
+- name: collect ssh-keys
+  action: fetch src=~/.ssh/id_rsa.pub dest=/root/.ssh/id_rsa.pub_{{ ansible_fqdn }} flat=yes
+  when: mysql_role is defined or mysql_masterha == "true"
+  tags:
+    - percona
+
+- name: merge ssh keys
+  local_action: shell cp -p ~/.ssh/id_rsa.pub ~/.ssh/authorized_keys_tmp
+  when: mysql_role is defined or mysql_masterha == "true"
+  tags:
+    - percona
+
+- name: merge ssh_keys
+  local_action: shell cat ~/.ssh/id_rsa.pub_{{ item }}  >> ~/.ssh/authorized_keys_tmp
+  when: mysql_role is defined or mysql_masterha == "true"
+  with_items:
+    - "{{ ansible_fqdn }}"
+  tags:
+    - percona
+
+- name: put ssh-keys
+  action: copy src=~/.ssh/authorized_keys_tmp dest=~/.ssh/authorized_keys
+  when: mysql_role is defined or mysql_masterha == "true"
+  tags:
+    - percona

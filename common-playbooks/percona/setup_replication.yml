@@ -1,0 +1,16 @@
+- hosts: '{{ hosts }}'
+  sudo: no
+  vars_files:
+     # common vars file
+     - ../../common-vars/common.yml
+     # platform vars file
+     - ../../platform-vars/{{ platform }}-{{ env }}.yml
+     # system vars file
+     - ../../system-vars/{{ system }}-{{ env }}.yml
+     # dbset vars file
+     - ../../system-vars/{{ system }}-{{ db }}-{{ env }}.yml
+
+  roles:
+     - ../../common-roles/percona/11_exchange_ssh-key
+     - ../../common-roles/percona/21_copy_database
+     - ../../common-roles/percona/22_replication_database

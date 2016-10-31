@@ -1,0 +1,2 @@
+MHA_CONFIGFILE=/etc/masterha/masterha.cnf
+MASTER_VIP={{ masterha_check_vip }}

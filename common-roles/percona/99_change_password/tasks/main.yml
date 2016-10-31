@@ -1,0 +1,11 @@
+- name: "change password"
+  action: mysql_user name={{ mysql_username }} password={{ mysql_password }}
+  tags:
+    - mysql
+
+- name: "create /root/.my.cnf"
+  action: template src=.my.cnf dest=/root/
+  when: mysql_username == "root"
+  tags:
+    - mysql
+

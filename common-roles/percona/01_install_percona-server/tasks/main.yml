@@ -1,0 +1,20 @@
+- name: add percona repository
+  copy: src=percona.repo dest=/etc/yum.repos.d/
+  tags:
+    - packages
+
+- name: install percona-server
+  yum: name={{ item }} state=latest disable_gpg_check=yes enablerepo=percona,epel
+  with_items:
+    - Percona-Server-server-56
+    - Percona-Server-devel-56
+    - percona-toolkit
+    - jemalloc
+    - qpress    
+    - MySQL-python
+    - cronie
+    - cronie-noanacron
+    - perl-DBD-MySQL
+    - postfix
+  tags:
+    - packages

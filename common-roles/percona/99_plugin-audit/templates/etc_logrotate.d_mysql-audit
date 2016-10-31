@@ -1,0 +1,10 @@
+/var/log/mysql/audit.log {
+  copytruncate
+  daily
+  missingok
+  notifempty
+  compress
+  delaycompress
+  dateext
+  rotate 365
+}

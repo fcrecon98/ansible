@@ -1,0 +1,64 @@
+[server default]
+
+### user settings ###
+# mysql admin user and password
+user={{ mysql_admin_user | default("root") }}
+password={{ mysql_admin_password }}
+
+# mysql replication user and password
+repl_user={{ mysql_repl_user | default("repl") }}
+repl_password={{ mysql_repl_password | default("repl") }}
+
+# ssh user
+ssh_user={{ masterha_check_ssh_user | default("root") }}
+
+### port settings ###
+# mysql port
+port={{ masterha_check_mysql_port | default(3306) }}
+# ssh port
+ssh_port={{ masterha_check_ssh_port | default(22) }}
+
+### directory settings ###
+# working directory on the manager
+# default: /var/tmp
+manager_workdir=/var/tmp/masterha/
+
+# working directory on MySQL servers
+# default: /var/tmp
+remote_workdir=/var/tmp/masterha/
+
+# binlog directory for master server
+master_binlog_dir=/var/lib/mysql/binlog/
+
+### log settings ###
+# manager log file
+manager_log=/var/log/masterha/masterha.log
+
+# script setting
+master_ip_failover_script=/etc/masterha/master_ip_failover --virtual_ip={{ masterha_check_vip }}
+secondary_check_script = masterha_secondary_check {% for slave in mysql_slave | unique %} -s {{ slave.backend_ip }} {% endfor %}
+
+{% for master in mysql_master | unique %}
+
+[server{{ master.server_id }}]
+hostname={{ master.replicate_ip }}
+
+{% endfor %}
+
+{% for slave in mysql_slave | unique %}
+
+[server{{ slave.server_id }}]
+candidate_master=1
+hostname={{ slave.replicate_ip }}
+
+{% endfor %}
+
+{% if mysql_backup is defined %}
+{% for backup in mysql_backup | unique %}
+
+[server{{ backup.server_id }}]
+no_master=1
+hostname={{ backup.replicate_ip }}
+
+{% endfor %}
+{% endif %}

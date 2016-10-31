@@ -22,4 +22,3 @@
   action: service name=httpd state=reloaded enabled=yes
   tags:
     - apache
-

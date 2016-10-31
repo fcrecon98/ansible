@@ -1,0 +1,175 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings FATAL => 'all';
+
+use Getopt::Long qw(:config posix_default no_ignore_case gnu_compat);
+use IO::Socket::INET;
+
+my (
+    $command,          $ssh_user,        $orig_master_host, $orig_master_ip,
+    $orig_master_port, $new_master_host, $new_master_ip,    $new_master_port,
+    $virtual_ip
+);
+
+my $ssh_stop_mysqld = "/sbin/service mysql stop";
+
+GetOptions(
+    'command=s'          => \$command,
+    'ssh_user=s'         => \$ssh_user,
+    'orig_master_host=s' => \$orig_master_host,
+    'orig_master_ip=s'   => \$orig_master_ip,
+    'orig_master_port=i' => \$orig_master_port,
+    'new_master_host=s'  => \$new_master_host,
+    'new_master_ip=s'    => \$new_master_ip,
+    'new_master_port=i'  => \$new_master_port,
+    'virtual_ip=s'       => \$virtual_ip,
+);
+
+exit &main();
+
+sub main {
+
+    if ( $command eq "stop" || $command eq "stopssh" ) {
+
+        # $orig_master_host, $orig_master_ip, $orig_master_port are passed.
+        # If you manage master ip address at global catalog database,
+        # invalidate orig_master_ip here.
+        my $exit_code = 1;
+        eval {
+            eval {
+                print "Checking virtual ip [$virtual_ip] status...\n";
+                my $check_vip_result;
+                $check_vip_result = &check_vip();
+                if ($check_vip_result == 0) {
+                     print "Virtual ip [$virtual_ip] is alive.\n";
+                     print "Bringing down virtual ip [$virtual_ip] on old master [$orig_master_host]. \n";
+                     &stop_vip();
+                }
+                print "Stop mysqld on old master: $orig_master_host \n";
+                system("ssh $ssh_user\@$orig_master_host \" $ssh_stop_mysqld \"");
+            };
+#            system("/usr/local/bin/mod_lvs_weight.sh");
+            $exit_code = 0;
+        };
+        if ($@) {
+            warn "Got Error: $@\n";
+#            exit $exit_code;
+        }
+#        exit $exit_code;
+        exit 0;
+    }
+    elsif ( $command eq "start" ) {
+
+        # all arguments are passed.
+        # If you manage master ip address at global catalog database,
+        # activate new_master_ip here.
+        # You can also grant write access (create user, set read_only=0, etc) here.
+        my $exit_code = 10;
+
+        print "Checking virtual ip [$virtual_ip] status...\n";
+        my $check_vip_result;
+        $check_vip_result = &check_vip();
+        if ($check_vip_result == 0) {
+               print "Virtual ip [$virtual_ip] is alive.\n";
+               print "Bringing down virtual ip [$virtual_ip] on old master [$orig_master_host]. \n";
+               &stop_vip();
+        }
+
+        eval {
+            print "Bringing up virtual ip [$virtual_ip] on new master [$new_master_host]. \n";
+            &start_vip();
+        };
+        if ($@) {
+            warn $@;
+            exit $exit_code;
+        } else {
+            $exit_code = 0;
+        }
+        exit $exit_code;
+    }
+    elsif ( $command eq "status" ) {
+        print "Checking the Status of the script.. \n"; 
+        eval { &check_status(); };
+        if ($@) {
+          warn $@;
+          exit 1;
+        }
+        else {exit 0;}
+    }
+    else {
+        &usage();
+        exit 1;
+    }
+}
+
+# A simple system call that enable the VIP on the new master 
+sub start_vip() {
+
+      my $quoted_virtual_ip = quotemeta $virtual_ip;
+      my $interface_configfile = `ssh $new_master_host 'grep -l -e "IPADDR.*=.*$quoted_virtual_ip" /etc/sysconfig/network-scripts/ifcfg-*'` or die ;
+      `ssh $new_master_host "/sbin/ifup $interface_configfile"` or die;
+}
+
+# A simple system call that disable the VIP on the old_master
+sub stop_vip() {
+      my $quoted_virtual_ip = quotemeta $virtual_ip;
+      my $interface_configfile = `ssh $orig_master_host 'grep -l -e "IPADDR.*=.*$quoted_virtual_ip" /etc/sysconfig/network-scripts/ifcfg-*'` or die ;
+      print "stopping NIC $interface_configfile on $orig_master_host";
+      `ssh $virtual_ip "/sbin/ifdown $interface_configfile"` or die;
+}
+
+# get I/F name from vip
+sub get_interface_name() {
+      my $target_host_ip = $_[0];
+      my ($interface_name , $temp_str , @temp_arg);
+      print "[info] get interfacename VIP($virtual_ip) from host ($target_host_ip) ... ";
+      eval {
+          $temp_str = `ssh $target_host_ip "ip addr show | grep $virtual_ip "` or die;
+      };
+      if ($@){
+          print "not found!!\n";
+          return $interface_name;
+      } else {
+          @temp_arg = split(/ /,$temp_str) ;
+          $interface_name = $temp_arg[-1];
+          print "interface is $interface_name \n";
+      };
+      return $interface_name;
+
+}
+
+# check status
+sub check_status() {
+      my $interface = &get_interface_name($orig_master_ip);
+      my $return_code =  $? ;
+      if ( $return_code != 0){
+          die("[error]vip not up on host $orig_master_ip\n");
+      }
+}
+
+# check vip
+sub check_vip() {
+      my $socket;
+
+      my $retry;
+      my $retry_count=3;
+      my $timeout=1;
+
+      my $return_code=1;
+
+      for ($retry=0; $retry<$retry_count; $retry++) {
+            $socket = IO::Socket::INET->new(
+                  PeerAddr => $virtual_ip,
+                  PeerPort => 22,
+                  Proto    => "tcp",
+                  Timeout  => $timeout
+            ) and close($socket) and $return_code=0 and last;
+      }
+      return($return_code);
+}
+
+sub usage {
+    print
+    "Usage: master_ip_failover --command=start|stop|stopssh|status --orig_master_host=host --orig_master_ip=ip --orig_master_port=port --new_master_host=host --new_master_ip=ip --new_master_port=port\n";
+}
