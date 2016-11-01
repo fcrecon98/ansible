@@ -1,6 +1,6 @@
 ./configure \
+--enable-mods-shared=all \
 --enable-so \
 --enable-ssl \
---enable-mods-shared=all \ 
---with-expat=builtin \ 
+--with-expat=builtin \
 --with-included-apr
