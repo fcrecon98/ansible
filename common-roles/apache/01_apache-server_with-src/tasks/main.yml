@@ -71,7 +71,7 @@
 - name: create apache log directories
   action: file state=directory path={{ item }}
   with_items:
-    - /var/log/httpd/
+    - /data/logs
   tags:
     - apache
 
@@ -81,7 +81,7 @@
     - apache
 
 - name: create symlink for apache log directory (2/2)
-  action: file state=link src=/var/log/httpd dest=/usr/local/apache2/logs
+  action: file state=link src=/data/logs dest=/usr/local/apache2/logs
   tags:
     - apache
 
@@ -100,8 +100,12 @@
   tags:
     - apache
 
+#- name: copy apache init script
+#  action: template src=etc_init.d_httpd dest=/etc/init.d/httpd mode=0755
+#  tags:
+#    - apache
 - name: copy apache init script
-  action: template src=etc_init.d_httpd dest=/etc/init.d/httpd mode=0755
+  action: shell cp /usr/local/apache2/bin/apachectl /etc/init.d/httpd
   tags:
     - apache
 
