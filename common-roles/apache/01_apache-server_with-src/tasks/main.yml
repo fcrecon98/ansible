@@ -8,7 +8,6 @@
     - apache
 
 - name: download apache source file
-  #action: shell http_proxy={{ http_proxy }} wget -nc http://archive.apache.org/dist/httpd/httpd-{{ apache_version }}.tar.gz  chdir=/usr/local/src/
   action: shell wget -nc http://archive.apache.org/dist/httpd/httpd-{{ apache_version }}.tar.gz  chdir=/usr/local/src/
   tags:
     - apache
@@ -20,47 +19,45 @@
   tags:
     - apache
 
-###
-- name: download apr source file
-  action: shell wget -nc http://ftp.meisei-u.ac.jp/mirror/apache/dist//apr/apr-{{ apr_version }}.tar.gz chdir=/usr/local/src/
-  tags:
-    - apache
-
-- name: extract apr source file
-  action: shell tar xvzf {{ item }} chdir=/usr/local/src/
-  with_items:
-    - apr-{{ apr_version }}.tar.gz
-  tags:
-    - apache
-
-- name: copy apr source file
-  action: shell cp -Rr /usr/local/src/apr-{{ apr_version }} /usr/local/src/httpd-{{ apache_version }}/srclib/apr
-  tags: 
-    - apache
-
-- name: download apr-util source file
-  action: shell wget -nc http://ftp.meisei-u.ac.jp/mirror/apache/dist//apr/apr-util-{{ aprutil_version }}.tar.gz
-  tags:
-    - apache
-
-- name: extract apr-util source file
-  action: shell tar xvzf {{ item }} chdir=/usr/local/src/
-  with_items:
-    - apr-util-{{ aprutil_version }}.tar.gz
-  tags:
-    - apache
-
-- name: copy apr-util source file
-  action: shell cp -Rr /usr/local/src/apr-util-{{ aprutil_version }} /usr/local/src/httpd-{{ apache_version }}/srclib/apr-util
-  tags:
-    - apache
-###
-
+#- name: download apr source file
+#  action: shell wget -nc http://ftp.meisei-u.ac.jp/mirror/apache/dist//apr/apr-{{ apr_version }}.tar.gz chdir=/usr/local/src/
+#  tags:
+#    - apache
+#
+#- name: extract apr source file
+#  action: shell tar xvzf {{ item }} chdir=/usr/local/src/
+#  with_items:
+#    - apr-{{ apr_version }}.tar.gz
+#  tags:
+#    - apache
+#
+#- name: copy apr source file
+#  action: shell cp -Rr /usr/local/src/apr-{{ apr_version }} /usr/local/src/httpd-{{ apache_version }}/srclib/apr
+#  tags: 
+#    - apache
+#
+#- name: download apr-util source file
+#  action: shell wget -nc http://ftp.meisei-u.ac.jp/mirror/apache/dist//apr/apr-util-{{ aprutil_version }}.tar.gz
+#  tags:
+#    - apache
+#
+#- name: extract apr-util source file
+#  action: shell tar xvzf {{ item }} chdir=/usr/local/src/
+#  with_items:
+#    - apr-util-{{ aprutil_version }}.tar.gz
+#  tags:
+#    - apache
+#
+#- name: copy apr-util source file
+#  action: shell cp -Rr /usr/local/src/apr-util-{{ aprutil_version }} /usr/local/src/httpd-{{ apache_version }}/srclib/apr-util
+#  tags:
+#    - apache
+#
 - name: copy apache configure file
   action: template src=apache-configure.sh dest=/usr/local/src/httpd-{{ apache_version }}/
   tags:
     - apache
-
+  
 - name: exec apache configure file
   action: shell sh apache-configure.sh chdir=/usr/local/src/httpd-{{ apache_version }}/
   tags:
@@ -70,11 +67,6 @@
   action: shell make && porg -lD "make install" chdir=/usr/local/src/httpd-{{ apache_version }}/
   tags:
     - apache
-
-- name: create symlink for apache home directory
-  action: file state=link src=/usr/local/apache-{{apache_version}} dest=/usr/local/apache2
-  tags:
-     - apache
 
 - name: create apache log directories
   action: file state=directory path={{ item }}
@@ -100,6 +92,11 @@
 
 - name: create apache user
   action: user name=apache uid=48 group=apache createhome=yes home=/var/www/ shell=/sbin/nologin
+  tags:
+    - apache
+
+- name: change logrotate settings
+  action: template src=www_dmm_logrotate dest=/etc/logrotate.d/dmm
   tags:
     - apache
 
