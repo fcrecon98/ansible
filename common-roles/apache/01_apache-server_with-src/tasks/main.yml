@@ -64,7 +64,7 @@
     - apache
 
 - name: make install apache
-  action: shell make && porg -lD "make install" chdir=/usr/local/src/httpd-{{ apache_version }}/
+  action: shell make && make install chdir=/usr/local/src/httpd-{{ apache_version }}/
   tags:
     - apache
 
