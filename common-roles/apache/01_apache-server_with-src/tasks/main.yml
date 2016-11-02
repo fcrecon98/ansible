@@ -106,7 +106,7 @@
 #    - apache
 
 - name: copy apache init script
-  action: shell cp /usr/local/apache2/bin/apachectl /etc/init.d/httpd mode=0755
+  action: shell cp /usr/local/apache2/bin/apachectl /etc/init.d/httpd
   tags:
     - apache
 
