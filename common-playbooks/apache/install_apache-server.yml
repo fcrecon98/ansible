@@ -7,4 +7,3 @@
 
   roles:
      - ../../common-roles/apache/01_apache-server
-
