@@ -1,5 +1,5 @@
 - name: download php56 repository file
-  action: shell -Uvh http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+  action: shell rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
   tags:
     - php
 
