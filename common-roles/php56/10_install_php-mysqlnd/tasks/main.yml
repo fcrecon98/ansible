@@ -1,0 +1,4 @@
+- name: install php-mysqlnd
+  action: yum name=php-mysqlnd state=latest enablerepo=remi-php56
+  tags:
+    - php56

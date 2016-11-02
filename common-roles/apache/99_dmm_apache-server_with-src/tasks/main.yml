@@ -32,7 +32,7 @@
 #    - apache
 #
 #- name: copy apr source file
-#  action: shell cp -Rr /usr/local/src/apr-{{ apr_version }} /usr/local/src/httpd-{{ apache_version }}/srclib/apr
+#  action: shell cp -pR /usr/local/src/apr-{{ apr_version }} /usr/local/src/httpd-{{ apache_version }}/srclib/apr
 #  tags: 
 #    - apache
 #
@@ -49,7 +49,7 @@
 #    - apache
 #
 #- name: copy apr-util source file
-#  action: shell cp -Rr /usr/local/src/apr-util-{{ aprutil_version }} /usr/local/src/httpd-{{ apache_version }}/srclib/apr-util
+#  action: shell cp -pR /usr/local/src/apr-util-{{ aprutil_version }} /usr/local/src/httpd-{{ apache_version }}/srclib/apr-util
 #  tags:
 #    - apache
 #

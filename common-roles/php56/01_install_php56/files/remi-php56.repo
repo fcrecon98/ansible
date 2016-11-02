@@ -1,0 +1,6 @@
+[remi-php56]
+name=Les RPM de remi de PHP 5.6 pour Enterprise Linux $releasever - $basearch
+#baseurl=http://rpms.famillecollet.com/enterprise/$releasever/php56/$basearch/
+mirrorlist=http://rpms.famillecollet.com/enterprise/$releasever/php56/mirror
+enabled=0
+gpgcheck=0

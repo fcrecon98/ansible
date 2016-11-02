@@ -1,0 +1,4 @@
+- name: install mod_php
+  action: yum name=mod_php state=latest enablerepo=remi-php56
+  tags:
+    - php
