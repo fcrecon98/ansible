@@ -104,8 +104,9 @@
 #  action: template src=etc_init.d_httpd dest=/etc/init.d/httpd mode=0755
 #  tags:
 #    - apache
+
 - name: copy apache init script
-  action: shell cp /usr/local/apache2/bin/apachectl /etc/init.d/httpd
+  action: shell cp /usr/local/apache2/bin/apachectl /etc/init.d/httpd mode=0755
   tags:
     - apache
 
