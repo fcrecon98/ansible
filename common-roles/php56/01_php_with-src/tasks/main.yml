@@ -1,0 +1,104 @@
+- name: install required packages from repository
+  action: yum name={{ item }} state=latest
+  with_items:
+    - libxml2-devel
+    - openssl-devel
+    - curl-devel
+  tags:
+    - php
+    - php56
+
+- name: install required packages from repository
+  action: yum name={{ item }} state=latest enablerepo=epel
+  with_items:
+    - libmcrypt
+    - libmcrypt-devel
+  tags:
+    - php
+    - php56
+
+
+- name: copy src files
+  action: copy src={{ item }} dest=/usr/local/src/
+  with_items:
+    - php-{{ php_version }}.tar.gz
+  tags:
+    - php
+    - php56
+
+#- name: download php source file
+#  action: shell http_proxy={{ http_proxy }} wget -nc http://jp1.php.net/distributions/php-{{ php_version }}.tar.gz  chdir=/usr/local/src/
+#  tags:
+#    - php
+
+- name: extract source file
+  action: shell tar xvzf {{ item }} chdir=/usr/local/src/
+  with_items:
+    - php-{{ php_version }}.tar.gz
+  tags:
+    - php
+    - php56
+
+- name: copy php configure file
+  action: template src=php-configure.sh dest=/usr/local/src/php-{{ php_version }}/
+  tags:
+    - php
+    - php56
+
+- name: exec php configure file
+  action: shell sh php-configure.sh chdir=/usr/local/src/php-{{ php_version }}/
+  tags:
+    - php
+    - php56
+
+- name: make install php
+  action: shell make && make install chdir=/usr/local/src/php-{{ php_version }}/
+  tags:
+    - php
+    - php56
+
+- name: create symlink for php home directory
+  action: file state=link src=/usr/local/php-{{ php_version }} dest=/usr/local/php
+  tags:
+    - php
+    - php56
+
+- name: create php log directories
+  action: file state=directory path={{ item }}
+  with_items:
+    - /var/log/php
+  tags:
+    - php
+    - php56
+
+- name: create php error-log directories
+  action: file state=directory path={{ item }}  owner=apache
+  with_items:
+    - /var/log/php/php-error
+  tags:
+    - php
+    - php56
+
+- name: set pear Proxy
+  action: shell /usr/local/php/bin/pear config-set http_proxy {{ http_proxy }}
+  tags:
+    - php
+    - php56
+
+- name: install pear Crypt_Blowfish
+  action: shell /usr/local/php/bin/pear install Crypt_Blowfish 
+  tags:
+    - php
+    - php56
+
+- name: install pecl zendopcache
+  action: shell /usr/local/php/bin/pecl install zendopcache
+  tags:
+    - php56
+
+- name: copy php.ini-production
+  action: shell cp /usr/local/src/php-{{ php_version }}/php.ini-production /usr/local/php/lib/php.ini-production
+  tags:
+    - php
+    - php56
+
