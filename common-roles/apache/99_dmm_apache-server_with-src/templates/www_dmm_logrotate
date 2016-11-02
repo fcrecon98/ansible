@@ -1,0 +1,13 @@
+/data/logs/*log {
+    daily
+    rotate 30
+    compress
+    missingok
+    notifempty
+    sharedscripts
+    postrotate
+        /etc/init.d/httpd graceful > /dev/null 2>/dev/null || true
+        /usr/local/apache2/bin/apachectl graceful > /dev/null 2>/dev/null || true
+        /etc/init.d/rsyslog reload > /dev/null 2>/dev/null || true
+    endscript
+}

@@ -1,6 +1,13 @@
 ./configure \
---enable-mods-shared=all \
---enable-so \
+--prefix=/usr/local/apache{{ apache_version }} \
+--with-included-apr \
+--with-pcre \
+--disable-cgi \
+--disable-include \
 --enable-ssl \
---with-expat=builtin \
---with-included-apr
+--enable-rewrite \
+--enable-proxy \
+--enable-headers \
+--enable-deflate \
+--enable-so \
+

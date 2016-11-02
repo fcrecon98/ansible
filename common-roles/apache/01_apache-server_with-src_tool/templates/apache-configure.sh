@@ -1,0 +1,17 @@
+./configure \
+--prefix=/usr/local/apache{{ apache_version }} \
+--with-included-apr \
+--with-pcre=/usr/local/pcre \
+--disable-cgi \
+--disable-include \
+--enable-ssl \
+--enable-rewrite \
+--enable-proxy \
+--enable-headers \
+--enable-deflate \
+--enable-dav=yes\
+--enable-so \
+--enable-auth_digest \
+--with-ldap \
+--enable-ldap \
+--enable-authnz-ldap\
