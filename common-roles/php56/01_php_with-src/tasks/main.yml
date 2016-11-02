@@ -79,11 +79,11 @@
     - php
     - php56
 
-- name: set pear Proxy
-  action: shell /usr/local/php/bin/pear config-set http_proxy {{ http_proxy }}
-  tags:
-    - php
-    - php56
+#- name: set pear Proxy
+#  action: shell /usr/local/php/bin/pear config-set http_proxy {{ http_proxy }}
+#  tags:
+#    - php
+#    - php56
 
 - name: install pear Crypt_Blowfish
   action: shell /usr/local/php/bin/pear install Crypt_Blowfish 
