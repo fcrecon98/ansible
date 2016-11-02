@@ -115,10 +115,10 @@
   tags:
     - apache
 
-- name: add httpd service
-  action: shell chkconfig --add httpd
-  tags:
-    - apache
+#- name: add httpd service
+#  action: shell chkconfig --add httpd
+#  tags:
+#    - apache
 
 - name: start httpd service
   action: service name=httpd state=started enabled=yes
