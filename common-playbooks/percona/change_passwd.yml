@@ -23,7 +23,7 @@
       prompt: "Enter privileges(default *.*:ALL)"
       confirm: false
       private: no
-      default: *.*:ALL
+      #default: *.*:ALL
 
   roles:
      - ../common-roles/percona/99_change_password

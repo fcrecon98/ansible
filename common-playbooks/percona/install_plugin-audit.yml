@@ -4,9 +4,9 @@
      # common vars file
      - ../../common-vars/common.yml
      # platform vars file
-     - ../../platform-vars/{{ platform }}-{{ env }}.yml
+     #- ../../platform-vars/{{ platform }}-{{ env }}.yml
      # system vars file
-     - ../../system-vars/{{ system }}-{{ env }}.yml
+     #- ../../system-vars/{{ system }}-{{ env }}.yml
      
   roles:
      - ../../common-roles/percona/99_plugin-audit
