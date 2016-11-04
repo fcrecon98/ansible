@@ -26,4 +26,4 @@
       #default: *.*:ALL
 
   roles:
-     - ../common-roles/percona/99_change_password
+     - ../../common-roles/percona/99_change_password
