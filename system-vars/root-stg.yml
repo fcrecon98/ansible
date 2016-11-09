@@ -1,6 +1,0 @@
-zabbixserver: 10.99.109.6
-http_proxy: http://10.99.109.10:80/
-
-monit_addressfromfqdn: mail.cmm.capcomcld.jp
-monit_addressto: 
-  - sysope_g@eng.capcom.co.jp

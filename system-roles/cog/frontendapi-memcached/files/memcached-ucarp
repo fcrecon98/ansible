@@ -1,5 +1,0 @@
-check process memcached with pidfile /var/run/memcached/memcached.pid
-start program = "/bin/bash -c '/etc/rc.d/init.d/ucarp restart && /etc/rc.d/init.d/memcached start'"
-stop  program = "/bin/bash -c '/etc/rc.d/init.d/ucarp restart && /etc/rc.d/init.d/memcached stop'"
-if failed port 11211 type tcp then restart
-if 5 restarts within 5 cycles then timeout

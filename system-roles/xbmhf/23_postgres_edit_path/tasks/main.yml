@@ -1,2 +1,0 @@
-- name: edit postgres bashrc
-  action : lineinfile dest='/home/postgres/.bash_profile' state=present backup=yes regexp='^PATH=' line='PATH=/usr/local/postgres/bin:$PATH'

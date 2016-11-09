@@ -1,5 +1,0 @@
-http_proxy: http://10.5.4.41:80
-
-system_ntpservers:
-   - 10.5.4.41
-

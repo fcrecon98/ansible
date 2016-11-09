@@ -1,4 +1,0 @@
-apache soft    nofile  32768
-apache hard    nofile  32768
-apache soft    nproc   15000
-apache hard    nproc   15000

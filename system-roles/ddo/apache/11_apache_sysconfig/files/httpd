@@ -1,2 +1,0 @@
-# Option Environment Variable for NSS Memory Leak
-export NSS_SDB_USE_CACHE=yes
