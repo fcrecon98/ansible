@@ -1,0 +1,6 @@
+zabbixserver: 10.15.209.6
+pam_filter: pam_filter &(objectclass=posixaccount)(|(ou=admin)(ou=web_dev))
+
+
+http_proxy: http://10.15.204.246:8080/
+

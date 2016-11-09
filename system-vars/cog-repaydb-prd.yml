@@ -1,0 +1,77 @@
+#### MySQL CONFIG(MUST) ####
+# 0:disable 1:enable, recommend:0
+mysql_autocommit: 1
+# choise one from { READ-UNCOMMITTED | READ-COMMITTED | REPEATABLE-READ | SERIALIZABLE }, recommond:REPEATABLE-READ
+mysql_transaction_isolation: REPEATABLE-READ
+# slow query settings
+# default 10
+mysql_long_query_time: 3
+# choose ON or OFF
+mysql_log_queries_not_using_indexes: OFF
+# performance option
+mysql_max_connections: 100
+mysql_wait_timeout: 28800
+mysql_interactive_timeout: 28800
+
+#### MySQL GLOBAL CONFIG(NOT MUST) ####
+# default none
+# mysql_instance_name:
+# default 3306
+# mysql_port:
+# enable:1 disable:0, default:1
+# mysql_use_performance_schema: 1
+# default 60
+# mysql_log_throttle_queries_not_using_indexes: 60
+# default 7(days)
+mysql_expire_log_days: 7
+
+#### MySQL INNODB CONFIG(NOT MUST) ####
+# default about 60% of total memory
+# mysql_innodb_buffer_pool_size:
+# default 64M
+# mysql_innodb_log_buffer_size: 64M
+# default 256M
+# mysql_innodb_log_file_size: 256M
+# default 10000(set 100000 over when using ssd)
+# mysql_innodb_io_capacity: 10000
+
+#### MySQL MyISAM CONFIG(NOT MUST) ####
+# default 64M
+# mysql_key_buffer_size: 64M
+# default 8M
+# mysql_myisam_sort_buffer_size: 8M
+# default 4096
+# percona_innodb_log_block_size: 4096
+# default 60
+# percona_thread_pool_idle_timeout: 60
+# default 100000
+# percona_thread_pool_max_threads: 100000
+
+#### MySQL ADMIN USER CONFIG ####
+mysql_admin_user: root
+mysql_admin_password: iNJBMtVk9Cfh834zWeQs
+
+#### MySQL AP USER CONFIG ####
+mysql_ap_user:
+  - { username: webrole, password: AjccKnp9, host: '10.%', priv: '*.*:ALL' }
+  - { username: nobody, password: rFeeKX2u, host: '10.%', priv: '*.*:SELECT' }
+
+#### MySQL REPLICATION & MASTER HA CONFIG ####
+mysql_repl_user: repl
+mysql_repl_password: repl
+mysql_replicate_do_db:
+   - repay
+
+mysql_master:
+  - { hostname: cr1db001.be01.capcom,  backend_ip: 10.4.4.101, replicate_ip: 10.5.4.101, server_id: 1001 }
+mysql_slave:
+  - { hostname: cr1db002.be01.capcom,  backend_ip: 10.4.4.102, replicate_ip: 10.5.4.102, server_id: 1002 }
+mysql_backup:
+  - { hostname: cr1db003.be01.capcom,  backend_ip: 10.4.4.103, replicate_ip: 10.5.4.103, server_id: 1003 }
+mysql_masterha:
+  - { hostname: cr1db003.be01.capcom, backend_ip: 10.4.4.103, replicate_ip: 10.5.4.103 }
+
+masterha_check_vip: 10.4.4.211
+masterha_check_ssh_user: root
+masterha_check_ssh_port: 22
+masterha_check_mysql_port: 3306

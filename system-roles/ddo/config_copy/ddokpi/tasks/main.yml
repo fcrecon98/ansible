@@ -1,0 +1,28 @@
+- name: copy nginx config file
+  action: synchronize src={{ item }} dest=/usr/local/nginx/ -a recursive=yes
+  with_items:
+    - /opt/capcom/svn/src-ddo/config/{{ config_dir }}/nginx/conf
+  tags:
+    - ddo
+    - config_copy
+    - ddokpi
+
+- name: copy php.ini file
+  action: synchronize src={{ item }} dest=/usr/local/php/ -a recursive=yes
+  with_items:
+    - /opt/capcom/svn/src-ddo/config/{{ config_dir }}/php/lib
+  tags:
+    - ddo
+    - config_copy
+    - ddokpi
+
+- name: copy php-fpm.conf file
+  action: synchronize src={{ item }} dest=/usr/local/php/ -a recursive=yes
+  with_items:
+    - /opt/capcom/svn/src-ddo/config/{{ config_dir }}/php/etc
+  tags:
+    - ddo
+    - config_copy
+    - ddokpi
+
+

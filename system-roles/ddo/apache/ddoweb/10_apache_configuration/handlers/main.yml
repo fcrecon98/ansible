@@ -1,0 +1,6 @@
+- name: Apache Restart Handler
+  service: name=httpd state=restarted
+
+- name: Apache Graceful Restart Handler
+  shell: service httpd graceful
+

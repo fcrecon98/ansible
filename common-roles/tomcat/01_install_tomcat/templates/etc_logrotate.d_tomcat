@@ -1,0 +1,10 @@
+/usr/local/tomcat/logs/jsvc_tomcat.log {
+  copytruncate
+  daily
+  missingok
+  notifempty
+  compress
+  delaycompress
+  dateext
+  rotate 365
+}

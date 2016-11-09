@@ -1,0 +1,9 @@
+- name: add mhfmin group
+  action: group name={{item.name}} gid={{item.gid}} state=present
+  with_items:
+    - { name: 'postgres', gid: 26}
+
+- user: name={{item.name}} uid={{item.uid}} comment="{{item.comment}}" group={{item.group}} groups={{item.groups}}
+  with_items:
+    - { name: 'postgres', uid: 26  , group: 'postgres', groups: ''      , comment: '' }
+

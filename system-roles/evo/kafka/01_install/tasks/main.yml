@@ -1,0 +1,67 @@
+- name: install OpenJDK
+  yum: name=java-{{ java_version }}-openjdk state=latest
+  tags:
+    - kafka
+
+- name: check scala installed
+  stat: path=/usr/local/scala-{{ scala_version }}
+  register: scala
+  tags:
+    - kafka
+
+- name: download scala
+  get_url: url=http://downloads.lightbend.com/scala/{{ scala_version }}/scala-{{ scala_version }}.tgz dest=/tmp/
+  when: not scala.stat.exists
+  tags:
+    - kafka
+
+- name: unpack scala
+  unarchive: copy=no src=/tmp/scala-{{ scala_version }}.tgz dest=/usr/local/ owner=root group=root
+  when: not scala.stat.exists
+  tags:
+    - kafka
+
+- name: remove tmp downloaded file
+  file: path=/tmp/scala-{{ scala_version }}.tgz state=absent
+  tags:
+    - kafka
+
+- name: install scala
+  file: src=/usr/local/scala-{{ scala_version }} path=/usr/local/scala state=link
+  when: not scala.stat.exists
+  tags:
+    - kafka
+
+- name: set environment
+  copy: src=profile_scala.sh dest=/etc/profile.d/scala.sh group=root owner=root mode=644 backup=no
+  tags:
+    - kafka
+
+- name: check kafka installed
+  stat: path=/usr/local/kafka_{{ scala_major_version }}-{{ kafka_version }}
+  register: kafka
+  tags:
+    - kafka
+
+- name: download kafka
+  get_url: url=http://ftp.riken.jp/net/apache/kafka/{{ kafka_version }}/kafka_{{ scala_major_version }}-{{ kafka_version }}.tgz dest=/tmp/ validate_certs=False
+  when: not kafka.stat.exists
+  tags:
+    - kafka
+
+- name: unpack kafka
+  unarchive: copy=no src=/tmp/kafka_{{ scala_major_version }}-{{ kafka_version }}.tgz dest=/usr/local/ owner=root group=root
+  when: not kafka.stat.exists
+  tags:
+    - kafka
+
+- name: remove tmp downloaded file
+  file: path=/tmp/kafka_{{ scala_major_version }}-{{ kafka_version }}.tgz state=absent
+  tags:
+    - kafka
+
+- name: install kafka
+  file: src=/usr/local/kafka_{{ scala_major_version }}-{{ kafka_version }} path=/usr/local/kafka state=link
+  tags:
+    - kafka
+

@@ -1,0 +1,132 @@
+#!/bin/bash
+# tomcat         Startup script for the Apache Tomcat Server
+#
+# chkconfig: - 85 15
+# description: Tomcat automatic startup and shutdown 
+
+. /etc/rc.d/init.d/functions
+
+# pull in sysconfig settings
+[ -f /etc/sysconfig/tomcat ] && . /etc/sysconfig/tomcat
+
+TOMCAT_USER=root
+PID_FILE=${CATALINA_PID-/var/run/tomcat.pid}
+CATALINA_BASE=$CATALINA_HOME
+CATALINA_TMPDIR=$CATALINA_HOME/temp
+LOGGING_CONFIG=-Djava.util.logging.config.file=$CATALINA_HOME/conf/logging.properties
+JAVA_OPTS=-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+JAVA_ENDORSED_DIRS=$CATALINA_HOME/endorsed
+CATALINA_OUT=/var/log/tomcat/jsvc_tomcat.log
+CLASSPATH=$JAVA_HOME/lib/tools.jar:$CATALINA_HOME/bin/tomcat-juli.jar:$CATALINA_HOME/bin/commons-daemon.jar:$CATALINA_HOME/bin/bootstrap.jar
+RUN_JAVA=$CATALINA_HOME/bin/jsvc
+
+case `echo "testing\c"`,`echo -n testing` in
+    *c*,-n*) echo_n=   echo_c=     ;;
+    *c*,*)   echo_n=-n echo_c=     ;;
+    *)       echo_n=   echo_c='\c' ;;
+esac
+
+prog=Tomcat
+
+start(){
+    echo -n $"Starting $prog: " 
+    # check if tomcat is already booted
+    __pids_var_run "${JAVA_HOME}/bin/java" "$PID_FILE" 
+    RC=$?
+    if [ -z "$PID_FILE" -a -z "$pid" ]; then
+        pid="$(__pids_pidof "$1")" 
+    fi
+    if [ -n "$pid" ]; then
+        echo_success
+        echo
+        return 0
+    fi
+    rm -f $PID_FILE
+
+    $RUN_JAVA \
+    -jvm server \
+    -user $TOMCAT_USER \
+    -home $JAVA_HOME \
+    -procname jsvc.tomcat \
+    -Dcatalina.home=$CATALINA_HOME \
+    -Dcatalina.base=$CATALINA_BASE \
+    -Djava.io.tmpdir=$CATALINA_TMPDIR \
+    -wait 90 \
+    -pidfile $PID_FILE \
+    -outfile $CATALINA_OUT \
+    -errfile '&1' \
+    "$LOGGING_CONFIG" $JAVA_OPTS $CATALINA_OPTS \
+    -cp $CLASSPATH \
+    org.apache.catalina.startup.Bootstrap
+    #
+    # To get a verbose JVM
+    #-verbose \
+    # To get a debug of jsvc.
+    #-debug \
+    if [ $? -eq 0 ]; then
+        if [ -f $PID_FILE ]; then
+            chmod 644 $PID_FILE
+        fi
+        echo_success
+    else
+        echo_failure
+    fi
+    echo
+}
+
+stop(){
+    echo -n $"Shutting down $prog: " 
+
+    $RUN_JAVA -stop -pidfile $PID_FILE org.apache.catalina.startup.Bootstrap >&/dev/null
+    if [ $? -eq 0 ]; then
+        echo_success
+    else
+        echo_failure
+    fi
+    echo
+}
+
+status() {
+    __pids_var_run "${JAVA_HOME}/bin/java" "$PID_FILE" 
+    RC=$?
+    if [ -z "$PID_FILE" -a -z "$pid" ]; then
+        pid="$(__pids_pidof "$1")" 
+    fi
+    if [ -n "$pid" ]; then
+        echo $"${prog} (pid $pid) is running..." 
+        return 0
+    fi
+
+    case "$RC" in
+        0)
+            echo $"${prog} (pid $pid) is running..." 
+            return 0
+            ;;
+        1)
+            echo $"${prog} dead but pid file exists" 
+            return 1
+            ;;
+    esac
+    echo $"${prog} is stopped" 
+    return 2
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status
+        ;;
+    restart|reload)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage tomcat {start|stop|status|restart|reload}" 
+esac
+
+exit 0

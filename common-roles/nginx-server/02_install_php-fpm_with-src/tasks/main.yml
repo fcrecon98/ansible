@@ -1,0 +1,75 @@
+- name: install required packages from repository
+  action: yum name={{ item }} state=latest
+  with_items:
+    - libxml2-devel
+    - openssl-devel
+    - curl-devel
+  tags:
+    - php-fpm
+ 
+- name: download php-fpm source file
+  action: shell http_proxy={{ http_proxy }} wget -nc http://jp1.php.net/distributions/php-{{ php_version }}.tar.gz  chdir=/usr/local/src/
+  tags:
+    - php-fpm
+
+- name: extract source file
+  action: shell tar xvzf {{ item }} chdir=/usr/local/src/
+  with_items:
+    - php-{{ php_version }}.tar.gz
+  tags:
+    - php-fpm
+
+- name: copy php-fpm configure file
+  action: template src=php-fpm-configure.sh dest=/usr/local/src/php-{{ php_version }}/
+  tags:
+    - php-fpm
+
+- name: exec php-fpm configure file
+  action: shell sh php-fpm-configure.sh chdir=/usr/local/src/php-{{ php_version }}/
+  tags:
+    - php-fpm
+
+- name: make install php-fpm
+  action: shell make && make install chdir=/usr/local/src/php-{{ php_version }}/
+  tags:
+    - php-fpm
+
+- name: create symlink for php-fpm home directory
+  action: file state=link src=/usr/local/php-{{ php_version }}-fpm dest=/usr/local/php
+  tags:
+     - php-fpm
+
+- name: create php-fpm log directories
+  action: file state=directory path={{ item }}
+  with_items:
+    - /var/log/php/php-fpm
+  tags:
+    - php-fpm
+
+- name: create php-fpm error-log directories
+  action: file state=directory path={{ item }}  owner=nginx
+  with_items:
+    - /var/log/php/php-error
+  tags:
+    - php-fpm
+
+- name: copy php-fpm init script
+  action: template src=etc_init.d_php-fpm dest=/etc/init.d/php-fpm mode=0755
+  tags:
+    - php-fpm
+
+- name: create php-fpm pid directory
+  action: file state=directory mode=0755 owner=root group=nginx path=/var/run/php-fpm/
+  tags:
+    - php-fpm
+
+- name: add php-fpm service
+  action: shell chkconfig --add php-fpm
+  tags:
+    - php-fpm
+
+- name: start php-fpm service
+  action: service name=php-fpm state=started enabled=yes
+  tags:
+    - php-fpm
+

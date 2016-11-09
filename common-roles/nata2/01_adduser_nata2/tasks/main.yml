@@ -1,0 +1,9 @@
+- name: create nata2 group
+  action: group name=nata2 gid=5010
+  tags:
+    - nata2
+
+- name: create nata2 user
+  action: user name=nata2 group=nata2 uid=5010 home=/var/lib/nata2/
+  tags:
+    - nata2

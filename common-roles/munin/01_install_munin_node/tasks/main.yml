@@ -1,0 +1,20 @@
+- name: install munin-node
+  yum: name=munin-node enablerepo=epel state=latest disable_gpg_check=yes
+  tags:
+    - munin
+
+- name: template munin-node.conf
+  template: src=munin-node.conf dest=/etc/munin/munin-node.conf backup=yes
+  tags:
+    - munin
+
+- name: set basic plugin
+  file: state=link src=/usr/share/munin/plugins/tcp dest=/etc/munin/plugins/tcp
+  tags:
+    - munin
+
+- name: start munin
+  service: name=munin-node state=restarted enabled=yes
+  tags:
+    - munin
+

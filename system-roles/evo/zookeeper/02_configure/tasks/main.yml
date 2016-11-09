@@ -1,0 +1,49 @@
+- name: check zookeeper installed
+  stat: path=/usr/local/zookeeper-{{ zookeeper_version }}
+  register: zookeeper
+  failed_when: not zookeeper.stat.exists
+  tags:
+    - zookeeper
+
+- name: add group zookeeper
+  user: name={{ zookeeper_group }} state=present
+  tags:
+    - zookeeper
+
+- name: add user zookeeper
+  user: name={{ zookeeper_user }} comment="{{ zookeeper_user }}" group={{ zookeeper_group }} state=present
+  tags:
+    - zookeeper
+
+- name: create data directory
+  file: path=/var/zookeeper owner={{ zookeeper_user }} group={{ zookeeper_group }} mode=755 state=directory
+  tags:
+    - zookeeper
+
+- name: create log directory
+  file: path=/var/log/zookeeper owner={{ zookeeper_user }} group={{ zookeeper_group }} mode=755 state=directory
+  tags:
+    - zookeeper
+
+- name: copy configration
+  template: src=zoo.cfg.j2 dest=/usr/local/zookeeper/conf/zoo.cfg owner=root group=root mode=664 backup=yes
+
+- name: create myid
+  template: src=myid.j2 dest=/var/zookeeper/myid owner={{ zookeeper_user }} group={{ zookeeper_group }} mode=644
+  when: zookeeper_id is defined
+  tags:
+    - zookeeper
+
+- name: copy init file
+  template: src=zookeeper.init.j2 dest=/etc/init.d/zookeeper owner=root group=root mode=755 backup=no
+  tags:
+    - zookeeper
+
+- name: copy logrotate configuration file
+  template: src=zookeeper.logrotate.j2 dest=/etc/logrotate.d/zookeeper mode=644 owner=root group=root
+
+- name: add service
+  service: name=zookeeper enabled=yes
+  tags:
+    - zookeeper
+

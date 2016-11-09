@@ -1,0 +1,24 @@
+- name: make dirctory /etc/logmon
+  action: file state=directory dest=/etc/logmon
+  tags: install
+
+- name: copy logmon files
+  action: copy {{ item }}
+  with_items:
+     - src=logmon dest=/etc/init.d/logmon mode=700
+     - src=logmon.pl dest=/etc/logmon/logmon.pl mode=700
+  tags: install
+
+- name: copy logmon files
+  action: template {{ item }}
+  with_items:
+     - src=logmon.conf dest=/etc/logmon/logmon.conf mode=600
+  tags: install
+
+- name: add logmon service
+  action: shell chkconfig --add logmon
+  tags: install
+
+- name: start logmon
+  action: service name=logmon state=started
+  tags: install

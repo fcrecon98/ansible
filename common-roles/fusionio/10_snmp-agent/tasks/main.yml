@@ -1,0 +1,31 @@
+- name: copy rpm file
+  copy: src={{ item }} dest=/usr/local/src/
+  with_items:
+    - fio-snmp-agentx-3.1.4.111-1.0.x86_64.rpm
+    - fio-snmp-mib-3.1.4.111-1.0.x86_64.rpm
+  tags:
+    - setup
+
+- name: install rpm file
+  yum: name={{ item }} state=present
+  with_items:
+    - /usr/local/src/fio-snmp-agentx-3.1.4.111-1.0.x86_64.rpm
+    - /usr/local/src/fio-snmp-mib-3.1.4.111-1.0.x86_64.rpm
+  tags:
+    - setup
+
+- name: update snmpd.conf
+  lineinfile: dest=/etc/snmp/snmpd.conf {{ item }}
+  with_items:
+     - line='# iodrive'
+     - line='master agentx'
+  tags:
+     - setup
+
+- name: startup service
+  service: name={{ item }} state=restarted
+  with_items:
+    - fio-snmp-agentx
+    - snmpd
+  tags:
+    - setup

@@ -1,0 +1,18 @@
+- hosts: '{{ hosts }}'
+  gather_facts: no
+  sudo: yes
+  vars_files:
+     # common vars file
+     - ../../common-vars/common.yml
+     # platform vars file
+     - ../../platform-vars/{{ platform }}-{{ env }}.yml
+     # system vars file
+     - ../../system-vars/{{ system }}-{{ env }}.yml
+
+  vars:
+      - postfix_mydomain: capcom-onlinegames.jp
+      - postfix_myhostname: mail.capcom-onlinegames.jp
+      - api_url: http://172.29.2.201/api
+
+  roles:
+      - ../../system-roles/cog/frontendapi-mail/

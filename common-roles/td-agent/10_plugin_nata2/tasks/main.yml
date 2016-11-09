@@ -1,0 +1,24 @@
+- name: install nata2 plugin
+  action: shell http_proxy={{ http_proxy }} td-agent-gem install fluent-plugin-nata2
+  tags:
+    - nata2
+
+- name: put nata2 conf
+  action: template src=nata2.conf dest=/etc/td-agent/td-agent.conf.d/
+  tags:
+    - nata2
+
+- name: change permission /var/log/mysql
+  action: file path=/var/log/mysql/ mode=0750
+  tags:
+    - nata2
+
+- name: add td-agent to mysql group
+  action: user name=td-agent groups=mysql append=yes
+  tags:
+    - nata2
+
+- name: restart td-agent
+  action: service name=td-agent state=restarted
+  tags:
+    - nata2

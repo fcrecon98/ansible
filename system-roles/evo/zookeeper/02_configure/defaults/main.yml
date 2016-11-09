@@ -1,0 +1,4 @@
+---
+java_version : 1.7.0
+zookeeper_version : 3.4.8
+#zookeeper_id : 1

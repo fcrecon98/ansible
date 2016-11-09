@@ -1,0 +1,13 @@
+zabbixserver: 10.8.1.41
+http_proxy: http://10.8.1.211:80
+logserver: 10.8.1.11
+nata2server: 10.8.1.49
+mailserver: 10.8.1.212
+
+monit_addressfromfqdn: sys.capcom-onlinegames.jp
+monit_addressto:
+  - sysope_g@eng.capcom.co.jp
+
+pam_filter_ou:
+  - cog
+  - web_dev

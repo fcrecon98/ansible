@@ -1,0 +1,4 @@
+# monitor multipath
+* * * * * root /sbin/multipath -ll -v1 > /opt/capcom/zabbix/multipath-ll-v1.dat
+* * * * * root /sbin/multipath -ll -v2 > /opt/capcom/zabbix/multipath-ll-v2.dat
+* * * * * root for ALIAS in `cat /opt/capcom/zabbix/multipath-ll-v1.dat`;do /sbin/multipath -ll ${ALIAS} > /opt/capcom/zabbix/multipath-ll-v2.${ALIAS}.dat;done

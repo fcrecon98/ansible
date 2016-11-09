@@ -1,0 +1,32 @@
+- name: mkdir oracle rpm copy directory
+  action: file path=/usr/local/src/oracle/ state=directory
+  tags:
+    - oracle
+
+- name: copy rpm file
+  action: copy src={{ item }} dest=/usr/local/src/oracle/
+  with_items:
+    - oracle-instantclient-basic-10.2.0.5-1.x86_64.rpm
+    - oracle-instantclient-devel-10.2.0.5-1.x86_64.rpm
+    - oracle-instantclient-sqlplus-10.2.0.5-1.x86_64.rpm
+  tags:
+    - oracle
+
+- name: install oracle client from rpm
+  action: yum name={{ item }} state=present
+  with_items:
+    - /usr/local/src/oracle/oracle-instantclient-basic-10.2.0.5-1.x86_64.rpm
+    - /usr/local/src/oracle/oracle-instantclient-devel-10.2.0.5-1.x86_64.rpm
+    - /usr/local/src/oracle/oracle-instantclient-sqlplus-10.2.0.5-1.x86_64.rpm
+  tags:
+    - oracle
+
+- name: copy ld file
+  action: copy src=etc_ld.so.conf.d_oracle.conf dest=/etc/ld.so.conf.d/oracle.conf
+  tags:
+    - oracle
+
+- name: exec ldconfig
+  action: shell /sbin/ldconfig
+  tags:
+    - oracle

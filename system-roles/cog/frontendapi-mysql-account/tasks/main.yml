@@ -1,0 +1,5 @@
+- name: create application user
+  action: mysql_user name=daletto password=H3sz8Jpe priv=*.*:ALL host={{ item }}
+  with_items:
+    - 10.%
+    - localhost

@@ -1,0 +1,15 @@
+- hosts: '{{ hosts }}'
+  gather_facts: no
+  sudo: no
+  vars_files:
+     # common vars file
+     - ../../common-vars/common.yml
+     # platform vars file
+     - ../../platform-vars/{{ platform }}-{{ env }}.yml
+     # system vars file
+     - ../../system-vars/{{ system }}-{{ env }}.yml
+     # subsystem vars file
+     - ../../system-vars/{{ system }}-{{ subsystem }}-{{ env }}.yml
+
+  roles:
+      - ../../common-roles/postfix/01_setup_sendonly_postfix/

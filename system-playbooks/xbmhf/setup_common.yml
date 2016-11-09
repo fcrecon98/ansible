@@ -1,0 +1,14 @@
+- hosts: '{{ hosts }}'
+  sudo: no
+  vars_files:
+     # common vars file
+     - ../../common-vars/common.yml
+     # platform vars file
+     - ../../platform-vars/{{ platform }}-{{ env }}.yml
+     # system vars file
+     - ../../system-vars/{{ system }}-{{ env }}.yml
+
+  roles:
+
+    - ../../system-roles/xbmhf/01_account
+    - ../../system-roles/xbmhf/02_gnu_bash

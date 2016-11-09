@@ -1,0 +1,14 @@
+- name: install packages in GCC++ ver3.4
+  action: yum pkg={{ item }} state=latest
+
+  with_items:
+    - compat-gcc-34
+    - compat-gcc-34-c++
+  tags:
+    - packages
+
+- name: link for use GCC++ ver3.4
+  action : file src='/usr/bin/g++34' dest='/home/mhfmin/bin/g++' state=link
+
+- name: edit mhfmin bashrc
+  action : lineinfile dest='/home/mhfmin/.bashrc' state=present backup=yes regexp='PATH=' line='PATH=$HOME/bin:$PATH'

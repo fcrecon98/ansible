@@ -1,0 +1,19 @@
+- hosts: '{{ hosts }}'
+  sudo: no
+  vars_files:
+     # common vars file
+     - ../../common-vars/common.yml
+     # platform vars file
+     - ../../platform-vars/{{ platform }}-{{ env }}.yml
+     # system vars file
+     - ../../system-vars/{{ system }}-{{ env }}.yml
+     # system vars file
+     - ../../system-vars/{{ system }}-gamedb-8.ymf
+
+
+  roles:
+
+    - ../../system-roles/xbmhf/21_postgres_usradd
+    - ../../system-roles/xbmhf/22_postgres_install
+    - ../../system-roles/xbmhf/23_postgres_edit_path
+    - ../../system-roles/xbmhf/24_postgres_ldconfig

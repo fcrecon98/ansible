@@ -1,0 +1,13 @@
+pam_filter: pam_filter &(objectclass=posixaccount)(|(ou=admin)(ou=web_dev))
+
+
+http_proxy: http://10.15.109.19:8080/
+
+apr_version: 1.5.1
+apr_util_version: 1.5.4
+apache_version: 2.4.12
+
+
+
+
+php_version: 5.5.22

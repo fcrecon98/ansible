@@ -1,5 +1,5 @@
 - hosts: '{{ hosts }}'
-  sudo: yes
+  sudo: no
   vars_files: 
      - ../../common-vars/common.yml
      #- ../../platform-vars/{{ platform }}-{{ env }}.yml

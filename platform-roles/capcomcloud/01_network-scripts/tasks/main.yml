@@ -1,0 +1,19 @@
+- name: copy template dhcp ifcfg-ethx configuration file
+  copy: src=_ifcfg-ethx dest=/etc/sysconfig/network-scripts/_ifcfg-ethx
+  when: ansible_virtualization_role is defined
+  tags: setup_network
+
+- name: exec script setup_network_interface.sh
+  script: setup_network_interface.sh
+  when: ansible_virtualization_role is defined
+  tags: setup_network
+
+- name: remove static routing
+  file: path=/etc/sysconfig/static-routes state=absent
+  when: ansible_virtualization_role is defined
+  tags: setup_network
+
+#- name: restart network
+#  service: name=network state=restarted
+#  when: ansible_virtualization_role is defined
+#  tags: setup_network

@@ -1,0 +1,123 @@
+- name: install needed package
+  yum: name=perl-Net-OpenSSH.noarch state=latest
+  tags:
+    - pacemaker
+
+- name: copy source file
+  copy: src={{ item }} dest=/usr/local/src
+  with_items:
+    - pacemaker-repo-1.1.13-1.1.el6.x86_64.rpm
+    - pg-rex_operation_tools_script-1.6.1-1.el6.noarch.rpm
+  tags:
+    - pacemaker
+
+- name: install packages
+  yum: name={{ item }} state=present
+  with_items:
+    - /usr/local/src/pacemaker-repo-1.1.13-1.1.el6.x86_64.rpm
+    - /usr/local/src/pg-rex_operation_tools_script-1.6.1-1.el6.noarch.rpm
+  tags:
+    - pacemaker
+
+- name: install all packages
+  yum: name=pacemaker-all state=latest
+  tags:
+    - pacemaker
+
+- name: check corosync.conf
+  stat: path=/etc/corosync/corosync.conf
+  register: is_file_corosync_conf
+  
+- name: copy /etc/corosync/corosync.conf
+  copy: backup=yes src=corosync.conf dest=/etc/corosync/corosync.conf owner=root group=root mode=644
+  when: is_file_corosync_conf.stat.md5 is not defined
+  tags:
+    - pacemaker
+
+- name: check corosync key
+  stat: path=/etc/corosync/authkey
+  register: is_file_corosync_key
+  
+- name: generate corosync key
+  command: corosync-keygen -l
+  when: is_file_corosync_key.stat.md5 is not defined
+  tags:
+    - pacemaker
+
+- name: edit /etc/sysconfig/pacemaker for enviroment
+  lineinfile: backup=yes dest=/etc/sysconfig/pacemaker state=present line="{{ item }}"
+  with_items:
+    - export PCMK_logfile=none
+    - export PCMK_logfacility=local1
+    - export PCMK_logpriority=info
+    - export PCMK_fail_fast=yes
+    - export HA_LOGFACILITY=local1
+  tags:
+    - pacemaker
+
+- name: edit /etc/init/pacemaker.combined.conf for watchdog
+  lineinfile: backup=yes dest=/etc/init/pacemaker.combined.conf state=present regexp="modprobe softdog soft_margin=" line=""
+  with_items:
+    - regexp: 'modprobe softdog soft_margin='
+      line: '    [ -c /dev/watchdog ] || modprobe softdog soft_margin=60'
+    - regexp: '#.*pidof corosync || false'
+      line: '        pidof corosync || false'
+  tags:
+    - pacemaker
+
+- name: edit /etc/init/pacemaker.combined.conf for stop by upstart
+  lineinfile: dest=/etc/init/pacemaker.combined.conf state=present insertbefore="kill timeout" line="stop on runlevel [0123456]"
+  tags:
+    - pacemaker
+
+- name: edit /etc/rsyslog.conf for add local1.none
+  lineinfile: dest=/etc/rsyslog.conf state=present regexp="^.*/var/log/messages$" line="*.info;mail.none;authpriv.none;cron.none;local1.none    /var/log/messages"
+  tags:
+    - pacemaker
+
+- name: edit /etc/rsyslog.conf for add local1.info
+  lineinfile: dest=/etc/rsyslog.conf state=present line="local1.info   /var/log/ha-log;RSYSLOG_TraditionalFileFormat"
+  tags:
+    - pacemaker
+
+- name: set /etc/logrotate.d/pacemaker
+  copy: backup=yes src=logrotate_pacmaker dest=/etc/logrotate.d/pacemaker 
+  tags:
+    - pacemaker
+
+- name: service rsyslog restart
+  service: name=rsyslog state=restarted
+  tags:
+    - pacemaker
+
+- name: copy /etc/pm_logconv.conf
+  copy: src=pm_logconv.conf dest=/etc/pm_logconv.conf backup=yes
+  tags:
+    - pacemaker
+
+- name: start pm_logconv process
+  command: initctl start pm_logconv_init
+  register: pm_logconv_init_start_result
+  ignore_errors: True
+  tags:
+    - pacemaker
+
+- name: restart pm_logconv process
+  command: initctl restart pm_logconv_init
+  when: pm_logconv_init_start_result|failed
+  tags:
+    - pacemaker
+
+- name: start ifcheckd process
+  command: initctl start ifcheckd
+  register: ifcheckd_start_result
+  ignore_errors: True
+  tags:
+    - pacemaker
+
+- name: start ifcheckd process
+  command: initctl restart ifcheckd
+  when: ifcheckd_start_result|failed
+  tags:
+    - pacemaker
+

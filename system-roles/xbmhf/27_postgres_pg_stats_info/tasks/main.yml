@@ -1,0 +1,49 @@
+- name: check exist sorce file
+  stat: path={{src_dir}}/pg_statsinfo-{{pg_statsinfo_ver}}.tar.gz
+  register: is_file_pg_statsinfo_file
+  tags:
+    - postgres
+
+- name: copy source file
+  copy: src=pg_statsinfo-{{pg_statsinfo_ver}}.tar.gz dest={{src_dir}} owner=postgres group=postgres
+  when: is_file_pg_statsinfo_file.stat.md5 is not defined
+  tags:
+    - postgres
+
+- name : check exist sorce dir
+  stat : path={{src_dir}}/pg_statsinfo-{{pg_statsinfo_ver}}
+  register: is_file_pg_statsinfo_dir
+  tags:
+    - postgres
+
+- name : tar
+  command : tar xvfz pg_statsinfo-{{pg_statsinfo_ver}}.tar.gz chdir={{src_dir}} creates={{src_dir}}/pg_statsinfo-{{pg_statsinfo_ver}}
+  when: not is_file_pg_statsinfo_dir.stat.exists
+  tags:
+    - postgres
+
+- name : chown
+  file : path={{src_dir}}/pg_statsinfo-{{pg_statsinfo_ver}} recurse=yes owner=postgres group=postgres
+
+- name: check install
+  stat: path={{dst_dir}}/{{product_linkname}}-{{product_ver}}/bin/pg_statsinfo
+  register: is_file_pg_statsinfo_bin
+  tags:
+    - postgres
+
+- name : make
+  shell: bash -lc "make" chdir={{src_dir}}/pg_statsinfo-{{pg_statsinfo_ver}}
+  become: yes
+  become_user: postgres
+  when: not is_file_pg_statsinfo_bin.stat.exists
+  tags:
+    - postgres
+
+- name : make install
+  shell: bash -lc "make install" chdir={{src_dir}}/pg_statsinfo-{{pg_statsinfo_ver}}
+  become: yes
+  become_user: postgres
+  when: not is_file_pg_statsinfo_bin.stat.exists
+  tags:
+    - postgres
+

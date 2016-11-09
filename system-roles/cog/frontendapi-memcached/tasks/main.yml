@@ -1,0 +1,33 @@
+- name: copy ucarp configuration file
+  action: template src=vip-{{ ansible_fqdn }}.conf dest=/etc/ucarp/
+  with_items:
+    - cog
+    - ucarp
+    - memcached
+
+- name: disable autostart memcached & ucarp
+  action: service name={{ item }} state=stopped enabled=no
+  with_items:
+    - ucarp
+    - memcached
+  tags:
+    - cog
+    - memcached
+    - ucarp
+
+- name: copy monit sub configuration file
+  action: copy src={{ item }} dest=/etc/monit.d/
+  with_items:
+    - memcached-ucarp
+    - ucarp
+  tags:
+    - cog
+    - memcached
+    - ucarp
+    - monit
+
+- name: restart monit service
+  action: service name=monit state=restarted
+  tags:
+    - cog
+    - monit

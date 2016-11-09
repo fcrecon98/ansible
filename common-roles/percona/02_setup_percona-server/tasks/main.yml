@@ -76,11 +76,11 @@
     - percona
     - mysql
 
-- name: exec mysql_install_db
-  action: shell mysql_install_db
-  tags:
-    - percona
-    - mysql
+#- name: exec mysql_install_db
+#  action: shell mysql_install_db
+#  tags:
+#    - percona
+#    - mysql
 
 - name: startup percona server
   action: service name=mysql state=started enabled=yes
@@ -89,19 +89,19 @@
     - mysql
 
 - name: create work directory
-  action: file path=/opt/dmm/mysql/bin state=directory
+  action: file path=/opt/capcom/mysql/bin state=directory
   tags:
     - percona
     - mysql
 
 - name: put drop table sql
-  action: copy src=delete_slavetable.sql dest=/opt/dmm/mysql/bin
+  action: copy src=delete_slavetable.sql dest=/opt/capcom/mysql/bin
   tags:
     - percona
     - mysql
 
 - name: drop old innodb & slave tables
-  action: shell mysql -uroot mysql < /opt/dmm/mysql/bin/delete_slavetable.sql
+  action: shell mysql -uroot mysql < /opt/capcom/mysql/bin/delete_slavetable.sql
   tags:
     - percona
     - mysql

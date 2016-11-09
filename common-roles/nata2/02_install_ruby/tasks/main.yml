@@ -1,0 +1,77 @@
+- name: install required packages
+  action: yum name={{ item }} state=latest enablerepo=epel,remi,rpmforge
+  with_items:
+    - openssl-devel
+  tags:
+    - ruby
+
+- name: copy .gitconfig
+  action: template src=.gitconfig dest=/var/lib/nata2/ owner=nata2 group=nata2
+  tags:
+    - ruby
+
+- name: git clone rbenv
+  action: git repo=https://github.com/sstephenson/rbenv.git dest=/var/lib/nata2/.rbenv/ update=yes
+  sudo_user: nata2
+  tags:
+    - ruby
+
+- name: git clone ruby-build
+  action: git repo=https://github.com/sstephenson/ruby-build.git dest=/var/lib/nata2/.rbenv/plugins/ruby-build/
+  sudo_user: nata2
+  tags:
+    - ruby
+
+- name: add rbenv/bin to PATH
+  action: lineinfile line="{{ item.line }}" dest=/var/lib/nata2/.bash_profile
+  sudo_user: nata2
+  with_items:
+    - { line: 'export RBENV_ROOT=\"~/.rbenv\"' }
+    - { line: 'export PATH=\"${RBENV_ROOT}/bin:$PATH\"' }
+    - { line: 'eval \"$(rbenv init -)\"' }
+  tags:
+    - ruby
+
+- name: install ruby-build
+  action: shell PREFIX=/var/lib/nata2/.rbenv/ /var/lib/nata2/.rbenv/plugins/ruby-build/install.sh
+  sudo_user: nata2
+  tags:
+    - ruby
+
+- name: install ruby with ruby-build
+  action: shell http_proxy={{ http_proxy }} /var/lib/nata2/.rbenv/bin/rbenv install {{ ruby_version }}
+  sudo_user: nata2
+  tags:
+    - ruby
+
+- name: rbenv rehash
+  action: shell /var/lib/nata2/.rbenv/bin/rbenv rehash
+  sudo_user: nata2
+  tags:
+    - ruby
+
+- name: rbenv global
+  action: shell /var/lib/nata2/.rbenv/bin/rbenv global {{ ruby_version }}
+  sudo_user: nata2
+  tags:
+    - ruby
+
+- name: export ruby PATH
+  action: lineinfile line="{{ item.line }}" dest=/var/lib/nata2/.bash_profile
+  sudo_user: nata2
+  with_items:
+    - { line: 'export PATH=\"$PATH:~/.rbenv/shims/\"' }
+  tags:
+    - ruby
+
+- name: install bundler
+  action: shell http_proxy={{ http_proxy }} /var/lib/nata2/.rbenv/bin/rbenv exec gem install bundler
+  sudo_user: nata2
+  tags:
+    - ruby
+
+- name: rehash after install bundler
+  sudo_user: nata2
+  action: shell /var/lib/nata2/.rbenv/bin/rbenv rehash
+  tags:
+    - ruby

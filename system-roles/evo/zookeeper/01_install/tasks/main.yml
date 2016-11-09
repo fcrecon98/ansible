@@ -1,0 +1,32 @@
+- name: install OpenJDK
+  yum: name=java-{{ java_version }}-openjdk state=latest
+  tags:
+    - zookeeper
+
+- name: check zookeeper installed
+  stat: path=/usr/local/zookeeper-{{ zookeeper_version }}
+  register: zookeeper
+  tags:
+    - zookeeper
+
+- name: download zookeeper
+  get_url: url=http://ftp.jaist.ac.jp/pub/apache/zookeeper/zookeeper-{{ zookeeper_version }}/zookeeper-{{ zookeeper_version }}.tar.gz dest=/tmp/
+  when: not zookeeper.stat.exists
+  tags:
+    - zookeeper
+
+- name: unpack zookeeper
+  unarchive: copy=no src=/tmp/zookeeper-{{ zookeeper_version }}.tar.gz dest=/usr/local/ owner=root group=root
+  when: not zookeeper.stat.exists
+  tags:
+    - zookeeper
+
+- name: remove tmp downloaded file
+  file: path=/tmp/zookeeper-{{ zookeeper_version }}.tar.gz state=absent
+  tags:
+    - zookeeper
+
+- name: install zookeeper
+  file: src=/usr/local/zookeeper-{{ zookeeper_version }} path=/usr/local/zookeeper state=link
+  tags:
+    - zookeeper

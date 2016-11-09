@@ -1,0 +1,6 @@
+[mcp]
+name=Management Component Pack
+baseurl=http://downloads.linux.hpe.com/SDR/downloads/ManagementComponentPack/CentOS/$releasever/$basearch/current
+enabled=0
+gpgcheck=0
+gpgkey=file:///etc/pki/rpm-gpg/GPG-KEY-mcp

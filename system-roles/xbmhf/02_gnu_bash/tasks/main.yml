@@ -1,0 +1,9 @@
+- name: change login shell to /usr/local/bin/bash
+  user: name={{ item }} shell=/usr/local/bin/bash
+  with_items:
+    - mhfmin
+    - postgres
+    - capadmin
+  tags:
+    - gnu_bash
+

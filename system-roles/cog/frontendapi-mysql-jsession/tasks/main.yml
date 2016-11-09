@@ -1,0 +1,9 @@
+- name: alter table engine to memory
+  action: shell mysql -uroot jsession -e "alter table {{ item }} engine MEMORY;"
+  with_items:
+    - tables
+    - template_id
+    - template_value
+  tags:
+    - cog
+    - mysql

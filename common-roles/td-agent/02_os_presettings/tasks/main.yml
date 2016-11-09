@@ -1,0 +1,21 @@
+## 2016/06/25 : morihaya : Created
+
+- name : Increase Max Number of File Descriptors
+  lineinfile: backup=yes state=present dest=/etc/security/limits.conf regexp="{{ item.regexp }}" line="{{ item.line }}"
+  with_items:
+    - { regexp: 'root soft nofile *' ,  line: 'root soft nofile 65536' }
+    - { regexp: 'root hard nofile *' ,  line: 'root hard nofile 65536' }
+    - { regexp: '\* soft nofile *'   ,  line: '* soft nofile 65536' }
+    - { regexp: '\* hard nofile *'   ,  line: '* hard nofile 65536' }
+  tags:
+    td-agent
+
+- name: Optimize Network Kernel Parameters
+  lineinfile: backup=yes state=present dest=/etc/sysctl.conf regexp="{{ item.regexp }}" line="{{ item.line }}"
+  with_items:
+#    - { regexp: 'net.ipv4.tcp_tw_recycle ='        ,  line: 'net.ipv4.tcp_tw_recycle = 1' } # Have problems with under load balancer.
+    - { regexp: 'net.ipv4.tcp_tw_reuse ='          ,  line: 'net.ipv4.tcp_tw_reuse = 1' }
+    - { regexp: 'net.ipv4.ip_local_port_range ='   ,  line: 'net.ipv4.ip_local_port_range = 1024 65535' }
+  tags:
+    td-agent
+

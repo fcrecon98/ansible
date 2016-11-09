@@ -1,0 +1,11 @@
+- name: copy nginx.repo
+  action: copy src=nginx.repo dest=/etc/yum.repos.d/
+  tags:
+    - install
+    - nginx
+
+- name: install nginx
+  action: yum name=nginx disable_gpg_check=yes enablerepo=nginx state=latest
+  tags:
+    - install
+    - nginx

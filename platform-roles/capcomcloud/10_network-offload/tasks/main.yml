@@ -1,0 +1,21 @@
+- name: disable tcp segumentation offload
+  action: script disable_tcp-segumentation-offload.sh
+  tags: tuning_network
+
+- name: disable generic segumentation offload
+  action: script disable_generic-segumentation-offload.sh
+  #when: ansible_virtualization_role == "guest"
+  when: ansible_system_vendor == ""
+  tags: tuning_network
+
+- name: disable tx/rx checksumming
+  action: script disable_txrx_checksumming.sh
+  #when: ansible_virtualization_role == "guest"
+  when: ansible_system_vendor == ""
+  tags: tuning_network
+
+- name: set txqueuelen 10000
+  action: script set_txqueuelen_10000.sh
+  #when: ansible_virtualization_role == "guest"
+  when: ansible_system_vendor == ""
+  tags: tuning_network

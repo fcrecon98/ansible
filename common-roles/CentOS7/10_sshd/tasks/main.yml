@@ -1,0 +1,26 @@
+- name: configure /etc/ssh/sshd_config
+  lineinfile: dest=/etc/ssh/sshd_config owner=root group=root mode=0600 backup=yes regexp='^PermitRootLogin' line='PermitRootLogin without-password' insertafter='#PermitRootLogin'
+  notify: restart sshd
+  tags: sshd
+
+- name: configure /etc/ssh/sshd_config
+  lineinfile: dest=/etc/ssh/sshd_config owner=root group=root mode=0600 backup=yes regexp='^UseDNS' line='UseDNS no' insertafter='#UseDNS'
+  notify: restart sshd
+  tags: sshd
+
+- name: install openssh-clients
+  yum: name=openssh-clients state=latest
+  tags: sshd
+
+- name: configure /etc/ssh/ssh_config
+  lineinfile: dest=/etc/ssh/ssh_config owner=root group=root mode=0644 backup=yes line='Host *'
+  tags: ssh
+
+- name: configure /etc/ssh/ssh_config
+  lineinfile: dest=/etc/ssh/ssh_config owner=root group=root mode=0644 backup=yes line='        StrictHostKeyChecking no' insertafter='^Host *'
+  tags: ssh
+
+- name: configure /etc/ssh/ssh_config
+  lineinfile: dest=/etc/ssh/ssh_config owner=root group=root mode=0644 backup=yes line='        UserKnownHostsFile=/dev/null' insertafter='^Host *'
+  tags: ssh
+

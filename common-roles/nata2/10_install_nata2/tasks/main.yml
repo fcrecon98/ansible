@@ -1,0 +1,77 @@
+- name: install required package
+  action: yum name={{ item }} state=latest
+  with_items:
+    - sqlite-devel
+  tags:
+    - nata2
+
+- name: create nata2 dir
+  action: file path=/usr/local/nata2 state=directory owner=nata2 group=nata2
+  tags:
+    - nata2
+
+- name: git clone
+  action: git repo=https://github.com/studio3104/nata2.git dest=/usr/local/nata2/ update=yes
+  sudo_user: nata2
+  tags:
+    - nata2
+
+- name: replace 
+  action: shell sed -e "s/spec.add_runtime_dependency 'mysql2'$/spec.add_runtime_dependency 'mysql2', '~> 0.3.20'/g" /usr/local/nata2/nata2.gemspec -i
+
+- name: install nata2
+  action: shell http_proxy={{ http_proxy }} /var/lib/nata2/.rbenv/shims/bundle install chdir=/usr/local/nata2/
+  sudo_user: nata2
+  tags:
+    - nata2
+
+- name: put nata2 conf
+  action: template src=config.toml dest=/usr/local/nata2/
+  sudo_user: nata2
+  tags:
+    - nata2
+
+- name: create nata2 database
+  action: mysql_db name=nata2
+  tags:
+    - nata2
+
+- name: create mysql user
+  action: mysql_user name=nata2 password=nata2 priv=nata2.*:ALL host=127.0.0.1
+  tags:
+    - nata2
+
+- name: copy nata2server_init_database
+  action: copy src=nata2server_init_database dest=/usr/local/nata2/bin/nata2server_init_database mode=0755 owner=nata2 group=nata2
+  tags:
+    - nata2
+
+- name: init nata2 server database
+  action: shell /usr/local/nata2/bin/nata2server_init_database chdir=/usr/local/nata2
+  sudo_user: nata2
+  tags:
+    - nata2
+
+- name: create log,pid,socket directory
+  action: file path={{ item }} state=directory owner=nata2 group=nata2
+  with_items:
+    - /var/log/nata2/
+    - /usr/local/nata2/tmp/
+    - /var/run/nata2/
+  tags:
+    - nata2
+
+- name: put init script
+  action: template src=etc_init.d_nata2 dest=/etc/init.d/nata2 mode=755
+  tags:
+    - nata
+
+- name: put unicorn.rb
+  action: template src=unicorn.rb dest=/usr/local/nata2/ owner=nata2 group=nata2 mode=755
+  tags:
+    - nata
+
+- name: add nata2 service
+  action: shell chkconfig --add nata2
+  tags:
+    - nata

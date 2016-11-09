@@ -1,0 +1,13 @@
+
+@@@@@
+@@@@@ You have logged in to {{ ansible_fqdn }} successfully
+@@@@@
+@@@@@  !!!!!!!!!!!!!!!!!!!!!!!!! CAUTION !!!!!!!!!!!!!!!!!!!!!!!!!
+@@@@@
+@@@@@     This server is running on Physical Server.
+@@@@@
+@@@@@     Model: {{ ansible_system_vendor }} {{ ansible_product_name }}
+@@@@@     S/N: {{ ansible_product_serial }}
+@@@@@
+@@@@@  !!!!!!!!!!!!!!!!!!!!!!!!! CAUTION !!!!!!!!!!!!!!!!!!!!!!!!!
+@@@@@

@@ -1,0 +1,37 @@
+
+- name: copy packages
+  copy: src={{ item }} dest=/usr/local/src
+  with_items:
+    - IO_Tty-1.02-1.el6.x86_64.rpm
+    - Net_OpenSSH-0.62-1.el6.x86_64.rpm
+    - pg-rex_operation_tools_script-1.6.1-1.el6.noarch.rpm
+  tags:
+    - pacemaker
+
+- name: install packages
+  yum: name={{ item }} state=present
+  with_items:
+    - /usr/local/src/IO_Tty-1.02-1.el6.x86_64.rpm
+    - /usr/local/src/Net_OpenSSH-0.62-1.el6.x86_64.rpm
+    - /usr/local/src/pg-rex_operation_tools_script-1.6.1-1.el6.noarch.rpm
+  tags:
+    - pacemaker
+
+- name: copy /etc/pg-rex_tools.conf
+  copy: backup=yes src=pg-rex_tools.conf dest=/etc/pg-rex_tools.conf
+  tags:
+    - pacemaker
+
+- name: copy /usr/local/src/pg-rex9.4.crm ( virtual machine )
+  copy: backup=yes src=pg-rex9.4.crm.vm dest=/usr/local/src/pg-rex9.4.crm
+  when: ansible_virtualization_role is defined
+  tags:
+    - pacemaker
+
+- name: copy /usr/local/src/pg-rex9.4.crm ( physical machine )
+  copy: backup=yes src=pg-rex9.4.crm.phy dest=/usr/local/src/pg-rex9.4.crm
+  when: ansible_virtualization_role is not defined or ansible_virtualization_role=="NA"
+  tags:
+    - pacemaker
+
+

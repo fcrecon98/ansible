@@ -1,0 +1,17 @@
+- name: copy mongodb repository file
+  action: copy src=mongodb.repo dest=/etc/yum.repos.d/
+  tags:
+    - install
+    - monodb
+
+- name: install mongodb from mongodb repository
+  action: yum name={{ item }} state=latest disable_gpg_check=yes enablerepo=mongodb
+  with_items:
+    - mongodb-org
+    - mongodb-org-server
+    - mongodb-org-mongos
+    - mongodb-org-shell
+    - mongodb-org-tools
+  tags:
+    - install
+    - mongodb

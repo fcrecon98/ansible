@@ -1,0 +1,33 @@
+- name: create directory
+  file: path={{ item }} state=directory mode=0755 owner=zabbix group=zabbix
+  with_items:
+    - /opt/capcom/
+    - /opt/capcom/zabbix/
+    - /opt/capcom/zabbix/bin/
+    - /opt/capcom/zabbix/dat/
+
+- name: put userparameter
+  copy: src={{ item }} dest=/etc/zabbix/zabbix_agentd.d/ owner=root group=root mode=0644
+  tags:
+    - zabbix
+  with_items:
+    - userparameter_edgescape.conf
+
+- name: put script
+  copy: src={{ item }} dest=/opt/capcom/zabbix/bin/ owner=zabbix group=zabbix mode=0755
+  tags:
+    - zabbix
+  with_items:
+    - akamai.edgescape.status.sh
+
+- name: put dat
+  copy: src={{ item }} dest=/opt/capcom/zabbix/dat/ owner=zabbix group=zabbix mode=0644
+  tags:
+    - zabbix
+  with_items:
+    - akamai.edgescape.status.list
+
+- name: restart zabbix-agent
+  action: service name=zabbix-agent state=restarted
+  tags:
+    - zabbix

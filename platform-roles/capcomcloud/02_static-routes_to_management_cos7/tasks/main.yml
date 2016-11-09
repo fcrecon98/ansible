@@ -1,0 +1,8 @@
+- name: add route to management
+  script: add_route_to_management.sh
+  register:     add_route_to_management
+  changed_when: add_route_to_management.rc not in [2]
+  failed_when:  add_route_to_management.rc not in [0, 2]
+  tags:
+    - setup
+

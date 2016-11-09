@@ -1,0 +1,5 @@
+- name: dynamic liblary
+  action : lineinfile dest='/etc/ld.so.conf.d/pgsql.conf' state=present backup=yes regexp='/usr/local/postgres/lib' line='/usr/local/postgres/lib' create=yes
+
+- name: ldconfig
+  command : ldconfig

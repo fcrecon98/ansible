@@ -1,0 +1,43 @@
+- name: create directory
+  action: file dest={{ item }} state=directory mode=0777 owner=zabbix group=zabbix
+  with_items:
+    - /opt/capcom/
+    - /opt/capcom/zabbix/
+    - /opt/capcom/zabbix/bin/
+    - /opt/capcom/zabbix/dat/
+  tags:
+    - zabbix
+    - redis
+
+- name: copy discovery scripts
+  action: copy src={{ item }} dest=/opt/capcom/zabbix/bin/ mode=0755
+  with_items:
+    - redis.discovery.sh
+    - redis-sentinel.discovery.sh
+  tags:
+    - zabbix
+    - redis
+
+- name: copy userparameter file
+  action: copy src={{ item }} dest=/etc/zabbix/zabbix_agentd.d/
+  with_items:
+    - userparameter_redis.conf
+  tags:
+    - zabbix
+    - redis
+
+- name: change redis password in discovery scripts
+  action: replace dest=/opt/capcom/zabbix/bin/{{ item }} regexp='changeit' replace={{ redis_password }}
+  with_items:
+    - redis.discovery.sh
+    - redis-sentinel.discovery.sh
+  tags:
+    - zabbix
+    - redis
+
+
+- name: restart zabbix-agent
+  action: service name=zabbix-agent state=restarted
+  tags:
+    - zabbix
+    - redis

@@ -1,0 +1,10 @@
+- name: install php-fpm
+  action: yum name=php-fpm enablerepo=remi
+  tags:
+    - nginx
+
+- name: change user & group
+  action: lineinfile regexp="{{ item.regexp }}" line="{{ item.line }}" dest=/etc/php-fpm.d/www.conf
+  with_items:
+    - {regexp: '^user =', line: 'user = nginx'}
+    - {regexp: '^group =', line: 'group = nginx'}

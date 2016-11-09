@@ -1,0 +1,5 @@
+- name: stop firewalld
+  action: command systemctl stop firewalld
+
+- name: disable firewalld
+  action: command systemctl disable firewalld

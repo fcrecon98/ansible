@@ -1,0 +1,21 @@
+- name: create log directory
+  action: file path=/var/log/monit state=directory
+  tags:
+    - monit  
+
+- name: install monit
+  action: yum name={{item}} state=latest enablerepo=rpmforge disable_gpg_check=yes
+  with_items:
+    - monit
+  tags:
+    - monit
+
+- name: copy monit.conf
+  action: template src=monit.conf dest=/etc/monit.conf
+  tags:
+    - monit
+
+- name: start monit
+  action: service name=monit state=stopped enabled=yes
+  tags:
+    - monit

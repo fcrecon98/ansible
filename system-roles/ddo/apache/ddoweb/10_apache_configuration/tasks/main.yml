@@ -1,0 +1,28 @@
+- name: Copy httpd.conf
+  copy: src=httpd.conf dest=/usr/local/apache{{ apache_version }}/conf/httpd.conf owner=root group=root mode=0664
+  notify: Apache Restart Handler
+  tags:
+    - apache
+
+- name: Copy magic file
+  copy: src=magic dest=/usr/local/apache{{ apache_version }}/conf/magic owner=root group=root mode=0664
+  notify: Apache Restart Handler
+  tags:
+    - apache
+
+- name: Copy mime.types file
+  copy: src=mime.types dest=/usr/local/apache{{ apache_version }}/conf/mime.types owner=root group=root mode=0664
+  notify: Apache Restart Handler
+  tags:
+    - apache
+
+- name: Copy extra configurations
+  copy: src=extra/{{ item }} dest=/usr/local/apache{{ apache_version }}/conf/extra/{{ item }} owner=root group=root mode=0664
+  notify: Apache Restart Handler
+  tags:
+    - apache
+  with_items:
+    - httpd-default.conf
+    - httpd-mpm.conf
+    - httpd-vhosts.conf
+    - proxy-html.conf

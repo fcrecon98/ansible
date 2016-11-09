@@ -1,0 +1,8 @@
+- name: edit limit conf
+  lineinfile : backup=yes dest='/etc/security/limits.conf' state=present regexp='{{ item.regexp }}' line='{{ item.line }}'
+  with_items:
+    - { regexp: '^mhfmin   soft   nofile' , line: 'mhfmin   soft   nofile   8192' }
+    - { regexp: '^mhfmin   hard   nofile' , line: 'mhfmin   hard   nofile   8192' }
+    - { regexp: '^mhfmin   soft   core' ,   line: 'mhfmin   soft   core   unlimited' }
+    - { regexp: '^mhfmin   hard   core' ,   line: 'mhfmin   hard   core   unlimited' }
+

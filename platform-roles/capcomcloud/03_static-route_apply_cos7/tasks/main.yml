@@ -1,0 +1,9 @@
+- name: systemctl restart NetworkManager
+  action: command systemctl restart NetworkManager
+  tags:
+    - setup
+
+- name: service network restart
+  action: service name=network state=restarted
+  tags:
+    - setup

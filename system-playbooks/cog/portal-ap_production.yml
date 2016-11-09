@@ -1,0 +1,16 @@
+- hosts: '{{ hosts }}'
+  sudo: yes
+  vars_files:
+     # common vars file
+     - ../../common-vars/common.yml
+     # platform vars file
+     - ../../platform-vars/{{ platform }}-{{ env }}.yml
+     # system vars file
+     - ../../system-vars/{{ system }}-{{ env }}.yml
+
+  roles:
+     - ../../common-roles/apache/00_apache-portable-runtime
+     - ../../common-roles/apache/01_apache-server
+     - ../../common-roles/oracle-jdk/01_install_oracle-jdk
+     - ../../common-roles/tomcat/01_install_tomcat
+     - ../../system-roles/cog/frontendapi-ap/

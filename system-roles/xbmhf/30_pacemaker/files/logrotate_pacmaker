@@ -1,0 +1,12 @@
+#/var/log/pacemaker.log {
+#    missingok
+#}
+
+/var/log/ha-log {
+        missingok
+}
+
+/var/log/pm_logconv.out {
+        missingok
+}
+

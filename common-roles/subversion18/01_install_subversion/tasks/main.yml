@@ -1,0 +1,13 @@
+### CentOS ###
+- name: install svn1.8 repository
+  action: copy src="{{ item.src }}" dest="{{ item.dest }}"
+  with_items:
+     - { src: WANdisco-svn18.repo,  dest: /etc/yum.repos.d/ }
+     - { src: RPM-GPG-KEY-WANdisco, dest: /etc/pki/rpm-gpg/}
+  tags:
+    - subversion18
+
+- name: install svn
+  action: yum name=subversion state=latest enablerepo=WANdisco-svn18
+  tags:
+    - subversion18

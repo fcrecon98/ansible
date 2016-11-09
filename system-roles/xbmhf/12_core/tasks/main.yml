@@ -1,0 +1,2 @@
+- name: edit output corefile
+  lineinfile : backup=yes dest='/home/mhfmin/.bashrc' state=present regexp='ulimit -c unlimited' line='ulimit -c unlimited'

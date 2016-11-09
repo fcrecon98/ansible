@@ -1,0 +1,7 @@
+- name: put slapd monitor conf
+  action: copy src=slapd dest=/etc/monit.d/
+  tags:
+    - monit
+    - ldap
+    - slapd
+

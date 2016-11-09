@@ -1,0 +1,4 @@
+#### Tomcat ####
+jdk_version: 1.7.0_25
+tomcat_version: 7.0.41
+

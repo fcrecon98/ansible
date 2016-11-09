@@ -1,0 +1,30 @@
+- name: install required packages
+  action: yum name={{ item }} enablerepo=epel disable_gpg_check=yes
+  with_items:
+    - jq
+  tags:
+    - tomcat 
+    - zabbix
+
+- name: create directory
+  action: file path={{ item }} mode=0755 owner=zabbix group=zabbix
+  with_items:
+    - /opt/capcom/
+    - /opt/capcom/zabbix/
+    - /opt/capcom/zabbix/bin/
+    - /opt/capcom/zabbix/dat/
+  tags:
+    - tomcat
+    - zabbix
+
+- name: copy userparameter
+  action: copy src=userparameter_tomcat.conf dest=/etc/zabbix/zabbix_agentd.d/
+  tags:
+    - tomcat 
+    - zabbix
+
+- name: restart zabbix-agent
+  action: service name=zabbix-agent state=restarted
+  tags:
+    - tomcat 
+    - zabbix

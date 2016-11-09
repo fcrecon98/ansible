@@ -1,0 +1,17 @@
+# dns
+dns_suffix: capstg
+platform_dnsservers:
+  - 203.191.249.2
+  - 203.191.249.3
+
+# ntp
+platform_ntpservers:
+  - 10.99.109.1
+  - 10.99.109.2
+
+# ldap
+platform_ldapservers:
+  - ldap://10.99.109.9/
+
+# mail
+mailserver: 10.99.109.11

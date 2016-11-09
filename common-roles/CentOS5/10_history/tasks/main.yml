@@ -1,0 +1,6 @@
+- name: set HISTSIZE=10000 /etc/profile
+  action: lineinfile dest=/etc/profile {{item}} backup=yes
+  with_items:
+    - regexp='HISTSIZE=' line='HISTSIZE=10000'
+  tags:
+    - history

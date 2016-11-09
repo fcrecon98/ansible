@@ -1,0 +1,9 @@
+- name: install bundler
+  action: shell http_proxy={{ http_proxy }} /usr/local/rbenv/bin/rbenv exec gem install bundler
+  tags:
+    - ruby
+
+- name: rehash after install bundler
+  action: shell /usr/local/rbenv/bin/rbenv rehash
+  tags:
+    - ruby

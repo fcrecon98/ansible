@@ -1,13 +1,9 @@
 ./configure \
---prefix=/usr/local/apache{{ apache_version }} \
---with-included-apr \
---with-pcre \
---disable-cgi \
---disable-include \
---enable-ssl \
+--prefix=/usr/local/apache-{{ apache_version }} \
+--with-mpm=worker \
 --enable-rewrite \
 --enable-proxy \
---enable-headers \
---enable-deflate \
+--enable-proxy-ajp \
 --enable-so \
-
+--enable-ssl \
+--enable-headers

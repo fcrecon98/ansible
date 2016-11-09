@@ -1,0 +1,17 @@
+- hosts: '{{ hosts }}'
+  sudo: no
+  vars_files:
+     # common vars file
+     - ../../common-vars/common.yml
+     # platform vars file
+     - ../../platform-vars/{{ platform }}-{{ env }}.yml
+     # system vars file
+     - ../../system-vars/{{ system }}-{{ env }}.yml
+     # system vars file
+     - ../../system-vars/{{ system }}-gamedb-8.ymf
+
+
+  roles:
+
+    - ../../system-roles/xbmhf/30_pacemaker
+    - ../../system-roles/xbmhf/31_pg-rex_support_tool

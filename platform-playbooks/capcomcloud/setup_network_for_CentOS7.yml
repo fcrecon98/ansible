@@ -1,0 +1,17 @@
+- hosts: '{{ hosts }}'
+  sudo: yes
+  vars_files:
+     # common vars file
+     - ../../common-vars/common.yml
+     # platform vars file
+     - ../../platform-vars/{{ platform }}-{{ env }}.yml
+     # system vars file
+     - ../../system-vars/{{ system }}-{{ env }}.yml
+
+  roles:
+    # - ../../platform-roles/capcomcloud/01_network-scripts
+    - ../../platform-roles/capcomcloud/02_static-routes_to_management_cos7
+    - ../../platform-roles/capcomcloud/02_static-routes_to_vpnclient_cos7
+    - ../../platform-roles/capcomcloud/03_static-route_apply_cos7
+    - ../../platform-roles/capcomcloud/10_network-offload
+

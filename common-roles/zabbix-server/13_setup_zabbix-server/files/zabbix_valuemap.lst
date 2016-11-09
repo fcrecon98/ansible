@@ -1,0 +1,668 @@
+APC Battery Replacement Status,1,unknown
+APC Battery Replacement Status,2,notInstalled
+APC Battery Replacement Status,3,ok
+APC Battery Replacement Status,4,failed
+APC Battery Replacement Status,5,highTemperature
+APC Battery Replacement Status,6,replaceImmediately
+APC Battery Replacement Status,7,lowCapacity
+APC Battery Status,1,unknown
+APC Battery Status,2,batteryNormal
+APC Battery Status,3,batteryLow
+Dell Array Controller Battery State,1,unknown
+Dell Array Controller Battery State,2,OK
+Dell Array Controller Battery State,3,failed
+Dell Array Controller Battery State,4,high voltage or high temperature
+Dell Array Controller Battery State,5,missing
+Dell Array Controller Battery State,6,recharging
+Dell Array Controller Battery State,7,low voltage or low temperature
+Dell Array Disk State(OMSA),1,ready
+Dell Array Disk State(OMSA),2,failed
+Dell Array Disk State(OMSA),3,online
+Dell Array Disk State(OMSA),4,offline
+Dell Array Disk State(OMSA),6,degraded
+Dell Array Disk State(OMSA),7,recovering
+Dell Array Disk State(OMSA),11,removed
+Dell Array Disk State(OMSA),13,non-raid
+Dell Array Disk State(OMSA),14,notReady
+Dell Array Disk State(OMSA),15,resyncing
+Dell Array Disk State(OMSA),24,rebuild
+Dell Array Disk State(OMSA),25,noMedia
+Dell Array Disk State(OMSA),26,formatting
+Dell Array Disk State(OMSA),28,diagnostics
+Dell Array Disk State(OMSA),34,predictiveFailure
+Dell Array Disk State(OMSA),35,initializing
+Dell Array Disk State(OMSA),39,foreign
+Dell Array Disk State(OMSA),40,clear
+Dell Array Disk State(OMSA),41,unsupported
+Dell Array Disk State(OMSA),53,incompatible
+Dell Array Disk State(OMSA),56,readOnly
+Dell EqualLogic Controller Battery Status,1,ok
+Dell EqualLogic Controller Battery Status,2,failed
+Dell EqualLogic Controller Battery Status,3,good-battery-is-charging
+Dell EqualLogic Controller Battery Status,4,low-voltage-status
+Dell EqualLogic Controller Battery Status,5,low-voltage-charging
+Dell EqualLogic Controller Battery Status,6,missing-battery
+Dell EqualLogic Controller Primary or Secondary,1,primary
+Dell EqualLogic Controller Primary or Secondary,2,secondary
+Dell EqualLogic Disk Status,1,on-line
+Dell EqualLogic Disk Status,2,spare
+Dell EqualLogic Disk Status,3,failed
+Dell EqualLogic Disk Status,4,off-line
+Dell EqualLogic Disk Status,5,alt-sig
+Dell EqualLogic Disk Status,6,too-small
+Dell EqualLogic Disk Status,7,history-of-failures
+Dell EqualLogic Disk Status,8,unsupported-version
+Dell EqualLogic Disk Status,9,unhealthy
+Dell EqualLogic Disk Status,10,replacement
+Dell EqualLogic Disk Status,11,encrypted
+Dell EqualLogic Disk Status,12,notApproved
+Dell EqualLogic Disk Status,13,preempt-failed
+Dell EqualLogic Disk Type,1,SATA
+Dell EqualLogic Disk Type,2,SAS
+Dell EqualLogic Disk Type,3,SATA-SSD
+Dell EqualLogic Disk Type,4,SAS-SSD
+Dell EqualLogic Disk Type,5,SAS-SED-HDD
+Dell EqualLogic Disk Type,6,SAS-SED-SSD
+Dell EqualLogic Member Cache Mode,1,write-through
+Dell EqualLogic Member Cache Mode,2,write-back
+Dell EqualLogic Member Health Status,1,normal
+Dell EqualLogic Member Health Status,2,warning
+Dell EqualLogic Member Health Status,3,critical
+Dell EqualLogic Member Info State,1,online
+Dell EqualLogic Member Info State,2,offline
+Dell EqualLogic Member Info State,3,vacate
+Dell EqualLogic Member Info State,4,vacated
+Dell EqualLogic Member Lost Raid Blocks,1,true
+Dell EqualLogic Member Lost Raid Blocks,2,false
+Dell EqualLogic Member Power Supply Fan Status,1,fan-is-operational
+Dell EqualLogic Member Power Supply Fan Status,2,fan-not-operational
+Dell EqualLogic Member Power Supply State,1,on-and-operating
+Dell EqualLogic Member Power Supply State,2,no-ac-power
+Dell EqualLogic Member Power Supply State,3,failed-or-no-data
+Dell EqualLogic Member Raid Status,1,ok
+Dell EqualLogic Member Raid Status,2,degraded
+Dell EqualLogic Member Raid Status,3,verifying
+Dell EqualLogic Member Raid Status,4,reconstructing
+Dell EqualLogic Member Raid Status,5,failed
+Dell EqualLogic Member Raid Status,6,catastrophicLoss
+Dell EqualLogic Member Raid Status,7,expanding
+Dell EqualLogic Member Raid Status,8,mirroring
+Dell EqualLogic Member Row Status,1,active
+Dell EqualLogic Member Row Status,2,notInService
+Dell EqualLogic Member Row Status,3,notReady
+Dell EqualLogic Member Row Status,4,createAndGo
+Dell EqualLogic Member Row Status,5,createAndWait
+Dell EqualLogic Member Row Status,6,destroy
+Dell Network Device Connection Status,1,connected
+Dell Network Device Connection Status,2,disconnected
+Dell Network Device Connection Status,3,driverBad
+Dell Network Device Connection Status,4,driverDisabled
+Dell Network Device Connection Status,10,hardwareInitializing
+Dell Network Device Connection Status,11,hardwareResetting
+Dell Network Device Connection Status,12,hardwareClosing
+Dell Network Device Connection Status,13,hardwareNotReady
+Dell Open Manage Redundancy Component Status,1,Other
+Dell Open Manage Redundancy Component Status,2,Unknown
+Dell Open Manage Redundancy Component Status,3,Full
+Dell Open Manage Redundancy Component Status,4,Degraded
+Dell Open Manage Redundancy Component Status,5,Lost
+Dell Open Manage Redundancy Component Status,6,Not Redundant
+Dell Open Manage Redundancy Component Status,7,Redundancy Offline
+Dell Open Manage System Status,1,Other
+Dell Open Manage System Status,2,Unknown
+Dell Open Manage System Status,3,OK
+Dell Open Manage System Status,4,NonCritical
+Dell Open Manage System Status,5,Critical
+Dell Open Manage System Status,6,NonRecoverable
+Dell Physical Drive Status(iDRAC),1,unknown
+Dell Physical Drive Status(iDRAC),2,ready
+Dell Physical Drive Status(iDRAC),3,online
+Dell Physical Drive Status(iDRAC),4,foreign
+Dell Physical Drive Status(iDRAC),5,offline
+Dell Physical Drive Status(iDRAC),6,blocked
+Dell Physical Drive Status(iDRAC),7,failed
+Dell Physical Drive Status(iDRAC),8,non-raid
+Dell Physical Drive Status(iDRAC),9,removed
+Dell Virtual Disk Layout,1,other
+Dell Virtual Disk Layout,2,RAID 0
+Dell Virtual Disk Layout,3,RAID 1
+Dell Virtual Disk Layout,4,RAID 5
+Dell Virtual Disk Layout,5,RAID 6
+Dell Virtual Disk Layout,6,RAID 10
+Dell Virtual Disk Layout,7,RAID 50
+Dell Virtual Disk Layout,8,RAID 60
+Dell Virtual Disk Layout,9,Concat RAID-1
+Dell Virtual Disk Layout,10,Concat RAID-5
+Dell Virtual Drive Status,1,unknown
+Dell Virtual Drive Status,2,online
+Dell Virtual Drive Status,3,failed
+Dell Virtual Drive Status,4,degraded
+Dell Virtual Drive Status(OMSA),1,ready
+Dell Virtual Drive Status(OMSA),2,failed
+Dell Virtual Drive Status(OMSA),3,online
+Dell Virtual Drive Status(OMSA),4,offline
+Dell Virtual Drive Status(OMSA),6,degraded
+Dell Virtual Drive Status(OMSA),7,verifying
+Dell Virtual Drive Status(OMSA),15,resynching
+Dell Virtual Drive Status(OMSA),18,failedRedundancy
+Dell Virtual Drive Status(OMSA),24,rebuilding
+Dell Virtual Drive Status(OMSA),26,formatting
+Dell Virtual Drive Status(OMSA),35,initializing
+eqlControllerBatteryStatus,0,0
+eqlDiskStatus,0,0
+eqliscsiVolumeAdminStatus,0,0
+eqlMemberHealthDetailsFanCurrentState,0,0
+eqlMemberHealthDetailsPowerSupplyCurrentState,0,0
+eqlMemberHealthDetailsTemperatureCurrentState,0,0
+eqlMemberHealthStatus,0,0
+eqlMemberRaidStatus,0,0
+Fusion-IO ioDrive Dimm Info Minimal Mode Reason,0,unknown
+Fusion-IO ioDrive Dimm Info Minimal Mode Reason,1,fw out of date
+Fusion-IO ioDrive Dimm Info Minimal Mode Reason,2,low power
+Fusion-IO ioDrive Dimm Info Minimal Mode Reason,3,dual plane fail
+Fusion-IO ioDrive Dimm Info Minimal Mode Reason,5,internal
+Fusion-IO ioDrive Dimm Info Minimal Mode Reason,6,card limit exceeded
+Fusion-IO ioDrive Dimm Info Minimal Mode Reason,7,not in minimal mode
+Fusion-IO ioDrive Dimm Info Minimal Mode Reason,8,unsupported os
+Fusion-IO ioDrive Dimm Info Minimal Mode Reason,9,insufficient memory
+Fusion-IO ioDrive Dimm Info Reduced Write Reason,0,none
+Fusion-IO ioDrive Dimm Info Reduced Write Reason,1,user requested
+Fusion-IO ioDrive Dimm Info Reduced Write Reason,2,no md blocks
+Fusion-IO ioDrive Dimm Info Reduced Write Reason,3,no memory
+Fusion-IO ioDrive Dimm Info Reduced Write Reason,4,die failure
+Fusion-IO ioDrive Dimm Info Reduced Write Reason,5,wearout
+Fusion-IO ioDrive Dimm Info Reduced Write Reason,6,adapter power
+Fusion-IO ioDrive Dimm Info Reduced Write Reason,7,internal
+Fusion-IO ioDrive Dimm Info Reduced Write Reason,8,power limiting
+Fusion-IO ioDrive Dimm Info Reduced Write Reason,9,unavailable
+Fusion-IO ioDrive Dimm Info State,0,unknown
+Fusion-IO ioDrive Dimm Info State,1,detached
+Fusion-IO ioDrive Dimm Info State,2,attached
+Fusion-IO ioDrive Dimm Info State,3,minimal
+Fusion-IO ioDrive Dimm Info State,4,error
+Fusion-IO ioDrive Dimm Info State,5,detaching
+Fusion-IO ioDrive Dimm Info State,6,attaching
+Fusion-IO ioDrive Dimm Info State,7,scanning
+Fusion-IO ioDrive Dimm Info State,8,formatting
+Fusion-IO ioDrive Dimm Info State,9,updating
+Fusion-IO ioDrive Dimm Info State,10,attach
+Fusion-IO ioDrive Dimm Info State,11,detach
+Fusion-IO ioDrive Dimm Info State,12,format
+Fusion-IO ioDrive Dimm Info State,13,update
+Fusion-IO ioDrive Dimm Info Status,0,unknown
+Fusion-IO ioDrive Dimm Info Status,1,other
+Fusion-IO ioDrive Dimm Info Status,2,ok
+Fusion-IO ioDrive Dimm Info Status,3,degraded
+Fusion-IO ioDrive Dimm Info Status,4,failed
+Host status,0,Up
+Host status,2,Unreachable
+HP Array Accelerator Board Backup Power Status,1,Other
+HP Array Accelerator Board Backup Power Status,2,OK
+HP Array Accelerator Board Backup Power Status,3,Charging
+HP Array Accelerator Board Backup Power Status,4,Failed
+HP Array Accelerator Board Backup Power Status,5,Degraded
+HP Array Accelerator Board Backup Power Status,6,Not Present
+HP Array Accelerator Board Backup Power Status,7,Capacitor Failed
+HP Array Accelerator Board Error Code,1,Other
+HP Array Accelerator Board Error Code,2,Invalid(No write cache errors have occurred)
+HP Array Accelerator Board Error Code,3,Bad Configuration
+HP Array Accelerator Board Error Code,4,Low Battery Power
+HP Array Accelerator Board Error Code,5,Disable Command Issued
+HP Array Accelerator Board Error Code,6,No Resources Available
+HP Array Accelerator Board Error Code,7,Board Not Connected
+HP Array Accelerator Board Error Code,8,Bad Mirror Data
+HP Array Accelerator Board Error Code,9,Read Failure
+HP Array Accelerator Board Error Code,10,Write Failure
+HP Array Accelerator Board Error Code,11,Config Command
+HP Array Accelerator Board Error Code,12,Expand in Progress
+HP Array Accelerator Board Error Code,13,Snapshot In Progress
+HP Array Accelerator Board Error Code,14,Redundant Low Battery
+HP Array Accelerator Board Error Code,15,Redundant Size Mismatch
+HP Array Accelerator Board Error Code,16,Redundant Cache Failure
+HP Array Accelerator Board Error Code,17,Excessive ECC Errors
+HP Array Accelerator Board Error Code,18,RAID ADG Enabler Module Missing
+HP Array Accelerator Board Error Code,19,Power On Self Test (Post) ECC Errors
+HP Array Accelerator Board Error Code,20,Battery Hot Removed
+HP Array Accelerator Board Error Code,21,Capacitor Charge Low
+HP Array Accelerator Board Error Code,22,Not Enough Batteries
+HP Array Accelerator Board Error Code,23,Cache Module Not Supported
+HP Array Accelerator Board Error Code,24,Battery Not Supported
+HP Array Accelerator Board Error Code,25,No Capacitor Attached
+HP Array Accelerator Board Error Code,26,Capacitor Based Backup Failed
+HP Array Accelerator Board Error Code,27,Capacitor Based Restore Failed
+HP Array Accelerator Board Error Code,28,Capacitor Based Hardware Module Failure
+HP Array Accelerator Board Error Code,29,Capacitor Failed To Charge
+HP Array Accelerator Board Status,1,Other
+HP Array Accelerator Board Status,2,Invalid
+HP Array Accelerator Board Status,3,Enabled
+HP Array Accelerator Board Status,4,Temporarily Disabled
+HP Array Accelerator Board Status,5,Permanently Disabled
+HP Array Accelerator Condition,1,Other
+HP Array Accelerator Condition,2,OK
+HP Array Accelerator Condition,3,Degraded
+HP Array Accelerator Condition,4,Failed
+HP Array Controller Board Status,1,Other
+HP Array Controller Board Status,2,OK
+HP Array Controller Board Status,3,General Failure
+HP Array Controller Board Status,4,Cable Problem
+HP Array Controller Board Status,5,Powered Off
+HP Array Controller Condition,2,OK
+HP Array Controller Condition,3,Degraded
+HP Array Controller Condition,4,Failed
+HP Array Controller Model,1,Other
+HP Array Controller Model,2,Compaq 32-Bit Intelligent Drive Array Controller
+HP Array Controller Model,3,Compaq 32-Bit Intelligent Drive Array Expansion Controller
+HP Array Controller Model,4,Compaq Intelligent Drive Array Controller-2
+HP Array Controller Model,5,Compaq SMART Array Controller
+HP Array Controller Model,6,Compaq SMART-2/E Array Controller
+HP Array Controller Model,7,Compaq SMART-2/P Array Controller
+HP Array Controller Model,8,Compaq SMART-2SL Array Controller
+HP Array Controller Model,9,Compaq Smart Array 3100ES Controller
+HP Array Controller Model,10,Compaq Smart Array 3200 Controller
+HP Array Controller Model,11,Compaq SMART-2DH Array Controller
+HP Array Controller Model,12,Compaq Smart Array 221 Controller
+HP Array Controller Model,13,Compaq Smart Array 4250ES Controller
+HP Array Controller Model,14,Compaq Smart Array 4200 Controller
+HP Array Controller Model,15,Compaq Integrated Smart Array Controller
+HP Array Controller Model,16,Compaq Smart Array 431 Controller
+HP Array Controller Model,17,HP Smart Array 5300 Controller
+HP Array Controller Model,18,Compaq RAID LC2 Controller
+HP Array Controller Model,19,HP Smart Array 5i Controller
+HP Array Controller Model,20,Compaq Smart Array 532 Controller
+HP Array Controller Model,21,Compaq Smart Array 5312 Controller
+HP Array Controller Model,22,HP Smart Array 641 Controller
+HP Array Controller Model,23,HP Smart Array 642 Controller
+HP Array Controller Model,24,HP Smart Array 6400 Controller
+HP Array Controller Model,25,HP Smart Array 6400 EM Controller
+HP Array Controller Model,26,HP Smart Array 6i Controller
+HP Array Controller Model,27,Generic Array Controller
+HP Array Controller Model,28,Reserved
+HP Array Controller Model,29,HP Smart Array P600 Controller
+HP Array Controller Model,30,HP Smart Array P400 Controller
+HP Array Controller Model,31,HP Smart Array E200 Controller
+HP Array Controller Model,32,HP Smart Array E200i Controller
+HP Array Controller Model,33,HP Smart Array P400i Controller
+HP Array Controller Model,34,HP Smart Array P800 Controller
+HP Array Controller Model,35,HP Smart Array E500 Controller
+HP Array Controller Model,36,HP Smart Array P700m Controller
+HP Array Controller Model,37,HP Smart Array P212 Controller
+HP Array Controller Model,38,HP Smart Array P410 Controller
+HP Array Controller Model,39,HP Smart Array P410i Controller
+HP Array Controller Model,40,HP Smart Array P411 Controller
+HP Array Controller Model,41,HP Smart Array B110i SATA RAID Controller
+HP Array Controller Model,42,HP Smart Array P712m Controller
+HP Array Controller Model,43,HP Smart Array P711m Controller
+HP Array Controller Model,44,HP Smart Array P812 Controller
+HP Array Controller Model,45,HP StorageWorks 1210m Scalable Storage Controller
+HP Array Controller Model,46,HP Smart Array P220i Controller
+HP Array Controller Model,47,HP Smart Array P222 Controller
+HP Array Controller Model,48,HP Smart Array P420 Controller
+HP Array Controller Model,49,HP Smart Array P420i Controller
+HP Array Controller Model,50,HP Smart Array P421 Controller
+HP Array Controller Model,51,HP Dynamic Smart Array B320i Controller
+HP Array Controller Model,52,HP Smart Array P822 Controller
+HP Array Controller Model,53,HP Smart Array P721m Controller
+HP Array Controller Model,54,HP Dynamic Smart Array B120i Controller
+HP Cpu Status,1,Unknown
+HP Cpu Status,2,OK
+HP Cpu Status,3,Degraded
+HP Cpu Status,4,Failed
+HP Cpu Status,5,Disabled
+HP Fiber Channel Adapter Model,1,other
+HP Fiber Channel Adapter Model,2,fchc-p
+HP Fiber Channel Adapter Model,3,fchc-e
+HP Fiber Channel Adapter Model,4,fchc64
+HP Fiber Channel Adapter Model,5,sa-sam
+HP Fiber Channel Adapter Model,6,fca-2101
+HP Fiber Channel Adapter Model,7,sw64-33
+HP Fiber Channel Adapter Model,8,fca-221x
+HP Fiber Channel Adapter Model,9,dpfcmc
+HP Fiber Channel Adapter Model,10,fca-2404
+HP Fiber Channel Adapter Model,11,fca-2214
+HP Fiber Channel Adapter Model,12,a7298a
+HP Fiber Channel Adapter Model,13,fca-2214dc
+HP Fiber Channel Adapter Model,14,a6826a
+HP Fiber Channel Adapter Model,15,fcmcG3
+HP Fiber Channel Adapter Model,16,fcmcG4
+HP Fiber Channel Adapter Model,17,ab46xa
+HP Fiber Channel Adapter Model,18,fc-generic
+HP Fiber Channel Adapter Model,19,fca-1143
+HP Fiber Channel Adapter Model,20,fca-1243
+HP Fiber Channel Adapter Model,21,fca-2143
+HP Fiber Channel Adapter Model,22,fca-2243
+HP Fiber Channel Adapter Model,23,fca-1050
+HP Fiber Channel Adapter Model,24,fca-lpe1105
+HP Fiber Channel Adapter Model,25,fca-qmh2462
+HP Fiber Channel Adapter Model,26,fca-1142sr
+HP Fiber Channel Adapter Model,27,fca-1242sr
+HP Fiber Channel Adapter Model,28,fca-2142sr
+HP Fiber Channel Adapter Model,29,fca-2242sr
+HP Fiber Channel Adapter Model,30,fcmc20pe
+HP Fiber Channel Adapter Model,31,fca-81q
+HP Fiber Channel Adapter Model,32,fca-82q
+HP Fiber Channel Adapter Model,33,fca-qmh2562
+HP Fiber Channel Adapter Model,34,fca-81e
+HP Fiber Channel Adapter Model,35,fca-82e
+HP Fiber Channel Adapter Model,36,fca-1205
+HP Fiber Channel Adapter Status,1,other
+HP Fiber Channel Adapter Status,2,OK
+HP Fiber Channel Adapter Status,3,failed
+HP Fiber Channel Adapter Status,4,shutdown
+HP Fiber Channel Adapter Status,5,loop degraded
+HP Fiber Channel Adapter Status,6,loop failed
+HP Fiber Channel Adapter Status,7,not connected
+HP Insight System Status,1,Other
+HP Insight System Status,2,OK
+HP Insight System Status,3,Degraded
+HP Logical Drive Condition,1,Other
+HP Logical Drive Condition,2,OK
+HP Logical Drive Condition,3,Degraded
+HP Logical Drive Condition,4,Failed
+HP Logical Drive Fault Tolerance,2,None
+HP Logical Drive Fault Tolerance,3,Mirroring - RAID 1/RAID 1+0
+HP Logical Drive Fault Tolerance,4,Data Guard - RAID 4
+HP Logical Drive Fault Tolerance,5,Distributed Data Guard - RAID 5
+HP Logical Drive Fault Tolerance,7,Advanced Data Guarding - RAID 6
+HP Logical Drive Fault Tolerance,8,RAID 50
+HP Logical Drive Fault Tolerance,9,RAID 60
+HP Logical Drive Status,1,Other
+HP Logical Drive Status,2,OK
+HP Logical Drive Status,3,Failed
+HP Logical Drive Status,4,Unconfigured
+HP Logical Drive Status,5,Recovering
+HP Logical Drive Status,6,Ready for Rebuild
+HP Logical Drive Status,7,Rebuilding
+HP Logical Drive Status,8,Wrong Drive
+HP Logical Drive Status,9,Bad Connect
+HP Logical Drive Status,10,Overheating
+HP Logical Drive Status,11,Shutdown
+HP Logical Drive Status,12,Expanding
+HP Logical Drive Status,13,Not Available
+HP Logical Drive Status,14,Queued For Expansion
+HP Logical Drive Status,15,Multi-path Access Degraded
+HP Logical Drive Status,16,Erasing
+HP Logical Network Interface Adapter Condition,1,other
+HP Logical Network Interface Adapter Condition,2,ok
+HP Logical Network Interface Adapter Condition,3,degraded
+HP Logical Network Interface Adapter Condition,4,failed
+HP Logical Network Interface Adapter Status,1,unknown
+HP Logical Network Interface Adapter Status,2,ok
+HP Logical Network Interface Adapter Status,3,primaryFailed
+HP Logical Network Interface Adapter Status,4,standbyFailed
+HP Logical Network Interface Adapter Status,5,groupFailed
+HP Logical Network Interface Adapter Status,6,redundancyReduced
+HP Logical Network Interface Adapter Status,7,redundancyLost
+HP Physical Drive Condition,1,other
+HP Physical Drive Condition,2,ok
+HP Physical Drive Condition,3,degraded
+HP Physical Drive Condition,4,failed
+HP Physical Drive Smart Status,1,other
+HP Physical Drive Smart Status,2,OK
+HP Physical Drive Smart Status,3,should be replaced
+HP Physical Drive Status,1,Other
+HP Physical Drive Status,2,OK
+HP Physical Drive Status,3,Failed
+HP Physical Drive Status,4,Predictive Failure
+HP Physical Drive Status,5,Erasing
+HP Physical Drive Status,6,Erase Done
+HP Physical Drive Status,7,Erase Queued
+HP Physical Network Interface Adapter Condition,1,other
+HP Physical Network Interface Adapter Condition,2,ok
+HP Physical Network Interface Adapter Condition,3,degraded
+HP Physical Network Interface Adapter Condition,4,failed
+HP Physical Network Interface Adapter Configured Speed and Duple,1,other
+HP Physical Network Interface Adapter Configured Speed and Duple,2,Auto and Auto
+HP Physical Network Interface Adapter Configured Speed and Duple,3,10Mbps Half
+HP Physical Network Interface Adapter Configured Speed and Duple,4,10Mbps Full
+HP Physical Network Interface Adapter Configured Speed and Duple,5,100Mbps Half
+HP Physical Network Interface Adapter Configured Speed and Duple,6,100Mbps Full
+HP Physical Network Interface Adapter Configured Speed and Duple,7,1Gbps Half
+HP Physical Network Interface Adapter Configured Speed and Duple,8,1Gbps Full
+HP Physical Network Interface Adapter Configured Speed and Duple,9,10Gbps Full
+HP Physical Network Interface Adapter Duplex State,1,unknown
+HP Physical Network Interface Adapter Duplex State,2,half
+HP Physical Network Interface Adapter Duplex State,3,full
+HP Physical Network Interface Adapter State,1,unknown
+HP Physical Network Interface Adapter State,2,active
+HP Physical Network Interface Adapter State,3,standby
+HP Physical Network Interface Adapter State,4,failed
+HP Physical Network Interface Adapter Status,1,interfaceDown
+HP Physical Network Interface Adapter Status,2,ok
+HP Physical Network Interface Adapter Status,3,generalFailure
+HP Physical Network Interface Adapter Status,4,linkFailure
+HP Power Supply Condition,1,other
+HP Power Supply Condition,2,ok
+HP Power Supply Condition,3,degraded
+HP Power Supply Condition,4,failed
+HP Power Supply Error Condition,1,noError
+HP Power Supply Error Condition,2,generalFailure
+HP Power Supply Error Condition,3,overvoltage
+HP Power Supply Error Condition,4,overcurrent
+HP Power Supply Error Condition,5,overtemperature
+HP Power Supply Error Condition,6,powerinputloss
+HP Power Supply Error Condition,7,fanfailure
+HP Power Supply Error Condition,8,vinhighwarning
+HP Power Supply Error Condition,9,vinlowwarning
+HP Power Supply Error Condition,10,vouthighwarning
+HP Power Supply Error Condition,11,voutlowwarning
+HP Power Supply Error Condition,12,inlettemphighwarning
+HP Power Supply Error Condition,13,iinternaltemphighwarning
+HP Power Supply Error Condition,14,vauxhighwarning
+HP Power Supply Error Condition,15,vauxlowwarning
+HP Power Supply Present,1,other
+HP Power Supply Present,2,absent
+HP Power Supply Present,3,present
+HP Power Supply Redundant,1,other
+HP Power Supply Redundant,2,noRedundant
+HP Power Supply Redundant,3,redundant
+HP Power Supply Status,1,noError
+HP Power Supply Status,2,generalFailure
+HP Power Supply Status,3,bistFailure
+HP Power Supply Status,4,fanFailure
+HP Power Supply Status,5,tempFailure
+HP Power Supply Status,6,interlockOpen
+HP Power Supply Status,7,epromFailed
+HP Power Supply Status,8,vrefFailed
+HP Power Supply Status,9,dacFailed
+HP Power Supply Status,10,ramTestFailed
+HP Power Supply Status,11,voltageChannelFailed
+HP Power Supply Status,12,orringdiodeFailed
+HP Power Supply Status,13,brownOut
+HP Power Supply Status,14,giveupOnStartup
+HP Power Supply Status,15,nvramInvalid
+HP Power Supply Status,16,calibrationTableInvalid
+HP Storage Box Condition,1,Other
+HP Storage Box Condition,2,OK
+HP Storage Box Condition,3,Degraded
+HP Storage Box Condition,4,Failed
+HP Storage Box Fan Status,1,Other
+HP Storage Box Fan Status,2,OK
+HP Storage Box Fan Status,3,Failed
+HP Storage Box Fan Status,4,Not Present
+HP Storage Box Fan Status,5,Degraded
+HP Storage Box Power Supply Status,1,Other
+HP Storage Box Power Supply Status,2,OK
+HP Storage Box Power Supply Status,3,Degraded
+HP Storage Box Power Supply Status,4,Failed
+HP Storage Box Power Supply Status,5,Not Supported
+HP Storage Box Temperature Status,1,Other
+HP Storage Box Temperature Status,2,OK
+HP Storage Box Temperature Status,3,Degraded
+HP Storage Box Temperature Status,4,Failed
+HP Storage Box Temperature Status,5,No Information
+HP System CPU Fan Status,1,Other
+HP System CPU Fan Status,2,OK
+HP System CPU Fan Status,3,Degraded
+HP System CPU Fan Status,4,Failed
+HP System Fan Condition,1,other
+HP System Fan Condition,2,ok
+HP System Fan Condition,3,degraded
+HP System Fan Condition,4,failed
+HP System Fan Locale,1,other
+HP System Fan Locale,2,unknown
+HP System Fan Locale,3,system
+HP System Fan Locale,4,systemBoard
+HP System Fan Locale,5,ioBoard
+HP System Fan Locale,6,cpu
+HP System Fan Locale,7,memory
+HP System Fan Locale,8,storage
+HP System Fan Locale,9,removableMedia
+HP System Fan Locale,10,powerSupply
+HP System Fan Locale,11,ambient
+HP System Fan Locale,12,chassis
+HP System Fan Locale,13,bridgeCard
+HP System Fan Locale,14,managementBoard
+HP System Fan Locale,15,backplane
+HP System Fan Locale,16,networkSlot
+HP System Fan Locale,17,bladeSlot
+HP System Fan Locale,18,virtual
+HP System Fan Present,1,other
+HP System Fan Present,2,absent
+HP System Fan Present,3,present
+HP System Fan Redundant,1,other
+HP System Fan Redundant,2,notRedundant
+HP System Fan Redundant,3,redundant
+HP System Fan Speed,1,other
+HP System Fan Speed,2,normal
+HP System Fan Speed,3,high
+HP System Fan Status,1,Other
+HP System Fan Status,2,OK
+HP System Fan Status,3,Degraded
+HP System Fan Status,4,Failed
+HP System Fan Type,1,other
+HP System Fan Type,2,tachOutput
+HP System Fan Type,3,spinDetect
+HP System Memory Board Condition,1,other
+HP System Memory Board Condition,2,ok
+HP System Memory Board Condition,3,degraded
+HP System Memory Board Error Status,1,other
+HP System Memory Board Error Status,2,noError
+HP System Memory Board Error Status,3,dimmEccError
+HP System Memory Board Error Status,4,unlockError
+HP System Memory Board Error Status,5,configError
+HP System Memory Board Error Status,6,busError
+HP System Memory Board Error Status,7,powerError
+HP System Memory Board Error Status,8,advancedEcc
+HP System Memory Board Error Status,9,onlineSpare
+HP System Memory Board Error Status,10,mirrored
+HP System Memory Board Error Status,11,mirroredDimmError
+HP System Memory Board Error Status,12,memoryRaid
+HP System Memory Board Error Status,13,raidDimmError
+HP System Memory Board Error Status,14,lockstep
+HP System Memory Board Error Status,15,lockstepDimmError
+HP System Memory Board Locked State,1,other
+HP System Memory Board Locked State,2,unlocked
+HP System Memory Board Locked State,3,locked
+HP System Memory Board Online Status,1,other
+HP System Memory Board Online Status,2,present
+HP System Memory Board Online Status,3,absent
+HP System Memory Module Condition,1,other
+HP System Memory Module Condition,2,ok
+HP System Memory Module Condition,3,degraded
+HP System Memory Module Status,1,other
+HP System Memory Module Status,2,notPresent
+HP System Memory Module Status,3,present
+HP System Memory Module Status,4,good
+HP System Memory Module Status,5,add
+HP System Memory Module Status,6,upgraded
+HP System Memory Module Status,7,missing
+HP System Memory Module Status,8,doesNotMatch
+HP System Memory Module Status,9,notSupported
+HP System Memory Module Status,10,badConfig
+HP System Memory Module Status,11,degraded
+HP System Memory Module Type,1,other
+HP System Memory Module Type,2,board
+HP System Memory Module Type,3,cpqSingleWidthModule
+HP System Memory Module Type,4,cpqDoubleWidthModule
+HP System Memory Module Type,5,simm
+HP System Memory Module Type,6,pcmcia
+HP System Memory Module Type,7,compac-specific
+HP System Memory Module Type,8,dimm
+HP System Memory Module Type,9,smallOutlineDimm
+HP System Memory Module Type,10,rimm
+HP System Memory Module Type,11,srimm
+HP System Memory Module Type,12,fb-dimm
+HP System Memory Module Type,13,dimmddr
+HP System Memory Module Type,14,dimmddr2
+HP System Memory Module Type,15,dimmddr3
+HP System Memory Module Type,16,dimmfbd2
+HP System Memory Module Type,17,fb-dimmddr2
+HP System Memory Module Type,18,fb-dimmddr3
+HP System Overall Condition,1,Other
+HP System Overall Condition,2,OK
+HP System Overall Condition,3,Degraded
+HP System Overall Condition,4,Failed
+HP System Power Supply Condition,1,Other
+HP System Power Supply Condition,2,OK
+HP System Power Supply Condition,3,Degraded
+HP System Power Supply Condition,4,Failed
+HP System Temperature Condition,1,Other
+HP System Temperature Condition,2,OK
+HP System Temperature Condition,3,Degraded
+HP System Temperature Condition,4,Failed
+HP System Temperature Locale,1,other
+HP System Temperature Locale,2,unknown
+HP System Temperature Locale,3,system
+HP System Temperature Locale,4,systemBoard
+HP System Temperature Locale,5,ioBoard
+HP System Temperature Locale,6,cpu
+HP System Temperature Locale,7,memory
+HP System Temperature Locale,8,storage
+HP System Temperature Locale,9,removableMedia
+HP System Temperature Locale,10,powerSupply
+HP System Temperature Locale,11,ambient
+HP System Temperature Locale,12,chassis
+HP System Temperature Locale,13,bridgeCard
+HP System Temperature Locale,14,managementBoard
+HP System Temperature Locale,15,backplane
+HP System Temperature Locale,16,networkSlot
+HP System Temperature Locale,17,bladeSlot
+HP System Temperature Locale,18,virtual
+HP System Thermal Condition,1,Other
+HP System Thermal Condition,2,OK
+HP System Thermal Condition,3,Degraded
+HP System Thermal Condition,4,Failed
+Huawei Tecal Hardware Status,1,ok
+Huawei Tecal Hardware Status,2,minor
+Huawei Tecal Hardware Status,3,major
+Huawei Tecal Hardware Status,4,critical
+Huawei Tecal Hardware Status,5,absence
+Huawei Tecal Hardware Status,6,unknown
+okng,0,ng
+okng,1,ok
+redis-yesno,0,no
+redis-yesno,1,yes
+Service state,0,Down
+Service state,1,Up
+SNMP device status (hrDeviceStatus),1,unknown
+SNMP device status (hrDeviceStatus),2,running
+SNMP device status (hrDeviceStatus),3,warning
+SNMP device status (hrDeviceStatus),4,testing
+SNMP device status (hrDeviceStatus),5,down
+SNMP interface status (ifAdminStatus),1,up
+SNMP interface status (ifAdminStatus),2,down
+SNMP interface status (ifAdminStatus),3,testing
+SNMP interface status (ifOperStatus),1,up
+SNMP interface status (ifOperStatus),2,down
+SNMP interface status (ifOperStatus),3,testing
+SNMP interface status (ifOperStatus),4,unknown
+SNMP interface status (ifOperStatus),5,dormant
+SNMP interface status (ifOperStatus),6,notPresent
+SNMP interface status (ifOperStatus),7,lowerLayerDown
+VMware status,0,gray
+VMware status,1,green
+VMware status,2,yellow
+VMware status,3,red
+VMware VirtualMachinePowerState,0,poweredOff
+VMware VirtualMachinePowerState,1,poweredOn
+VMware VirtualMachinePowerState,2,suspended
+Windows service state,0,Running
+Windows service state,1,Paused
+Windows service state,3,Pause pending
+Windows service state,4,Continue pending
+Windows service state,5,Stop pending
+Windows service state,6,Stopped
+Windows service state,7,Unknown
+Windows service state,255,No such service
+Windows service state,2,Start pending
+Zabbix agent ping status,1,Up

@@ -1,0 +1,18 @@
+- hosts: '{{ hosts }}'
+  gather_facts: yes
+  sudo: yes
+  vars_files:
+     # common vars file
+     - ../../common-vars/common.yml
+     # platform vars file
+     - ../../platform-vars/{{ platform }}-{{ env }}.yml
+     # system vars file
+     - ../../system-vars/{{ system }}-{{ env }}.yml
+
+  roles:
+      - ../../common-roles/apache/01_apache-server
+      - ../../common-roles/apache/10_logformat-json
+      - ../../common-roles/php56/01_install_php56
+      - ../../common-roles/php56/10_install_mod_php
+      - ../../system-roles/cog/repay-ap/
+

@@ -1,0 +1,7 @@
+- name: change hostname
+  hosts: '{{ hosts }}'
+  sudo: yes
+
+  roles:
+    - ../../common-roles/tools/99_hostname
+    - ../../common-roles/CentOS6/10_motd

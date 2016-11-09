@@ -1,0 +1,25 @@
+- name: create directory
+  action: file path={{ item }} state=directory mode=0755 owner=zabbix group=zabbix
+  with_items:
+    - /opt/capcom/
+    - /opt/capcom/zabbix/
+    - /opt/capcom/zabbix/bin/
+    - /opt/capcom/zabbix/dat/
+
+- name: put userparameter
+  action: copy src=userparameter_zapache.conf dest=/etc/zabbix/zabbix_agentd.d/
+  tags:
+    - apache 
+    - zabbix
+
+- name: put zapache script
+  action: copy src=zapache dest=/opt/capcom/zabbix/bin/ mode=0755 owner=zabbix group=zabbix
+  tags:
+    - apache
+    - zabbix
+
+- name: restart zabbix-agent
+  action: service name=zabbix-agent state=restarted
+  tags:
+    - apache
+    - zabbix

@@ -1,0 +1,88 @@
+- name: install required packages
+  action: yum name={{ item }} state=latest enablerepo=remi
+  with_items:
+    - php-cli
+    - php-common
+    - php-devel
+    - php-mbstring
+    - php-mysqlnd
+    - php-pdo
+    - php-pear
+    - php-pecl-apc
+    - php-process
+    - php-xml
+  tags:
+    - cog
+    - fronttools
+    - php
+
+- name: install smarty (download archive file)
+  action: shell http_proxy={{ http_proxy }} wget http://www.smarty.net/files/Smarty-{{ smarty_version }}.tar.gz chdir=/usr/local/src/
+  tags:
+    - cog
+    - fronttools
+    - php
+
+- name: install smarty (extract gzip file)
+  action: shell tar xvzf /usr/local/src/Smarty-{{ smarty_version }}.tar.gz chdir=/usr/local/lib/
+  tags:
+    - cog
+    - fronttools
+    - php
+
+- name: install smarty (create symlink)
+  action: file state=link src=/usr/local/lib/Smarty-{{ smarty_version }}/ dest=/usr/local/lib/Smarty
+  tags:
+    - cog
+    - fronttools
+    - php
+
+- name: create php error-log directory
+  action: file state=directory mode=755 owner=apache group=apache path=/var/log/capcom/fronttool/
+  tags:
+    - cog
+    - fronttools
+
+- name: change properties in /etc/php.ini
+  action: template src=php.ini dest=/etc/php.ini 
+  tags:
+    - cog
+    - fronttools
+    - php
+
+- name: change properties in /etc/php.d/apc.ini
+  action: lineinfile dest=/etc/php.d/apc.ini backup=yes regexp="apc.shm_size=" line="apc.shm_size=128M"
+  tags:
+    - cog
+    - fronttools
+    - php
+
+- name: put fronttool.conf to /etc/httpd/conf.d/
+  action: copy src=fronttool.conf dest=/etc/httpd/conf.d/
+  tags:
+    - cog
+    - fronttools
+    - apache
+
+- name: change apache process owner to ope
+  action: lineinfile dest=/etc/httpd/conf/httpd.conf regexp="{{ item.regexp }}" line="{{ item.line }}"
+  with_items:
+    - { regexp: 'User apache'  , line: 'User ope'  }
+    - { regexp: 'Group apache' , line: 'Group ope' }
+  tags:
+    - cog
+    - fronttools
+    - apache
+
+- name: change owner of php session directory
+  action: file dest=/var/lib/php/session owner=ope group=ope
+  tags:
+    - cog
+    - fronttools
+
+- name: restart httpd
+  action: service name=httpd state=restarted
+  tags:
+    - cog
+    - fronttools
+    - apache

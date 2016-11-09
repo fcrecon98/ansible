@@ -1,0 +1,15 @@
+- name: install required packages
+  action: yum name=java-1.7.0-openjdk.x86_64 state=latest
+  tags:
+    - rundeck
+
+- name: copy rundeck.repo
+  action: copy src=rundeck.repo dest=/etc/yum.repos.d/
+  tags:
+    - rundeck
+
+- name: install rundeck
+  action: yum name=rundeck enablerepo=rundeck-release-bintray
+  tags:
+    - rundeck
+

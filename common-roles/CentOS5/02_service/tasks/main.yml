@@ -1,0 +1,21 @@
+- name: stop unneccesary services
+  action: service name={{ item }} state=stopped enabled=no
+  with_items:
+    - avahi-daemon
+    - gpm
+    - haldaemon
+    - iscsi
+    - iscsid
+    - kudzu
+    - lm_sensors
+    - lvm2-monitor
+    - mcstrans
+    - messagebus
+    - nfslock
+    - pcscd
+    - rawdevices
+    - restorecond
+    - rpcgssd
+    - rpcidmapd
+  tags:
+    - service

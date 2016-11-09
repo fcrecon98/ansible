@@ -1,0 +1,14 @@
+# common
+src_dir: /usr/local/src
+dst_dir: /usr/local
+product_name: postgresql
+product_linkname: postgres
+product_bin : psql
+
+# for Version 9.4.5
+product_ver: 9.4.5
+
+# for postgres server products
+pg_rman_ver: 1.2.11-pg94
+pg_statsinfo_ver: 3.0.2
+pg_stats_reporter_ver: 3.0.1-1

@@ -1,0 +1,34 @@
+- hosts: '{{ hosts }}'
+  sudo: yes
+  vars_files:
+     # common vars file
+     - ../../common-vars/common.yml
+     # platform vars file
+     - ../../platform-vars/{{ platform }}-{{ env }}.yml
+     # system vars file
+     - ../../system-vars/{{ system }}-{{ env }}.yml
+
+  vars:
+     masterha_admin_user: root
+     masterha_admin_password: h89813en
+     masterha_repl_user: repl
+     masterha_repl_password: repl
+
+     mysql_virtual_ip: 10.29.2.211
+
+     mysql_master:
+       - { backend_ip: 10.29.2.101, replicate_ip: 10.5.2.101, server_id: 1001 }
+
+     mysql_slave:
+       - { backend_ip: 10.29.2.102, replicate_ip: 10.5.2.102, server_id: 1002 }
+
+#     mysql_backup:
+#       - { backend_ip: 10.29.2.102, replicate_ip: 10.5.2.102, server_id: 1002 }
+
+     mysql_masterha:
+       - { backend_ip: 10.29.2.109, replicate_ip: 10.5.2.109 }
+
+  roles:
+     - ../../common-roles/percona/11_exchange_ssh-key
+     - ../../common-roles/percona/31_setup_master-ha
+     - ../../common-roles/percona/32_add_grants_for_master-ha

@@ -1,0 +1,18 @@
+- name: uninstall old plugins
+  action: /usr/share/elasticsearch/bin/plugin -remove {{ item }}
+  with_items:
+    - mobz/elasticsearch-head
+    - lukas-vlcek/bigdesk
+    - elasticsearch/elasticsearch-analysis-kuromoji
+    - lmenezes/elasticsearch-kopf
+    - org.codelibs/elasticsearch-reindexing
+
+- name: install new plugins
+  action: /usr/share/elasticsearch/bin/plugin -install {{ item }} -DproxyHost={{ proxy_host }} -DproxyPort={{ proxy_port }}
+  with_items:
+    - mobz/elasticsearch-head
+    - lukas-vlcek/bigdesk
+    - elasticsearch/elasticsearch-analysis-kuromoji/2.5.0
+    - lmenezes/elasticsearch-kopf
+    - org.codelibs/elasticsearch-reindexing/1.4.2
+  

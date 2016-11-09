@@ -1,0 +1,39 @@
+- name: change hostname to inventory displayname
+  action: shell hostname {{ displayname }}
+  when: displayname is defined
+  tags:
+    - hostname
+    - tools
+
+- name: change HOSTNAME in /etc/sysconfing/network to inventory displayname
+  action: shell sed -i -e "s/HOSTNAME=.*/HOSTNAME={{ displayname }}/" /etc/sysconfig/network
+  when: displayname is defined
+  tags:
+    - hostname
+    - tools
+
+- name: change hostname to inventory hostname
+  action: shell hostname {{ inventory_hostname }}
+  when: displayname is not defined
+  tags:
+    - hostname
+    - tools
+
+- name: change HOSTNAME in /etc/sysconfig/network to inventory hostname
+  action: shell sed -i -e "s/HOSTNAME=.*/HOSTNAME={{ inventory_hostname }}/" /etc/sysconfig/network
+  when: displayname is not defined
+  tags:
+    - hostname
+    - tools
+
+- name: reset /etc/motd
+  action: shell cat /dev/null > /etc/motd
+  tags:
+    - hostname
+    - tools
+
+- name: restart rsyslog
+  action: service name=rsyslog state=restarted
+  tags:
+    - hostname
+    - tools

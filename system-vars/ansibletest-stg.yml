@@ -1,0 +1,3 @@
+zabbixserver: 127.0.0.1
+http_proxy: http://10.99.109.10:80/
+redis_password: test

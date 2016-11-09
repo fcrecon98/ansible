@@ -1,0 +1,57 @@
+#!/bin/sh
+#
+# edgescape - This script starts and stops the edgescape daemon
+#
+# chkconfig: - 26 99
+# description: edgescape is a edgescape server.
+# processname: edgescape
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+edgescape=/usr/local/edgescape/sbin/Facilitator.sh
+prog=edgescape
+
+
+start() {
+        [ -x $edgescape ] || exit 5
+        echo -n $"Starting $prog: "
+        daemon $edgescape start
+        echo
+        return
+}
+
+stop() {
+        echo -n $"Stopping $prog: "
+        $edgescape stop
+        echo
+        return
+}
+
+restart() {
+        stop
+        sleep 3
+        start
+}
+
+
+case "$1" in
+        start)
+                start
+                ;;
+
+        stop)
+                stop
+                ;;
+
+        restart)
+                restart
+                ;;
+
+        *)
+                echo "Usage: edgescape {start|stop|restart}" 1>&2
+                exit 1
+esac
+
+exit $retval
+

@@ -1,0 +1,11 @@
+/var/log/kafka/server.err
+/var/log/kafka/server.out
+{
+    missingok
+    weekly
+    notifempty
+    compress
+    delaycompress
+    rotate 5
+    create 0664 {{ kafka_user }} {{ kafka_group }}
+}

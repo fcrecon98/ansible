@@ -1,0 +1,16 @@
+- name: update /etc/sysctl.conf
+  template: src=sysctl.conf dest=/etc/sysctl.conf backup=yes
+  register: result_sysctl
+  tags: sysctl
+
+- name: insert "sysctl -p" to /etc/rc.local
+  lineinfile: dest=/etc/rc.local {{item}}
+  with_items:
+    - regexp='sysctl -p' state=absent
+    - regexp='sysctl' line='/sbin/sysctl -p' state=present insertafter=EOF
+  tags: sysctl
+
+- name: reload /etc/sysctl.conf
+  shell: /sbin/sysctl -p
+  when: result_sysctl.changed
+  tags: sysctl

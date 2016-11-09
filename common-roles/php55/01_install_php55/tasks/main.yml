@@ -1,0 +1,9 @@
+- name: copy php55 repository file
+  action: copy src=remi-php55.repo dest=/etc/yum.repos.d/
+  tags:
+    - php
+
+- name: install php55 packages
+  action: yum name=php55 enablerepo=epel,remi,remi-php55 disable_gpg_check=yes state=latest
+  tags:
+    - php

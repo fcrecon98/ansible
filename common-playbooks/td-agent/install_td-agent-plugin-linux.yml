@@ -1,0 +1,9 @@
+- hosts: '{{ hosts }}'
+  sudo: yes
+  vars_files: 
+     - ../../common-vars/common.yml
+     - ../../common-vars/{{ platform }}-{{ env }}.yml
+     - ../../common-vars/{{ system }}-{{ env }}.yml
+
+  roles:
+     - ../../common-roles/td-agent-plugin-linux/01_install_td-agent-plugin-linux

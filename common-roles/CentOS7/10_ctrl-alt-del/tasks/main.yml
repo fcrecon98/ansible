@@ -1,0 +1,9 @@
+- name: disable ctrl+alt+del reboot
+  action: command systemctl mask ctrl-alt-del.target
+  tags:
+    - ctrl-alt-del
+
+- name: disable ctrl+alt+del reboot apply
+  action: command systemctl daemon-reload
+  tags:
+    - ctrl-alt-del

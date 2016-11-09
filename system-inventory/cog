@@ -1,0 +1,118 @@
+[cog.common]
+cogntp[001:002].cm01.capcom groups=ntp dtap=prod
+cogdns[001:002].cm01.capcom groups=dns dtap=prd
+cogproxy[001:002].cm01.capcom
+cogansible001.cm01.capcom
+cogrundeck001.cm01.capcom mysql_role=master
+cogsvn001.cm01.capcom    mysql_server_id=1001 mysql_role=master
+cogjenkins001.cm01.capcom
+cogrepo001.cm01.capcom
+cogzabbix101.cm01.capcom
+cogzabbix011.cm01.capcom mysql_server_id=1001 mysql_role=master
+cognata001.cm01.capcom   mysql_server_id=1001 mysql_role=master
+cogjmeter[001:003].cm01.capcom
+cogjenkins001.cm01.capcom
+coglog[101:102].cm01.capcom
+cogesm001.cm01.capcom
+cogesd[001:005].cm01.capcom
+cogess001.cm01.capcom
+cogredmine001.cm01.capcom
+cogredmine101.cm01.capcom
+cogredmine201.cm01.capcom
+cogredmine901.cm01.capcom
+cogldap[001:002].cm01.capcom
+cogldap101.cm01.capcom
+
+
+[cog.portal.production]
+cp1fr[001:030].be01.capcom
+cp1mail[001:002].be01.capcom
+cp1mem001.be01.capcom   memcached_rephost=10.5.2.152
+cp1mem002.be01.capcom   memcached_rephost=10.5.2.151
+cp1db001.be01.capcom    mysql_role=master mysql_server_id=1001
+cp1db002.be01.capcom    mysql_role=slave  mysql_server_id=1002 
+cp1db011.be01.capcom    mysql_role=master mysql_server_id=1011
+cp1db012.be01.capcom    mysql_role=slave  mysql_server_id=1012
+cp1mha001.be01.capcom   is_masterha=true
+cp1mha011.be01.capcom   mysql_role=masterha is_masterha=true
+cp1tool001.be01.capcom  displayname=cp1tool001.fe01.capcom
+cp1sorry001.be01.capcom displayname=cp1sorry001.fe01.capcom
+
+[cp1fr]
+cp1fr[001:010].be01.capcom
+
+[cog.portal.production.oauth]
+cp1fr[011:025].be01.capcom
+
+[cog.portal.production.backdoor]
+cp1fr[026:030].be01.capcom
+
+[cog.portal.preview]
+cp1fr[001:003].be01.cappre
+cp1fr011.be01.cappre
+cp1mail[001:002].be01.cappre
+cp1tool001.be01.cappre  displayname=cp1tool001.fe01.cappre
+cp1db001.be01.cappre    mysql_role=master mysql_server_id=1001
+cp1db002.be01.cappre    mysql_role=slave  mysql_server_id=1002
+cp1mha001.be01.cappre   is_master-ha=true
+cp1mem001.be01.cappre   memcached_rephost=10.105.2.152
+cp1mem002.be01.cappre   memcached_rephost=10.105.2.151
+cp1sorry001.be01.cappre displayname=cp1sorry001.fe01.cappre
+
+[cog.portal.development]
+cp1dev001.be01.cappre   mysql_server_id=1001 mysql_role=master
+cp1dev011.be01.cappre   mysql_server_id=1001 mysql_role=master
+cp1devtool001.be01.cappre
+
+[cog.api.production]
+ca1fr[001:003].be01.capcom
+ca1fr[021:023].be01.capcom
+ca1fr[031:032].be01.capcom
+ca1db[001:002].be01.capcom
+ca1batch001.be01.capcom mysql_server_id=1001 mysql_role=master
+ca1dl001.be01.capcom
+ca1sorry001.be01.capcom
+
+[cog.api.preview]
+ca1fr[001:002].be01.cappre
+ca1fr[021:022].be01.cappre
+ca1fr[031:032].be01.cappre
+ca1db[001:002].be01.cappre
+ca1batch001.be01.cappre mysql_server_id=1001 mysql_role=master
+
+[cog.api.development]
+ca1devfr001.be01.cappre
+ca1devdb001.be01.cappre
+ca1devboffice001.be01.cappre
+d-ca1db[001:002].be01.cappre
+
+[cog.repay.production]
+cr1fr[001:002].be01.capcom  
+cr1mail[001:002].be01.capcom  
+cr1db001.be01.capcom  mysql_server_id=1001 mysql_role=master
+cr1db002.be01.capcom  mysql_server_id=1002 mysql_role=slave
+cr1db003.be01.capcom  mysql_server_id=1003 mysql_role=backup is_masterha=true
+
+[cog.repay.stage]
+cr1fr[001:002].be01.cappre
+cr1mail[001:002].be01.cappre
+cr1db001.be01.cappre  mysql_server_id=1001 mysql_role=master
+cr1db002.be01.cappre  mysql_server_id=1002 mysql_role=slave
+cr1db003.be01.cappre  mysql_server_id=1003 mysql_role=backup is_masterha=true
+
+[cog.repay.development]
+cr1dev001.be01.cappre mysql_server_id=1001 mysql_role=master
+
+#[template]
+#centos6510g.cm01.capcom
+#centos6530g.cm01.capcom
+
+[cog.legacyserver]
+master01v.be01.capcom
+dev.be01.capcom
+#dev01v.be01.capcom
+#dev02v.be01.capcom
+#pre01v.be01.capcom
+#pre02v.be01.capcom
+#ml[01:02]v.be01.capcom
+#mag[01:02]v.be01.capcom

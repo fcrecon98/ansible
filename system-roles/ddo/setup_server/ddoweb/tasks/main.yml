@@ -1,0 +1,40 @@
+- name: copy setup script file
+  action: template src=web-setup.sh dest=/usr/local/src/web-setup.sh
+  tags:
+    - ddo
+    - setup_server
+    - ddoweb
+
+- name: copy apachelog_compress script file
+  action: copy src={{ item }} dest=/etc/cron.daily/
+  with_items:
+    - apachelog_compress
+  tags:
+    - ddo
+    - setup_server
+    - ddoweb
+
+- name: permission apachelog_compress script file
+  action: file path=/etc/cron.daily/apachelog_compress mode=0755
+  tags:
+    - ddo
+    - setup_server
+    - ddoweb
+
+- name: copy file discripter setup file
+  action: copy src={{ item }} dest=/etc/security/limits.d/
+  with_items:
+    - apache_fd
+  tags:
+    - ddo
+    - setup_server
+    - ddoweb
+
+
+- name: exec setup script file
+  action: shell sh web-setup.sh chdir=/usr/local/src/
+  tags:
+    - ddo
+    - setup_server
+    - ddoweb
+

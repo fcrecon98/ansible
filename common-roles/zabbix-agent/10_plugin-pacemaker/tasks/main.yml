@@ -1,0 +1,33 @@
+- name: make capcom zabbix dir
+  file: state=directory path=/opt/capcom mode=0777 owner=root group=root
+  file: state=directory path=/opt/capcom/zabbix mode=0777 owner=root group=root
+  tags:
+    - zabbix
+
+- name: rsync /opt/capcom/zabbix/
+  synchronize: src=scripts/ dest=/opt/capcom/zabbix/
+  tags:
+    - zabbix
+    - pacemaker
+
+- name: copy userparameter file
+  copy:  src=configs/zabbix-agent-pacemaker.conf dest=/etc/zabbix/zabbix_agentd.d 
+  register: userparameter
+  tags:
+    - setup
+
+- name: copy sudo file
+  copy:  src=configs/zabbix-agent-pacemaker dest=/etc/sudoers.d
+  tags:
+    - setup
+
+- name: edit /etc/sudoers
+  lineinfile: backup=yes dest=/etc/sudoers regexp="^.*Defaults.*requiretty"  line="#Defaults    requiretty"
+  tags:
+    - setup
+
+- name: restart zabbix-agent
+  action: service name=zabbix-agent state=restarted
+  when: userparameter.changed
+  tags:
+    - setup

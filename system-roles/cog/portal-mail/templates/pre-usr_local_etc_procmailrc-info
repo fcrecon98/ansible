@@ -1,0 +1,30 @@
+HOME=/var/log/daletto/mail
+LOCKFILE=$HOME/.lockfile
+
+LOGPATH=$HOME
+LOGFILE=$LOGPATH/procmail-`date +%Y%m`.log
+
+
+:0
+* 9876543210^0 ^From:.*MAILER-DAEMON@.*
+* 9876543210^0 ^From:.*postmaster@.*
+* 9876543210^0 ^From:.*bounce@.*
+* 9876543210^0 ^To:.*undisclosed-recipients.*
+| python /usr/local/bin/procmail-info.py
+
+:0H
+* ^Content-Type: .*multipart
+{
+        :0B:
+        * ^Content-Type: .* name=.*(\.scr|\.exe|\.xls\.pif|\.doc\.com|\.xls\.bat)
+        /dev/null
+}
+
+:0H
+* ^Content-Type:.*Multipart/Mixed.*
+/dev/null
+
+:0H
+* ^From: *
+! ope hayakawa@gamesarena.co.jp
+

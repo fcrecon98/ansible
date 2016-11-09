@@ -1,0 +1,30 @@
+- hosts: '{{ hosts }}'
+  sudo: yes
+  vars_files:
+  - ../../common-vars/common.yml
+  - ../../platform-vars/{{ platform }}-{{ env }}.yml
+  - ../../system-vars/{{ system }}-{{ env }}.yml
+
+  user: root
+
+  tasks:
+    - name: install snmpd
+      yum: name=net-snmp state=installed
+      tags:
+      - snmpd
+
+    - name: backup config file
+      action: shell cp -pR /etc/snmp/snmpd.conf /etc/snmp/snmpd.conf.$(date +%Y%m%d-%H%M%S)
+      tags:
+      - snmpd   
+
+    - name: accept access from cacti
+      action: template src=./templates/snmpd.conf dest=/etc/snmp/snmpd.conf 
+      tags:
+      - snmpd
+
+    - name: restart snmpd server
+      action: service name=snmpd state=reloaded enabled=yes
+      tags:
+      - snmpd
+

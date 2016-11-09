@@ -1,0 +1,2 @@
+zabbixserver: 127.0.0.1
+http_proxy: http://10.9.104.6:80/

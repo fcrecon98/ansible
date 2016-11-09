@@ -1,0 +1,34 @@
+- hosts: '{{ hosts }}'
+  sudo: yes
+  vars_files:
+     # common vars file
+     - ../../common-vars/common.yml
+     # platform vars file
+     - ../../platform-vars/{{ platform }}-{{ env }}.yml
+     # system vars file
+     - ../../system-vars/{{ system }}-{{ env }}.yml
+
+  vars:
+     - apr_version: 1.5.1-1
+     - apr_util_version: 1.5.3-1
+     - tomcat_version: 7.0.55
+     - tomcat_native_version: 1.1.31
+     - jdk_version: 7u67
+
+     - mysql_server_ipaddr: 10.29.2.211
+     - memcached_server_ipaddr: 10.29.2.221
+
+     - mysql_user_password_daletto: H3sz8Jpe
+
+     - tomcat_xms: 2048m
+     - tomcat_xmx: 2048m
+     - tomcat_maxpermsize: 512m
+     - tomcat_newsize: 512m
+     - tomcat_maxnewsize: 512m
+
+  roles:
+     - ../../common-roles/apache/00_apache-portable-runtime
+     - ../../common-roles/apache/01_apache-server
+     - ../../common-roles/oracle-jdk/01_install_oracle-jdk
+     - ../../common-roles/tomcat/01_install_tomcat
+     - ../../system-roles/cog/frontendapi-ap/

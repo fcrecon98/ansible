@@ -1,0 +1,10 @@
+# Xen Virtual Ethernet
+DEVICE="ethx"
+
+BOOTPROTO="dhcp"
+USERCTL="no"
+NM_CONTROLLED="no"
+ONBOOT="yes"
+TYPE="Ethernet"
+IPV4_FAILURE_FATAL="yes"
+PEERDNS="no"

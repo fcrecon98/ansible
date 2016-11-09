@@ -1,3 +1,13 @@
+- name: update /etc/yum.conf
+  action: raw sed '/proxy.*/d' /etc/yum.conf -i
+  tags:
+    - yum
+
+- name: update /etc/yum.conf
+  action: raw echo proxy={{ http_proxy }} >> /etc/yum.conf
+  tags:
+    - yum
+
 - name: update /etc/yum/pluginconf.d/fastestmirror.conf
   action: raw echo include_only=.jp >> /etc/yum/pluginconf.d/fastestmirror.conf
   tags:
@@ -32,15 +42,20 @@
   tags:
     - yum
 
+- name: update /etc/yum.conf
+  action: lineinfile dest=/etc/yum.conf regexp='.*proxy=.*' line='proxy={{ http_proxy }}'
+  tags:
+    - yum
+
 - name: update all package
   action: yum name=* state=latest disable_gpg_check=yes
   tags:
     - yum
 
-#- name: update /etc/yum.conf
-#  action: lineinfile dest=/etc/yum.conf  regexp='.*exclude=kernel' line='# exclude=kernel* centos-release*'
-#  tags:
-#    - yum
+- name: update /etc/yum.conf
+  action: lineinfile dest=/etc/yum.conf  regexp='.*exclude=kernel' line='# exclude=kernel* centos-release*'
+  tags:
+    - yum
 
 - name: install base packages in [Base] 1/4
   action: yum pkg={{ item }} state=latest

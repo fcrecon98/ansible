@@ -1,0 +1,29 @@
+#
+#  Aliases in this file will NOT be expanded in the header from
+#  Mail, but WILL be visible over networks or from /bin/mail.
+#
+#       >>>>>>>>>>      The program "newaliases" must be run after
+#       >> NOTE >>      this file is updated for any changes to
+#       >>>>>>>>>>      show through to sendmail.
+#
+
+# Basic system aliases -- these MUST be present.
+systemadmin:	cog_dev@eng.capcom.co.jp,sysope_g@eng.capcom.co.jp
+mailer-daemon:	systemadimn
+postmaster:     systemadmin
+webmaster:      systemadmin
+hostmaster:     systemadmin
+namemaster:     systemadmin
+
+# Service aliases
+cog-support:	maildealer-2@mdmimosa.maildealer.jp
+auto-reply:	maildealer-3@mdmimosa.maildealer.jp
+sps:		 backend@daletto.com
+info:		"| procmail -m /usr/local/etc/procmailrc-info"
+mag:		"| procmail -m /usr/local/etc/procmailrc-mag"
+
+fk2-lovelaby:   maildealer-2@mdtroutgw.maildealer.jp
+fk2-lovelaby-ev:maildealer-2@mdtroutgw.maildealer.jp
+
+gs-haishin-g:   maildealer-3@mdtroutgw.maildealer.jp
+gs-haishin-g-ev:maildealer-3@mdtroutgw.maildealer.jp

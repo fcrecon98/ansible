@@ -1,0 +1,55 @@
+- name: install php-pecl-apc
+  yum: name=php-pecl-apc state=latest enablerepo=remi
+  tags:
+    - php
+
+- name: install php-ldap
+  yum: name=php-ldap state=latest enablerepo=remi
+  tags:
+    - php
+
+- name: update php.ini
+  copy: src=php.ini dest=/etc/
+  tags:
+    - php
+
+- name: update httpd.conf
+  copy: src=httpd.conf dest=/etc/httpd/conf/
+  tags:
+    - apache
+
+- name: update /etc/httpd/conf.d/zabbix.conf
+  copy: src=zabbix.conf dest=/etc/httpd/conf.d/
+  tags:
+    - zabbix
+    - apache
+
+- name: copy zabbix.conf.php to /etc/zabbix/web/
+  action: copy src=zabbix.conf.php dest=/etc/zabbix/web/
+  tags:
+    - zabbix
+    - apache
+
+- name: restart httpd
+  service: name=httpd state=restarted enabled=yes
+  tags:
+    - zabbix
+    - apache
+
+- name: mkdir custom php directory
+  file: state=directory path=/usr/share/zabbix/custom/ mode=0755
+  tags:
+    - zabbix
+
+- name: copy custom php
+  copy: src=printtext.php dest=/usr/share/zabbix/custom/
+  tags:
+    - zabbix
+
+- name: change php file owner to nginx
+  action: file path={{ item }} owner=apache group=apache recurse=yes
+  with_items:
+    - /etc/zabbix/web/
+    - /usr/share/zabbix/
+  tags:
+    - zabbix

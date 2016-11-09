@@ -1,0 +1,21 @@
+zabbixserver: 10.21.209.105
+pam_filter: pam_filter &(objectclass=posixaccount)(|(ou=admin)(ou=nttpc))
+
+# dns
+dns_suffix: capcom be01.capcom
+platform_dnsservers:
+   - 106.185.72.2
+   - 106.185.72.3
+
+
+# ntp
+system_ntpservers:
+  - 10.99.209.1
+  - 10.99.209.2
+
+http_proxy: http://10.21.209.104:8080/
+
+mysql_role: master
+mysql_instance_name: onizabbix001 
+
+redis_password: foobared

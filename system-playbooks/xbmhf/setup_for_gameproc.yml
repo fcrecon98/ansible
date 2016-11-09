@@ -1,0 +1,22 @@
+- hosts: '{{ hosts }}'
+  sudo: no
+  vars_files:
+     # common vars file
+     - ../../common-vars/common.yml
+     # platform vars file
+     - ../../platform-vars/{{ platform }}-{{ env }}.yml
+     # system vars file
+     - ../../system-vars/{{ system }}-{{ env }}.yml
+
+  roles:
+
+    - ../../system-roles/xbmhf/11_limitsconf
+    - ../../system-roles/xbmhf/12_core
+    - ../../system-roles/xbmhf/13_mkdir_mhmin
+    - ../../system-roles/xbmhf/14_gcc34
+    - ../../system-roles/xbmhf/15_openssl
+
+    - ../../system-roles/xbmhf/21_postgres_usradd
+    - { role: ../../system-roles/xbmhf/22_postgres_install , when: "ansible_distribution_major_version == '5'" }
+    - { role: ../../system-roles/xbmhf/23_postgres_edit_path , when: "ansible_distribution_major_version == '5'" }
+    - { role: ../../system-roles/xbmhf/24_postgres_ldconfig , when: "ansible_distribution_major_version == '5'" }

@@ -1,0 +1,19 @@
+- name: backup /etc/motd
+  action: shell cp -p /etc/motd /etc/motd.$(date +%Y%m%d-%H%M%S)
+  tags:
+     - motd
+
+- name: update /etc/motd ( virtual machine )
+  action: template src=motd.vm dest=/etc/motd
+  when: ansible_virtualization_role is defined
+  #when: ansible_system_vendor is not defined
+  tags:
+     - motd
+
+- name: update /etc/motd( physical server )
+  action: template src=motd.phy dest=/etc/motd
+  when: ansible_virtualization_role is not defined or ansible_virtualization_role=="NA"
+  #when: ansible_system_vendor is defined
+  tags:
+     - motd
+

@@ -1,0 +1,22 @@
+- name: copy conf for sending /var/log/messages to logserver
+  action: template src=messages.conf dest=/etc/td-agent/td-agent.conf.d/
+  tags:
+     - install
+
+- name: set permission /var/log/messages
+  action: file dest=/var/log/messages mode=0755
+  tags:
+     - install
+
+- name: copy conf for sending /var/log/secure to logserver
+  action: template src=secure.conf dest=/etc/td-agent/td-agent.conf.d/
+  tags:
+     - install
+
+- name: set permission /var/log/secure
+  action: file dest=/var/log/secure mode=0755
+  tags:
+     - install
+
+- name: reload td-agent
+  action: service name=td-agent state=reloaded

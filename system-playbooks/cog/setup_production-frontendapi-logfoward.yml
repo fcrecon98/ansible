@@ -1,0 +1,12 @@
+- hosts: '{{ hosts }}'
+  sudo: yes
+  vars_files:
+     # common vars file
+     - ../../common-vars/common.yml
+     # platform vars file
+     - ../../platform-vars/{{ platform }}-{{ env }}.yml
+     # system vars file
+     - ../../system-vars/{{ system }}-{{ env }}.yml
+
+  roles:
+     - ../../system-roles/cog/frontendapi-log

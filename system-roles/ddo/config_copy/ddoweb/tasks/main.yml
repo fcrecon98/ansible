@@ -1,0 +1,43 @@
+- name: copy apache config file
+  action: synchronize src={{ item }} dest=/usr/local/apache2/ -a recursive=yes
+  with_items:
+    - /opt/capcom/svn/src-ddo/config/{{ config_dir }}/apache2/conf
+  tags:
+    - ddo
+    - config_copy
+    - ddoweb
+    - ddowebif
+    - ddotool
+    - ddoipcheck
+    - ddodl
+
+- name: copy php.ini file
+  action: synchronize src={{ item }} dest=/usr/local/php/ -a recursive=yes
+  with_items:
+    - /opt/capcom/svn/src-ddo/config/{{ config_dir }}/php/lib
+  tags:
+    - ddo
+    - config_copy
+    - ddoweb
+    - ddowebif
+    - ddotool
+
+
+- name: copy sce_tcm file
+  action: synchronize src={{ item }} dest=/var/lib/ -a recursive=yes
+  with_items:
+    - /opt/capcom/svn/src-ddo/config/{{ config_dir }}/sce
+  tags:
+    - ddo
+    - config_copy
+    - ddoweb
+
+
+- name: chmod +x sce_tcm
+  action: shell chmod +x tcm_get chdir=/var/lib/sce/tcm/
+  tags:
+    - ddo
+    - config_copy
+    - ddoweb
+
+

@@ -1,0 +1,29 @@
+- name: Create /usr/local/apache{{ apache_version }}/conf/sysconfig
+  file: path=/usr/local/apache{{ apache_version }}/conf/sysconfig state=directory owner=root group=root mode=0755
+  tags:
+    - apache
+
+- name: Copy httpd sysconfig
+  copy: src=httpd dest=/usr/local/apache{{ apache_version }}/conf/sysconfig/httpd owner=root group=root mode=0644
+  register: apache_sysconfig
+  tags:
+    - apache
+
+- name: Create Symbolic Link
+  file: state=link src=/usr/local/apache{{ apache_version }}/conf/sysconfig/httpd dest=/etc/sysconfig/httpd owner=root group=root mode=0644
+  register: apache_sysconfig_ln
+  tags:
+    - apache
+
+- name: Restart Apache
+  shell: service httpd restart
+  when: apache_sysconfig|changed  or apache_sysconfig_ln|changed
+  tags:
+    - apache
+
+#- name: Clear Dentry Cache
+#  shell: echo 2 > /proc/sys/vm/drop_caches
+#  when: apache_sysconfig|changed  or apache_sysconfig_ln|changed
+#  tags:
+#    - apache
+
