@@ -1,4 +1,0 @@
-- name: stop weekly makewhatis
-  action: file path=/etc/cron.weekly/makewhatis.cron mode=644
-  tags:
-     - cron

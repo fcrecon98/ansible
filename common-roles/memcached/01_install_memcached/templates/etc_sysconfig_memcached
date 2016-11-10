@@ -1,6 +1,0 @@
-PORT=11211
-USER=memcached
-MAXCONN={{ memcached_maxconn | default(1024) }}
-CACHESIZE={{ memcached_cachesize_mb | default(64) }}
-THREADS={{ [ {{ ansible_processor_vcpus }} - 1 , 1 | max }}
-OPTIONS="-v 1>> /var/log/memcached/memcached.log 2>> /var/log/memcached/memcached.log"

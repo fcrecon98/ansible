@@ -1,4 +1,0 @@
-# This config needs " # Defaults requiretty" for /etc/sudoers
-zabbix ALL=(ALL) NOPASSWD: /opt/capcom/zabbix/check_pacemaker_actions
-zabbix ALL=(ALL) NOPASSWD: /opt/capcom/zabbix/crm_mon_stats.sh
-

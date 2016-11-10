@@ -1,2 +1,0 @@
-# monitor lifekeeper
-* * * * * root /opt/LifeKeeper/bin/lcdstatus -q > /opt/capcom/zabbix/lcdstatus-q.dat

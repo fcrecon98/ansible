@@ -1,3 +1,0 @@
-- hosts: '{{ hosts }}'
-  roles:
-    - /etc/ansible/common-roles/ansible-cmdb

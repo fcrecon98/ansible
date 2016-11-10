@@ -3,11 +3,48 @@
   with_items:
     - openssl
     - openssl-devel
+    - openldap-devel
+    - pcre-devel
+    - zlib-devel
   tags:
     - apache
 
-- name: download apache source file
-  action: shell http_proxy={{ http_proxy }} wget -nc http://archive.apache.org/dist/httpd/httpd-{{ apache_version }}.tar.gz  chdir=/usr/local/src/
+
+- name: copy src files
+  action: copy src={{ item }} dest=/usr/local/src/
+  with_items:
+    - apr-{{ apr_version }}.tar.gz
+    - apr-util-{{ apr_util_version }}.tar.gz
+    - httpd-{{ apache_version }}.tar.gz
+  tags:
+    - apache
+
+#- name: download apr source file
+#  action: shell http_proxy={{ http_proxy }} wget -nc http://www.us.apache.org/dist/apr/apr-{{ apr_version }}.tar.gz  chdir=/usr/local/src/
+#  tags:
+#    - apache
+#
+#- name: download apr-util source file
+#  action: shell http_proxy={{ http_proxy }} wget -nc http://www.us.apache.org/dist/apr/apr-util-{{ apr_util_version }}.tar.gz  chdir=/usr/local/src/
+#  tags:
+#    - apache
+#
+#- name: download apache source file
+#  action: shell http_proxy={{ http_proxy }} wget -nc http://archive.apache.org/dist/httpd/httpd-{{ apache_version }}.tar.gz  chdir=/usr/local/src/
+#  tags:
+#    - apache
+
+- name: extract source file
+  action: shell tar xvzf {{ item }} chdir=/usr/local/src/
+  with_items:
+    - apr-{{ apr_version }}.tar.gz
+  tags:
+    - apache
+
+- name: extract source file
+  action: shell tar xvzf {{ item }} chdir=/usr/local/src/
+  with_items:
+    - apr-util-{{ apr_util_version }}.tar.gz
   tags:
     - apache
 
@@ -15,6 +52,16 @@
   action: shell tar xvzf {{ item }} chdir=/usr/local/src/
   with_items:
     - httpd-{{ apache_version }}.tar.gz
+  tags:
+    - apache
+
+- name: copy apr source file
+  command: cp -pr /usr/local/src/apr-{{ apr_version }} /usr/local/src/httpd-{{ apache_version }}/srclib/apr
+  tags:
+    - apache
+
+- name: copy apr-utils source file
+  command: cp -pr /usr/local/src/apr-util-{{ apr_util_version }} /usr/local/src/httpd-{{ apache_version }}/srclib/apr-util
   tags:
     - apache
 
@@ -29,12 +76,12 @@
     - apache
 
 - name: make install apache
-  action: shell make && porg -lD "make install" chdir=/usr/local/src/httpd-{{ apache_version }}/
+  action: shell make && make install chdir=/usr/local/src/httpd-{{ apache_version }}/
   tags:
     - apache
 
 - name: create symlink for apache home directory
-  action: file state=link src=/usr/local/apache-{{apache_version}} dest=/usr/local/apache2
+  action: file state=link src=/usr/local/apache{{apache_version}} dest=/usr/local/apache2
   tags:
      - apache
 
@@ -70,13 +117,13 @@
   tags:
     - apache
 
-- name: create apache pid directory
-  action: file state=directory mode=0755 owner=root group=apache path=/var/run/httpd/
+- name: add httpd service
+  action: shell chkconfig --add httpd
   tags:
     - apache
 
-- name: add httpd service
-  action: shell chkconfig --add httpd
+- name: httpd configfile repair
+  command: sed -i'.org' -e 's/#LoadModule slotmem_shm_module modules\/mod_slotmem_shm.so/LoadModule slotmem_shm_module modules\/mod_slotmem_shm.so/g' /usr/local/apache2/conf/httpd.conf
   tags:
     - apache
 

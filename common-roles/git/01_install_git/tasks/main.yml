@@ -1,9 +1,0 @@
-- name: install git
-  action: yum name=git enablerepo=remi,epel,rpmforge
-  tags:
-    - git
-
-- name: put .gitconfig
-  action: template src=.gitconfig dest=/root/
-  tags:
-    - git

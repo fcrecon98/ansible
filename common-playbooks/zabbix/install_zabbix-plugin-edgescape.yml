@@ -1,9 +1,0 @@
-- hosts: '{{ hosts }}'
-  sudo: yes
-  vars_files: 
-     - ../../common-vars/common.yml
-     - ../../platform-vars/{{ platform }}-{{ env }}.yml
-     - ../../system-vars/{{ system }}-{{ env }}.yml
-
-  roles:
-     - ../../common-roles/zabbix-agent/10_plugin-edgescape

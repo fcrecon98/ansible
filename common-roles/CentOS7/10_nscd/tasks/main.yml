@@ -1,9 +1,0 @@
-- name: install nscd
-  yum: name=nscd state=latest
-  tags:
-    - nscd
-
-- name: enable nscd
-  service: name=nscd state=started enabled=yes
-  tags:
-    - nscd

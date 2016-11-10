@@ -1,5 +1,0 @@
-
-@@@@@
-@@@@@ You have logged in to {{ ansible_fqdn }} successfully.
-@@@@@ This server is running on {{ ansible_virtualization_type }}.
-@@@@@

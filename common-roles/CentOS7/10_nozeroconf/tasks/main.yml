@@ -1,4 +1,0 @@
-- name: set NOZEROCONF=yes /etc/sysconfig/network
-  action: lineinfile dest=/etc/sysconfig/network regexp='^NOZEROCONF' line='NOZEROCONF=yes'
-  tags:
-    - nozeroconf

@@ -1,4 +1,0 @@
-- name: change /root/.forward to /dev/null
-  action: copy src=.forward dest=/root/
-  tags:
-    - discard_mail_to_root

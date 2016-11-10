@@ -1,9 +1,0 @@
-- hosts: '{{ hosts }}'
-  sudo: no
-  vars_files: 
-     - ../../common-vars/common.yml
-     - ../../platform-vars/{{ platform }}-{{ env }}.yml
-     - ../../system-vars/{{ system }}-{{ env }}.yml
-
-  roles:
-     - ../../common-roles/munin/01_install_munin_node

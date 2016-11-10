@@ -1,14 +1,29 @@
 #!/bin/bash
 #
-# httpd        Startup script for the Apache HTTP Server
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+#
+# httpd        Startup script for the Apache Web Server
 #
 # chkconfig: - 85 15
 # description: The Apache HTTP Server is an efficient and extensible  \
-#              server implementing the current HTTP standards.
+#             server implementing the current HTTP standards.
 # processname: httpd
-# config: /etc/httpd/conf/httpd.conf
+# pidfile: /var/run/httpd.pid
 # config: /etc/sysconfig/httpd
-# pidfile: /var/run/httpd/httpd.pid
 #
 ### BEGIN INIT INFO
 # Provides: httpd
@@ -23,14 +38,13 @@
 # Source function library.
 . /etc/rc.d/init.d/functions
 
-if [ -f /etc/sysconfig/httpd ]; then
-        . /etc/sysconfig/httpd
-fi
-# pick up any necessary environment variables
-if test -f /usr/local/apache2/bin/envvars; then
-  . /usr/local/apache2/bin/envvars
-fi
+# What were we called? Multiple instances of the same daemon can be
+# created by creating suitably named symlinks to this startup script
+prog=$(basename $0 | sed -e 's/^[SK][0-9][0-9]//')
 
+if [ -f /etc/sysconfig/${prog} ]; then
+        . /etc/sysconfig/${prog}
+fi
 
 # Start httpd in the C locale by default.
 HTTPD_LANG=${HTTPD_LANG-"C"}
@@ -43,14 +57,26 @@ INITLOG_ARGS=""
 # with the thread-based "worker" MPM; BE WARNED that some modules may not
 # work correctly with a thread-based MPM; notably PHP will refuse to start.
 
-# Path to the apachectl script, server binary, and short-form for messages.
-apachectl=/usr/local/apache2/bin/apachectl
-httpd=${HTTPD-/usr/local/apache2/bin/httpd}
-prog=httpd
-pidfile=${PIDFILE-/var/run/httpd/httpd.pid}
-lockfile=${LOCKFILE-/var/lock/subsys/httpd}
+httpd=/usr/local/apache2/bin/httpd
+pidfile=/usr/local/apache2/logs/${prog}.pid
+lockfile=${LOCKFILE-/var/lock/subsys/${prog}}
 RETVAL=0
-STOP_TIMEOUT=${STOP_TIMEOUT-10}
+
+# check for 1.3 configuration
+check13 () {
+	CONFFILE=/usr/local/apache2/conf/httpd.conf
+	GONE="(ServerType|BindAddress|Port|AddModule|ClearModuleList|"
+	GONE="${GONE}AgentLog|RefererLog|RefererIgnore|FancyIndexing|"
+	GONE="${GONE}AccessConfig|ResourceConfig)"
+	if grep -Eiq "^[[:space:]]*($GONE)" $CONFFILE; then
+		echo
+		echo 1>&2 " Apache 1.3 configuration directives found"
+		echo 1>&2 " please read @docdir@/migration.html"
+		failure "Apache 1.3 config directives test"
+		echo
+		exit 1
+	fi
+}
 
 # The semantics of these two functions differ from the way apachectl does
 # things -- attempting to start while running is a failure, and shutdown
@@ -58,72 +84,71 @@ STOP_TIMEOUT=${STOP_TIMEOUT-10}
 # are expected to behave here.
 start() {
         echo -n $"Starting $prog: "
+        check13 || exit 1
         LANG=$HTTPD_LANG daemon --pidfile=${pidfile} $httpd $OPTIONS
         RETVAL=$?
         echo
         [ $RETVAL = 0 ] && touch ${lockfile}
         return $RETVAL
 }
-
-# When stopping httpd, a delay (of default 10 second) is required
-# before SIGKILLing the httpd parent; this gives enough time for the
-# httpd parent to SIGKILL any errant children.
 stop() {
-        echo -n $"Stopping $prog: "
-        killproc -p ${pidfile} -d ${STOP_TIMEOUT} $httpd
-        RETVAL=$?
-        echo
-        [ $RETVAL = 0 ] && rm -f ${lockfile} ${pidfile}
+	echo -n $"Stopping $prog: "
+	killproc -p ${pidfile} -d 10 $httpd
+	RETVAL=$?
+	echo
+	[ $RETVAL = 0 ] && rm -f ${lockfile} ${pidfile}
 }
 reload() {
-    echo -n $"Reloading $prog: "
-    if ! LANG=$HTTPD_LANG $httpd $OPTIONS -t >&/dev/null; then
-        RETVAL=6
-        echo $"not reloading due to configuration syntax error"
-        failure $"not reloading $httpd due to configuration syntax error"
-    else
-        # Force LSB behaviour from killproc
-        LSB=1 killproc -p ${pidfile} $httpd -HUP
-        RETVAL=$?
-        if [ $RETVAL -eq 7 ]; then
-            failure $"httpd shutdown"
-        fi
-    fi
-    echo
+	echo -n $"Reloading $prog: "
+	check13 || exit 1
+	killproc -p ${pidfile} $httpd -HUP
+	RETVAL=$?
+	echo
 }
 
 # See how we were called.
 case "$1" in
   start)
-        start
-        ;;
+	start
+	;;
   stop)
-        stop
-        ;;
+	stop
+	;;
   status)
-        status -p ${pidfile} $httpd
-        RETVAL=$?
-        ;;
-  restart)
-        stop
-        start
-        ;;
-  condrestart|try-restart)
-        if status -p ${pidfile} $httpd >&/dev/null; then
-                stop
-                start
+        if ! test -f ${pidfile}; then
+            echo $prog is stopped
+            RETVAL=3
+        else  
+            status -p ${pidfile} $httpd
+            RETVAL=$?
         fi
         ;;
-  force-reload|reload)
+  restart)
+	stop
+	start
+	;;
+  condrestart)
+	if test -f ${pidfile} && status -p ${pidfile} $httpd >&/dev/null; then
+		stop
+		start
+	fi
+	;;
+  reload)
         reload
-        ;;
-  graceful|help|configtest|fullstatus)
-        $apachectl $@
+	;;
+  configtest)
+        LANG=$HTTPD_LANG $httpd $OPTIONS -t
         RETVAL=$?
         ;;
+  graceful)
+        echo -n $"Gracefully restarting $prog: "
+        LANG=$HTTPD_LANG $httpd $OPTIONS -k $@
+        RETVAL=$?
+        echo
+        ;;
   *)
-        echo $"Usage: $prog {start|stop|restart|condrestart|try-restart|force-reload|reload|status|fullstatus|graceful|help|configtest}"
-        RETVAL=2
+	echo $"Usage: $prog {start|stop|restart|condrestart|reload|status|graceful|help|configtest}"
+	exit 1
 esac
 
 exit $RETVAL

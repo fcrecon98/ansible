@@ -1,0 +1,10 @@
+- hosts: '{{ hosts }}'
+  sudo: yes
+  vars_files: 
+     - ../../common-vars/common.yml
+
+  roles:
+     - ../../common-roles/jenkins/01_install_jenkins
+     - ../../common-roles/apache/01_apache-server
+     - ../../common-roles/apache/10_logformat-json
+     - ../../common-roles/jenkins/02_connect_apache_to_jenkins

@@ -1,7 +1,0 @@
-- name: install php package from remi repository
-  action: yum name={{ item }} state=latest enablerepo=remi-php55
-  with_items:
-    - php-opcache
-  tags:
-    - php
-

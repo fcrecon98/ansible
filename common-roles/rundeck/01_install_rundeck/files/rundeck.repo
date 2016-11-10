@@ -1,5 +1,0 @@
-[rundeck-release-bintray]
-name=Rundeck - Release
-baseurl=http://dl.bintray.com/rundeck/rundeck-rpm
-gpgcheck=0
-enabled=0

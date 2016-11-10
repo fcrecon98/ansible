@@ -1,0 +1,122 @@
+- name: install required packages from repository
+  yum: name={{ item }} state=latest
+  with_items:
+    - openssl
+    - openssl-devel
+    - pcre-devel
+    - zlib-devel
+    - openldap-devel
+  tags:
+    - apache
+
+- name: copy src files
+  copy: src={{ item }} dest=/usr/local/src/
+  with_items:
+    - apr-{{ apr_version }}.tar.gz
+    - apr-util-{{ apr_util_version }}.tar.gz
+    - httpd-{{ apache_version }}.tar.gz
+    - pcre-{{ pcre_version }}.tar.gz
+  tags:
+    - apache
+
+- name: extract source file
+  shell: tar xvzf {{ item }} chdir=/usr/local/src/
+  with_items:
+    - apr-{{ apr_version }}.tar.gz
+    - apr-util-{{ apr_util_version }}.tar.gz
+    - httpd-{{ apache_version }}.tar.gz
+    - pcre-{{ pcre_version }}.tar.gz
+  tags:
+    - apache
+
+- name: pcre configure
+  shell: ./configure --prefix=/usr/local/pcre-{{ pcre_version }} chdir=/usr/local/src/pcre-{{ pcre_version }}/
+  tags:
+    - apache
+
+- name: pcre install
+  shell: make && make install chdir=/usr/local/src/pcre-{{ pcre_version }}/
+  tags:
+    - apache
+
+- name: pcre create link
+  file: src=/usr/local/pcre-{{ pcre_version }} dest=/usr/local/pcre state=link
+  tags:
+    - apache
+
+- name: copy apr source file
+  shell: cp -pr /usr/local/src/apr-{{ apr_version }} /usr/local/src/httpd-{{ apache_version }}/srclib/apr
+  tags:
+    - apache
+
+- name: copy apr-utils source file
+  shell: cp -pr /usr/local/src/apr-util-{{ apr_util_version }} /usr/local/src/httpd-{{ apache_version }}/srclib/apr-util
+  tags:
+    - apache
+
+- name: copy apache configure file
+  template: src=apache-configure.sh dest=/usr/local/src/httpd-{{ apache_version }}/
+  tags:
+    - apache
+
+- name: exec apache configure file
+  shell: sh apache-configure.sh chdir=/usr/local/src/httpd-{{ apache_version }}/
+  tags:
+    - apache
+
+- name: make install apache
+  shell: make && make install chdir=/usr/local/src/httpd-{{ apache_version }}/
+  tags:
+    - apache
+
+- name: create symlink for apache home directory
+  file: state=link src=/usr/local/apache{{apache_version}} dest=/usr/local/apache2
+  tags:
+     - apache
+
+- name: create apache log directories
+  file: state=directory path={{ item }}
+  with_items:
+    - /var/log/httpd/
+  tags:
+    - apache
+
+- name: create symlink for apache log directory (1/2)
+  file: state=absent path=/usr/local/apache2/logs/
+  tags:
+    - apache
+
+- name: create symlink for apache log directory (2/2)
+  file: state=link src=/var/log/httpd dest=/usr/local/apache2/logs
+  tags:
+    - apache
+
+- name: create apache group
+  group: name=apache gid=48
+  tags:
+    - apache
+
+- name: create apache user
+  user: name=apache uid=48 group=apache createhome=yes home=/var/www/ shell=/sbin/nologin
+  tags:
+    - apache
+
+- name: copy apache init script
+  template: src=etc_init.d_httpd dest=/etc/init.d/httpd mode=0755
+  tags:
+    - apache
+
+- name: add httpd service
+  shell: chkconfig --add httpd
+  tags:
+    - apache
+
+- name: httpd configfile repair
+  command: sed -i'.org' -e 's/#LoadModule slotmem_shm_module modules\/mod_slotmem_shm.so/LoadModule slotmem_shm_module modules\/mod_slotmem_shm.so/g' /usr/local/apache2/conf/httpd.conf
+  tags:
+    - apache
+
+- name: start httpd service
+  service: name=httpd state=started enabled=yes
+  tags:
+    - apache

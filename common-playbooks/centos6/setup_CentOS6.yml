@@ -4,15 +4,14 @@
      # common vars file
      - ../../common-vars/common.yml
      # platform vars file
-     - ../../platform-vars/{{ platform }}-{{ env }}.yml
+     #- ../../platform-vars/{{ platform }}-{{ env }}.yml
      # system vars file
-     - ../../system-vars/{{ system }}-{{ env }}.yml
+     #- ../../system-vars/{{ system }}-{{ env }}.yml
 
   roles:
 
     - ../../common-roles/CentOS6/01_packages
     - ../../common-roles/CentOS6/02_root_bash_profile
-
     - ../../common-roles/CentOS6/03_account
     - ../../common-roles/CentOS6/04_porg
 

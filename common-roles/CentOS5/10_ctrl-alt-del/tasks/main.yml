@@ -1,4 +1,0 @@
-- name: disable ctrl+alt+del reboot /etc/inittab
-  action: lineinfile dest=/etc/inittab regexp="ca::ctrlaltdel:/sbin/shutdown" line="# ca::ctrlaltdel:/sbin/shutdown" backup=yes
-  tags:
-    - ctrl-alt-del
