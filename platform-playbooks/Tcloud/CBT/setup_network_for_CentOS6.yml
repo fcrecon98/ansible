@@ -11,6 +11,5 @@
   roles:
     - ../../platform-roles/capcomcloud/01_network-scripts
     - ../../platform-roles/capcomcloud/02_static-routes_to_management
-    - ../../platform-roles/capcomcloud/02_static-routes_to_vpnclient
     - ../../platform-roles/capcomcloud/10_network-offload
 

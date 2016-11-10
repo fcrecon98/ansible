@@ -1,17 +1,17 @@
 # dns
-dns_suffix: capstg
+dns_suffix: teststg
 platform_dnsservers:
-  - 203.191.249.2
-  - 203.191.249.3
+  - 103.91.149.2
+  - 103.91.149.3
 
 # ntp
 platform_ntpservers:
-  - 10.99.109.1
-  - 10.99.109.2
+  - 101.199.209.1
+  - 101.199.209.2
 
 # ldap
 platform_ldapservers:
-  - ldap://10.99.109.9/
+  - ldap://101.199.209.9/
 
 # mail
-mailserver: 10.99.109.11
+mailserver: 101.199.209.11

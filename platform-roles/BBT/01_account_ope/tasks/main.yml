@@ -1,9 +1,0 @@
-- name: create ope group
-  action: group name=ope gid=603 state=present
-  tags:
-    - cog
-
-- name: create ope user
-  action: user name=ope uid=603 append=yes group=ope groups=wheel state=present
-  tags:
-    - cog

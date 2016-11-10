@@ -1,18 +1,18 @@
 # dns
-dns_suffix: capcom
+dns_suffix: test
 platform_dnsservers:
-  - 106.185.72.2
-  - 106.185.72.3
+  - 202.85.172.2
+  - 202.85.172.3
 
 # ntp
 platform_ntpservers:
-  - 10.99.209.1
-  - 10.99.209.2
+  - 101.199.209.1
+  - 101.199.209.2
 
 # ldap
 platform_ldapservers:
-  - ldap://10.99.209.13/
-  - ldap://10.99.209.9/
+  - ldap://101.199.209.13/
+  - ldap://101.199.209.9/
 
 # mail
-mailserver: 10.99.209.11
+mailserver: 101.199.209.11
