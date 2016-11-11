@@ -1,0 +1,16 @@
+# dns
+dns_suffix: testdev
+platform_dnsservers:
+  - 103.92.149.2
+  - 103.92.149.3
+
+# ntp
+platform_ntpservers:
+  - 10.99.109.1
+  - 10.99.109.2
+
+# ldap
+platform_ldapservers:
+  - ldap://10.99.9.8/
+
+mailserver: 10.99.9.11

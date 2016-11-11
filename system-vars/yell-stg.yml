@@ -1,0 +1,17 @@
+# dns
+dns_suffix: teststg
+platform_dnsservers:
+  - 103.91.149.2
+  - 103.91.149.3
+
+# ntp
+platform_ntpservers:
+  - 101.199.209.1
+  - 101.199.209.2
+
+# ldap
+platform_ldapservers:
+  - ldap://101.199.209.9/
+
+# mail
+mailserver: 101.199.209.11
