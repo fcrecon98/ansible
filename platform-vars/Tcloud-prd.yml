@@ -1,0 +1,19 @@
+# dns
+dns_suffix: test
+platform_dnsservers:
+  - 101.18.11.3
+  - 102.148.15.37
+  - 102.148.15.5
+
+# ntp
+platform_ntpservers:
+  - 101.18.11.7
+  - 101.18.11.8
+
+# ldap
+platform_ldapservers:
+  - ldap://101.18.11.5/
+  - ldap://101.18.11.6/
+
+# mail
+mailserver: 101.18.11.203

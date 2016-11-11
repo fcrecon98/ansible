@@ -1,0 +1,14 @@
+- name: download php56 repository file
+  action: shell rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
+  tags:
+    - php
+
+#- name: copy php56 repository file
+#  action: copy src=remi-php56.repo dest=/etc/yum.repos.d/
+#  tags:
+#    - php
+
+- name: install php56 packages
+  action: yum name=php enablerepo=epel,remi-php56,remi disable_gpg_check=yes state=latest
+  tags:
+    - php

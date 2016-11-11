@@ -1,0 +1,11 @@
+- hosts: '{{ hosts }}'
+  sudo: yes
+  vars_files: 
+     - ../../../common-vars/common.yml
+     - ../../../platform-vars/{{ platform }}-{{ env }}.yml
+     - ../../../system-vars/{{ system }}-{{ env }}.yml
+
+  roles:
+     - ../../../system-roles/Tcloud/CBT/php56/01_install_php56
+     - ../../../system-roles/Tcloud/CBT/php56/10_install_php-mysqlnd
+     - ../../../system-roles/Tcloud/CBT/php56/10_install_php-opcache
