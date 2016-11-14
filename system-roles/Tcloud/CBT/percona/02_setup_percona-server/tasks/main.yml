@@ -1,0 +1,163 @@
+- name: copy my.cnf
+  action: template src=my.cnf dest=/etc/my.cnf backup=yes
+  tags:
+    - percona
+    - mysql
+
+- name: copy mysqltuner.pl to /usr/local/bin/
+  action: copy src=mysqltuner.pl dest=/usr/local/bin/ mode=777
+  tags:
+     - percona
+     - mysql
+
+- name: create pid directory
+  action: file path={{ item }} state=directory mode=0700 owner=root group=root
+  with_items:
+     - /var/run/mysqld
+  tags:
+     - percona
+     - mysql
+
+- name: create log directory
+  action: file path={{ item }} state=directory mode=0700 owner=mysql group=mysql
+  with_items:
+     - /var/log/mysql
+  tags:
+     - percona
+     - mysql
+
+- name: create default data & tmp directory
+  action: file path={{ item }} state=directory mode=0700 owner=mysql group=mysql
+  with_items:
+     - /var/lib/mysql/data
+     - /var/lib/mysql/tmp
+     - /var/lib/mysql/binlog
+     - /var/lib/mysql/relaylog
+  tags:
+     - percona
+     - mysql
+  when: mysql_instance_name is not defined
+
+- name: create specific directory
+  action: file path={{ item }} state=directory mode=0700 owner=mysql group=mysql
+  with_items:
+     - /var/lib/mysql/{{ mysql_instance_name }}/data
+     - /var/lib/mysql/{{ mysql_instance_name }}/tmp
+     - /var/lib/mysql/{{ mysql_instance_name }}/binlog
+     - /var/lib/mysql/{{ mysql_instance_name }}/relaylog
+  when: mysql_instance_name is defined
+  tags:
+    - percona
+    - mysql
+
+- name: move systemdb to common data directory
+  action: shell test -e /var/lib/mysql/{{ item }} && mv /var/lib/mysql/{{ item }} /var/lib/mysql/data/
+  with_items:
+    - mysql
+    - test
+    - performance_schema
+  register: command_result
+  failed_when: command_result.rc > 1 
+  when: mysql_instance_name is not defined
+  tags:
+    - percona
+    - mysql
+
+- name: move systemdb to specific data directory
+  action: shell test -e /var/lib/mysql/{{ item }} && mv /var/lib/mysql/{{ item }} /var/lib/mysql/{{ mysql_instance_name }}data/
+  with_items:
+    - mysql
+    - test
+    - performance_schema
+  register: command_result
+  failed_when: command_result.rc > 1 
+  when: mysql_instance_name is defined
+  tags:
+    - percona
+    - mysql
+
+- name: exec mysql_install_db
+  action: shell mysql_install_db
+  tags:
+    - percona
+    - mysql
+
+- name: startup percona server
+  action: service name=mysql state=started enabled=yes
+  tags:
+    - percona
+    - mysql
+
+- name: create work directory
+  action: file path=/opt/dmm/mysql/bin state=directory
+  tags:
+    - percona
+    - mysql
+
+- name: put drop table sql
+  action: copy src=delete_slavetable.sql dest=/opt/dmm/mysql/bin
+  tags:
+    - percona
+    - mysql
+
+- name: drop old innodb & slave tables
+  action: shell mysql -uroot mysql < /opt/dmm/mysql/bin/delete_slavetable.sql
+  tags:
+    - percona
+    - mysql
+
+- name: delete old innodb & slave table files
+  action: file path=/var/lib/mysql/data/mysql/{{ item }} state=absent
+  with_items:
+    - innodb_index_stats.ibd
+    - innodb_table_stats.ibd
+    - slave_master_info.ibd
+    - slave_relay_log_info.ibd
+    - slave_worker_info.ibd
+  when: mysql_instance_name is not defined
+  tags:
+    - percona
+    - mysql
+
+- name: delete old innodb & slave table files
+  action: file path=/var/lib/mysql/{{ mysql_instance_name }}/data/mysql/{{ item }} state=absent
+  with_items:
+    - innodb_index_stats.ibd
+    - innodb_table_stats.ibd
+    - slave_master_info.ibd
+    - slave_relay_log_info.ibd
+    - slave_worker_info.ibd
+  when: mysql_instance_name is defined
+  tags:
+    - percona
+    - mysql
+
+- name: recreate system tables
+  action: shell mysql -u root mysql < /usr/share/percona-server/mysql_system_tables.sql 
+  tags:
+    - percona
+    - mysql
+
+- name: restart percona-server
+  action: service name=mysql state=restarted
+  tags:
+    - percona
+    - mysql
+
+#- name: mysql_secure_installation
+#  action: shell echo hoge
+#  tags:
+#    - percona
+#    - mysql
+
+- name: copy log rotate conf
+  action: template src=etc_logrotate.d_mysql dest=/etc/logrotate.d/mysql
+  tags:
+    - percona
+    - mysql
+
+- name: set log directory permission
+  action: file dest=/var/log/mysql mode=0755
+  tags:
+    - percona
+    - mysql

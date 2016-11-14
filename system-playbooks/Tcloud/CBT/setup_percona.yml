@@ -1,0 +1,15 @@
+- hosts: '{{ hosts }}'
+  sudo: no
+  vars_files:
+     # common vars file
+     - ../../common-vars/common.yml
+     # platform vars file
+     - ../../platform-vars/{{ platform }}-{{ env }}.yml
+     # system vars file
+     - ../../system-vars/{{ system }}-{{ env }}.yml
+     # database vars file 
+     #- ../../system-vars/{{ system }}-{{ db }}-{{ env }}.yml
+
+  roles:
+     - ../../../system-roles/Tcloud/CBT/percona/01_install_percona-server
+     - ../../../system-roles/Tcloud/CBT/percona/02_setup_percona-server
