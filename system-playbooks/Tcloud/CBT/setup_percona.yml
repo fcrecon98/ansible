@@ -2,11 +2,11 @@
   sudo: no
   vars_files:
      # common vars file
-     - ../../common-vars/common.yml
+     - ../../../common-vars/common.yml
      # platform vars file
-     - ../../platform-vars/{{ platform }}-{{ env }}.yml
+     - ../../../platform-vars/{{ platform }}-{{ env }}.yml
      # system vars file
-     - ../../system-vars/{{ system }}-{{ env }}.yml
+     - ../../../system-vars/{{ system }}-{{ env }}.yml
      # database vars file 
      #- ../../system-vars/{{ system }}-{{ db }}-{{ env }}.yml
 
